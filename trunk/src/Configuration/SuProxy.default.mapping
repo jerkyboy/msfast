@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+<config>
 <!-- =======================================================================
 Project: MSFast (MySpace.MSFast)
 Author: Yadid Ramot (e.yadid@gmail.com)
@@ -18,7 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with MSFast.  If not, see <http://www.gnu.org/licenses/>.
 ======================================================================= -->
-<config>
+
   
   <urlmapping>
 
