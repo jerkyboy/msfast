@@ -288,4 +288,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>IF EXIST "$(SolutionDir)Resources\MySpace.MSFast.GUI.Engine.RenderGraph.bin" COPY "$(SolutionDir)Resources\MySpace.MSFast.GUI.Engine.RenderGraph.bin" "$(TargetDir)"
+</PreBuildEvent>
+  </PropertyGroup>
 </Project>
