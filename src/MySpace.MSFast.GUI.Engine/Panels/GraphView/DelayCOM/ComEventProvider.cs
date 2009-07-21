@@ -184,9 +184,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels.GraphView.DelayCOM
 			}
 			
 			if (null == _eventKeys)
-                _eventKeys = new Hashtable(
-                    CaseInsensitiveHashCodeProvider.Default,
-                    CaseInsensitiveComparer.Default);
+                _eventKeys = new Hashtable(StringComparer.OrdinalIgnoreCase);
 			
 			_eventKeys[eventName] = key;
 			return key;

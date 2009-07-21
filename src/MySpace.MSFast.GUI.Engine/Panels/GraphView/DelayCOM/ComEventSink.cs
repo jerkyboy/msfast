@@ -253,9 +253,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels.GraphView.DelayCOM
 		internal void AddUnmappedEventKey(string eventName, object key)
 		{
             if (null == _unmappedEventKeys)
-                _unmappedEventKeys = new Hashtable(
-                    CaseInsensitiveHashCodeProvider.DefaultInvariant,
-					CaseInsensitiveComparer.Default);
+                _unmappedEventKeys = new Hashtable(StringComparer.OrdinalIgnoreCase);
 			
 			_unmappedEventKeys[eventName] = key;
 			Debug.WriteLine(string.Format("Event {0} does not have a corresponding static field {0}Event.", eventName));
