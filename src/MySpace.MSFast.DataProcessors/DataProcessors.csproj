@@ -12,10 +12,14 @@
     <AssemblyName>MySpace.MSFast.DataProcessors</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <StartupObject>
     </StartupObject>
     <SignAssembly>false</SignAssembly>
@@ -76,6 +80,7 @@
     <Compile Include="DataValidators\ValidationResultTypes\DownloadStateOccurance.cs" />
     <Compile Include="DataValidators\ValidationResultTypes\IValidationResults.cs" />
     <Compile Include="DataValidators\ValidationResultTypes\SourceValidationOccurance.cs" />
+    <Compile Include="DataValidators\ValidationResultTypes\ValidationResultsPackage.cs" />
     <Compile Include="DataValidators\ValidationRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
