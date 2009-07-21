@@ -1,0 +1,8 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Windows\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe</StartProgram>
+    <StartWorkingDirectory>C:\Source\msfast\</StartWorkingDirectory>
+    <StartArguments>msfast.proj /t:createInstaller</StartArguments>
+  </PropertyGroup>
+</Project>
