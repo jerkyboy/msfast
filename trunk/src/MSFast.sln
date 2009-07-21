@@ -45,6 +45,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{F7DE65CC-2733-43B3-A332-8A34AC1B22FD}"
 	ProjectSection(SolutionItems) = preProject
 		Configuration\DefaultPageValidation.xml = Configuration\DefaultPageValidation.xml
+		..\msfast.proj = ..\msfast.proj
 		Configuration\SuProxy.default.config = Configuration\SuProxy.default.config
 		Configuration\SuProxy.default.mapping = Configuration\SuProxy.default.mapping
 		Configuration\SuProxy.msfast.config = Configuration\SuProxy.msfast.config
@@ -58,6 +59,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessors.Console", "MySpace.MSFast.DataProcessors.Console\DataProcessors.Console.csproj", "{88B5219B-D1DF-4BFB-AB29-B26B727641DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installation", "Installation", "{8530937F-1864-4F54-A3E2-B44B13D96E8A}"
+	ProjectSection(SolutionItems) = preProject
+		Installation\MSFastInstaller.nsi = Installation\MSFastInstaller.nsi
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,5 +133,6 @@ Global
 		{55758618-D930-447C-98B3-2CFE6D50F1F4} = {BE287E83-12BC-4A6A-A917-9811D774704D}
 		{F7DE65CC-2733-43B3-A332-8A34AC1B22FD} = {4EEADB13-7E22-4EF5-8A42-128604B7474C}
 		{D9D7EA6B-6576-4FE7-BC84-20EFE5DFDA17} = {4EEADB13-7E22-4EF5-8A42-128604B7474C}
+		{8530937F-1864-4F54-A3E2-B44B13D96E8A} = {4EEADB13-7E22-4EF5-8A42-128604B7474C}
 	EndGlobalSection
 EndGlobal
