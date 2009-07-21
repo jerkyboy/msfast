@@ -28,6 +28,7 @@ using System.Reflection;
 using System.Xml;
 using MySpace.MSFast.DataProcessors;
 using System.Threading;
+using MySpace.MSFast.DataProcessors.DataValidators.ValidationResultTypes;
 
 namespace MySpace.MSFast.DataValidators
 {
@@ -99,7 +100,7 @@ namespace MySpace.MSFast.DataValidators
 			}
 		}
 
-        public ICollection<IValidationResults> ValidateBlocking(ProcessedDataPackage metaData)
+        public ValidationResultsPackage ValidateBlocking(ProcessedDataPackage metaData)
 		{
 			lock (runningLock)
 			{
@@ -109,7 +110,7 @@ namespace MySpace.MSFast.DataValidators
 				}
 
 				IsRunning = true;
-                LinkedList<IValidationResults> vr = new LinkedList<IValidationResults>();
+                ValidationResultsPackage vr = new ValidationResultsPackage();
 				ValidateData(metaData,vr);
 				return vr;
 			}
@@ -124,7 +125,7 @@ namespace MySpace.MSFast.DataValidators
 
 		#region Validation Thread
 
-        private void ValidateData(ProcessedDataPackage data, LinkedList<IValidationResults> resultsList)
+        private void ValidateData(ProcessedDataPackage data, ValidationResultsPackage resultsList)
 		{
 			lock (runningLock)
 			{

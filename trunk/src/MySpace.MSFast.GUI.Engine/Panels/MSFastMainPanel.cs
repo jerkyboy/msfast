@@ -46,6 +46,7 @@ using MySpace.MSFast.Core.Configuration.CommonDataTypes;
 using MySpace.MSFast.GUI.Configuration.MSFast;
 using MySpace.MSFast.GUI.Engine.DataCollector;
 using MySpace.MSFast.Engine.BrowserWrapper;
+using MySpace.MSFast.DataProcessors.DataValidators.ValidationResultTypes;
 
 namespace MySpace.MSFast.GUI.Engine.Panels
 {
@@ -499,7 +500,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 
             #region Validation
 
-            ICollection<IValidationResults> validationResults = null;
+            ValidationResultsPackage validationResults = null;
 
             if (getter.GetBoolean(MSFastGlobalConfigKeys.PAGE_VALIDATION))
             {
@@ -564,9 +565,9 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 
         private delegate void testRunning(bool p);
         private delegate void setTestStatus(TestEventType status, params object[] args);
-        private delegate void showOutcome(String graphResults, ICollection<IValidationResults> validationResults, ProcessedDataPackage package);
+        private delegate void showOutcome(String graphResults, ValidationResultsPackage validationResults, ProcessedDataPackage package);
 
-        private void ShowOutcome(String graphResults, ICollection<IValidationResults> validationResults, ProcessedDataPackage package)
+        private void ShowOutcome(String graphResults, ValidationResultsPackage validationResults, ProcessedDataPackage package)
 		{
 			if (this.InvokeRequired)
 			{

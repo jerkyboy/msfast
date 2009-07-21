@@ -92,13 +92,22 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidat
                         else
                         {
                             try{
-                                DateTime dt = DateTime.Parse(m.Groups[1].ToString());
-
-                                if (dt < now)
+                                if (m.Groups[1].ToString() == "-1")
                                 {
                                     DownloadStateOccurance dso = new DownloadStateOccurance(ds);
-                                    dso.Comment = String.Format("({0})", dt.Date);
+                                    dso.Comment = "(-1)";
                                     results.Add(dso);
+                                }
+                                else
+                                {
+                                    DateTime dt = DateTime.Parse(m.Groups[1].ToString());
+
+                                    if (dt < now)
+                                    {
+                                        DownloadStateOccurance dso = new DownloadStateOccurance(ds);
+                                        dso.Comment = String.Format("({0})", dt.Date);
+                                        results.Add(dso);
+                                    }
                                 }
                             }catch{
                             }
