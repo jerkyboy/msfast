@@ -37,7 +37,7 @@ namespace MySpace.MSFast.DataProcessors.Console
         static void Main(string[] args)
         {
 
-            System.Console.Read();
+
             CommandLineArguments cla = new CommandLineArguments(args);
 
             if (cla.IsValid() == false)
