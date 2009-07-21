@@ -77,7 +77,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 			{
 				try
 				{
-					BrowserCacheHelper.ClearCache();
+                    WatiN.Core.Native.InternetExplorer.WinInet.ClearCache();
 				}
 				catch
 				{
