@@ -315,7 +315,19 @@ namespace MySpace.MSFast.DataValidators
         {
             try
             {
-                IDataValidator validator = (IDataValidator)Activator.CreateInstance(valididatorType);
+                if(log.IsDebugEnabled)log.DebugFormat("Creating an instance of {0}...", valididatorType);
+                object validatorObj = Activator.CreateInstance(valididatorType);
+                if (null == validatorObj)
+                {
+                    if (log.IsWarnEnabled) log.WarnFormat("Could not create instance of type {0}...", valididatorType);
+                    return;
+                }
+                IDataValidator validator = validatorObj as IDataValidator;
+                if (null == validator)
+                {
+                    if (log.IsWarnEnabled) log.WarnFormat("Type {0} could not be converted to IDataValidator. Did you forget to implement IDataValidator?...", valididatorType);
+                    return;
+                }
 
                 validator.Name = name;
                 validator.Description = description;
