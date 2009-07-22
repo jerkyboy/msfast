@@ -29,11 +29,13 @@ using System.Xml;
 using MySpace.MSFast.DataProcessors;
 using System.Threading;
 using MySpace.MSFast.DataProcessors.DataValidators.ValidationResultTypes;
+using DataValidatorAttribute = MySpace.MSFast.DataValidators.DataValidatorAttribute;
 
 namespace MySpace.MSFast.DataValidators
 {
 	public class ValidationRunner
 	{
+        private static readonly MySpace.MSFast.Core.Logger.MSFastLogger log = new MySpace.MSFast.Core.Logger.MSFastLogger();
 		public delegate void OnValidatorEventHandler(ValidationRunner sender);
 		public delegate void OnValidatorProgressEventHandler(ValidationRunner sender, 
                                                              IDataValidator  validator,
@@ -138,7 +140,26 @@ namespace MySpace.MSFast.DataValidators
 				{
                     foreach (IDataValidator dv in this.validators)
 					{
-						vr = dv.Validate(data);
+                        try
+                        {
+                            vr = dv.Validate(data);
+                            if (null == vr)
+                            {
+                                if (log.IsWarnEnabled) log.WarnFormat("Validation results from \"{0}\" were null.", dv);
+                                continue;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            if (log.IsErrorEnabled)
+                            {
+                                log.ErrorFormat("Exception while processing results with \"{0}\"", dv);
+                                log.Error(ex);
+                            }
+
+                            continue;
+                        }
+
 						vr.Validator = dv;
                         vr.GroupName = dv.GroupName;
 						if (vr != null && resultsList != null)
@@ -286,31 +307,118 @@ namespace MySpace.MSFast.DataValidators
 			}
 
 			Assembly validatorAssembly = Assembly.LoadFrom(assembly);
+            Type valididatorType = validatorAssembly.GetType(classname);
+            CreateAndRegisterValidator(name, groupname, description, helpurl, config, valididatorType);
+		}
+
+        private void CreateAndRegisterValidator(String name, String groupname, String description, String helpurl, Dictionary<String, String> config, Type valididatorType)
+        {
             try
             {
-                IDataValidator validator = (IDataValidator)validatorAssembly.CreateInstance(classname);
-            
-			validator.Name = name;
-			validator.Description = description;
-			validator.HelpURL = helpurl;
-            validator.GroupName = groupname;
+                IDataValidator validator = (IDataValidator)Activator.CreateInstance(valididatorType);
 
-			validator.Init(config);
+                validator.Name = name;
+                validator.Description = description;
+                validator.HelpURL = helpurl;
+                validator.GroupName = groupname;
 
-			lock (this.validators)
-			{
-                if(this.validators.Contains(validator) == false){
-					validators.Add(validator);
-				}
-            }
+                validator.Init(config);
+
+                lock (this.validators)
+                {
+                    if (this.validators.Contains(validator) == false)
+                    {
+                        validators.Add(validator);
+                    }
+                }
             }
             catch
             {
                 return;
             }
-		}
+        }
 
 		#endregion
 
-	}
+
+        public void LoadFromPluginsFolder(string PluginsFolder)
+        {
+            if (log.IsDebugEnabled) log.DebugFormat("LoadFromPluginsFolder(PluginsFolder = \"{0}\")", PluginsFolder);
+            if (!Directory.Exists(PluginsFolder))
+            {
+                if (log.IsDebugEnabled) log.DebugFormat("PluginsFolder \"{0}\" does not exist.", PluginsFolder);
+                return;
+            }
+
+            string[] assemblies = Directory.GetFiles(PluginsFolder, "*.dll");
+
+            foreach (string assemblyPath in assemblies)
+            {
+                try
+                {
+                    Assembly ass = null;
+                    try
+                    {
+                        ass = Assembly.LoadFrom(assemblyPath);
+                    }
+                    catch (BadImageFormatException ex0)
+                    {
+                        if (log.IsDebugEnabled)
+                        {
+                            log.DebugFormat("Exception while loading plugin \"{0}\" skipping...", assemblyPath);
+                            log.Debug(ex0);
+                        }
+                        continue;
+                    }
+                    catch (Exception ex0)
+                    {
+                        if (log.IsErrorEnabled)
+                        {
+                            log.ErrorFormat("Exception encountered while loading plugin \"{0}\"", assemblyPath);
+                            log.Error(ex0);
+                        }
+                        continue;
+                    }
+
+                    Type[] types = ass.GetTypes();
+
+                    foreach (Type type in types)
+                    {
+                        try
+                        {
+                            DataValidatorAttribute[] attributes = type.GetCustomAttributes(typeof(DataValidatorAttribute), false) as DataValidatorAttribute[];
+                            if (null == attributes || attributes.Length == 0)
+                                continue;
+                            DataValidatorAttribute attribute = attributes[0];
+
+                            string name = attribute.GetName();
+                            string description = attribute.GetDescription();
+                            string groupName = attribute.GetGroupName();
+                            string helpurl = attribute.GetHelpUrl();
+
+                            Dictionary<string, string> config = new Dictionary<string, string>();
+                            CreateAndRegisterValidator(name, groupName, description, helpurl, config, type);
+                        }
+                        catch (Exception ex0)
+                        {
+                            if (log.IsErrorEnabled)
+                            {
+                                log.ErrorFormat("Exception encountered while processing {0}", type);
+                                log.Error(ex0);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (log.IsErrorEnabled)
+                    {
+                        log.ErrorFormat("Exception encountered while processing plugin \"{0}\"", assemblyPath);
+                        log.Error(ex);
+                    }
+                }
+
+            }
+        }
+    }
 }

@@ -52,6 +52,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 {
 	public partial class MSFastMainPanel : Panel
 	{
+        private static readonly MySpace.MSFast.Core.Logger.MSFastLogger log = new MySpace.MSFast.Core.Logger.MSFastLogger();
 
 		private AsyncBufferPageDataCollector pageDataCollector = null;
 		private Browser browser = null;
@@ -526,15 +527,32 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 		private void CreateValidationRunner()
 		{
 			this.validationRunner = new ValidationRunner();
+            string location=null;
 			try
 			{
-                String location = "DefaultPageValidation.xml";
+                location = "DefaultPageValidation.xml";
 				location = (Path.GetDirectoryName(Assembly.GetAssembly(typeof(MSFastMainPanel)).Location).Replace("\\", "/") + "/conf/" + location);
 				this.validationRunner.LoadFromFile(location);
 			}
-			catch {
-			
+			catch(Exception ex) 
+            {
+                if (log.IsErrorEnabled)
+                {
+                    log.ErrorFormat("Exception encountered while processing \"{0}\"", location);
+                    log.Error(ex);
+                }
 			}
+
+            try
+            {
+                string AssemblyPath = Path.GetDirectoryName(typeof(MSFastMainPanel).Assembly.Location);
+                string pluginsFolder = Path.Combine(AssemblyPath, "Plugins");
+                this.validationRunner.LoadFromPluginsFolder(pluginsFolder);
+            }
+            catch(Exception ex)
+            {
+                if (log.IsErrorEnabled) log.Error("Exception Thrown loading Plugins", ex); 
+            }
         }
 
         #region Panels Switch

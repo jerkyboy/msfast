@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B77C5202-E02C-4E71-863D-190B18FA7E55}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -77,12 +77,19 @@
     <Compile Include="DataProcessors\Screenshots\ScreenshotsData.cs" />
     <Compile Include="DataProcessors\Screenshots\ScreenshotsDataProcessor.cs" />
     <Compile Include="DataValidators\DataValidator.cs" />
+    <Compile Include="DataValidators\DataValidatorAttribute.cs" />
     <Compile Include="DataValidators\ValidationResultTypes\DownloadStateOccurance.cs" />
     <Compile Include="DataValidators\ValidationResultTypes\IValidationResults.cs" />
     <Compile Include="DataValidators\ValidationResultTypes\SourceValidationOccurance.cs" />
     <Compile Include="DataValidators\ValidationResultTypes\ValidationResultsPackage.cs" />
     <Compile Include="DataValidators\ValidationRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MySpace.MSFast.Core\Core.csproj">
+      <Project>{8286C998-2F1E-413B-9893-CA7C80BDD2BE}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -23,20 +23,28 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-#if (DEBUG)
 using log4net;
-#endif
 using System.Reflection;
 using System.IO;
+using System.Diagnostics;
 
 namespace MySpace.MSFast.Core.Logger
 {
 	public class MSFastLogger
 	{
+        
+        public MSFastLogger()
+        {
+            StackFrame frame = new StackFrame(1);
+            MethodBase method = frame.GetMethod();
+            this.logger = LogManager.GetLogger(method.DeclaringType);
+        }
+
+
+
 
 		static MSFastLogger() 
 		{
-#if (DEBUG)
             try
             {
                 Stream configStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("MySpace.MSFast.Core.LoggingConfig.xml");
@@ -46,33 +54,25 @@ namespace MySpace.MSFast.Core.Logger
             catch 
             {
             }
-#endif
 		}
 		
-#if (DEBUG)
         private ILog logger = null;
-#endif
 		public static MSFastLogger GetLogger(Type t) 
 		{
 			return new MSFastLogger(t);
 		}
 
 		private MSFastLogger(Type t){
-#if (DEBUG)		
             this.logger =  LogManager.GetLogger(t);
-#endif
 		}
 
 
 		#region Delegate to LOG4NET logger
-        
-#if (DEBUG)
 		public bool IsDebugEnabled { get { return this.logger.IsDebugEnabled; } }
 		public bool IsErrorEnabled { get { return this.logger.IsErrorEnabled; } }
 		public bool IsFatalEnabled { get { return this.logger.IsFatalEnabled; } }
 		public bool IsInfoEnabled { get { return this.logger.IsInfoEnabled; } }
 		public bool IsWarnEnabled { get { return this.logger.IsWarnEnabled; } }
-
 		public void Debug(object message) { this.logger.Debug(message) ;}
 		public void Debug(object message, Exception exception){ this.logger.Debug(message, exception) ;}
 		public void DebugFormat(string format, object arg0){ this.logger. DebugFormat( format,  arg0) ;}
@@ -108,7 +108,6 @@ namespace MySpace.MSFast.Core.Logger
 		public void WarnFormat(IFormatProvider provider, string format, params object[] args){ this.logger.WarnFormat(provider, format, args) ;}
 		public void WarnFormat(string format, object arg0, object arg1){ this.logger.WarnFormat(format, arg0, arg1) ;}
 		public void WarnFormat(string format, object arg0, object arg1, object arg2){ this.logger.WarnFormat(format, arg0, arg1, arg2) ; }
-#endif
         #endregion
     }
 }
