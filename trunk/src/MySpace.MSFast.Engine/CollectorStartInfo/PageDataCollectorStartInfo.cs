@@ -33,6 +33,8 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 {
 	public class PageDataCollectorStartInfo
 	{
+        public String EngineExecutable = null;
+
 		private String _url;
 		public String URL
 		{
@@ -77,7 +79,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 		public String DumpFolder = Directory.GetCurrentDirectory();
 
 		public int Timeout = 15;
-		public bool IsDebug = false;
+		public bool IsDebug = true;
 
         public bool IsVerbose = false;
 
@@ -126,7 +128,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
             ArgsParsers.Add("/u:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.URL = value.Replace("\\", "/"); }));
             ArgsParsers.Add("/uw:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si._urlWithCollectionArgs = value.Replace("\\", "/"); }));
             ArgsParsers.Add("/pa:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.ProxyAddress = value; }));
-			ArgsParsers.Add("/debug", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.IsDebug = true; }));
+			//ArgsParsers.Add("/debug", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.IsDebug = true; }));
 			ArgsParsers.Add("/ct:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si.CollectionType = (CollectPageInformation)Enum.ToObject(typeof(CollectPageInformation), int.Parse(value)); } catch { } }));
 			ArgsParsers.Add("/ci:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si.CollectionId = int.Parse(value); } catch { } }));
 			
