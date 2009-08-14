@@ -36,6 +36,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{D9D7EA6B-6576-4FE7-BC84-20EFE5DFDA17}"
 	ProjectSection(SolutionItems) = preProject
 		Resources\icon.ico = Resources\icon.ico
+		..\..\MSFast\src\Resources\icon2.ico = ..\..\MSFast\src\Resources\icon2.ico
 		Resources\Install.bat = Resources\Install.bat
 		Resources\Interop.SHDocVw.dll = Resources\Interop.SHDocVw.dll
 		Resources\log4net.dll = Resources\log4net.dll
@@ -64,8 +65,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installation", "Installatio
 	ProjectSection(SolutionItems) = preProject
 		Installation\MSFastInstaller.nsi = Installation\MSFastInstaller.nsi
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuProxy.Launcher", "..\..\MySpace\Performance\Tracker\Collectors\Client\SuProxy.Launcher\SuProxy.Launcher.csproj", "{09BFFA28-DC7F-41E0-BD8A-D7A871AA27C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
