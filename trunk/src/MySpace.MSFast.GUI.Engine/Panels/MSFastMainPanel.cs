@@ -502,10 +502,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 
                     try
                     {
-                        Stream s = srfi.Open(FileAccess.Write);
-                        x.Save(s);
-                        s.Flush();
-                        s.Close();
+                        x.Save(srfi.GetFullPath());
                         graphResults = srfi.GetFullPath();
                     }
                     catch
