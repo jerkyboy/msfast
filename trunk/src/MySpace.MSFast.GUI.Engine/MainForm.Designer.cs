@@ -21,6 +21,7 @@
 
 //Imports
 using MySpace.MSFast.GUI.Engine.Panels;
+using System;
 
 namespace MySpace.MSFast.GUI.Engine
 {
@@ -52,12 +53,16 @@ namespace MySpace.MSFast.GUI.Engine
         /// </summary>
         private void InitializeComponent()
         {
+            InitializeComponent(null);
+        }
+        private void InitializeComponent(String loadData)
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.SuspendLayout();
             // 
             // panel
             // 
-            this.panel = new MSFastMainPanel(null);
+            this.panel = new MSFastMainPanel(null, loadData);
             this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel.Location = new System.Drawing.Point(0, 0);
             this.panel.Name = "panel";

@@ -28,10 +28,11 @@ using System.Reflection;
 using MySpace.MSFast.Engine.CollectorsConfiguration;
 using System.Windows.Forms;
 using MySpace.MSFast.Engine.DataCollector;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.Engine.CollectorStartInfo
 {
-	public class PageDataCollectorStartInfo
+    public class PageDataCollectorStartInfo : CollectionMetaInfo
 	{
         public String EngineExecutable = null;
 
@@ -67,7 +68,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 
         protected String GetOnlyCollectionArgs(String url)
         {
-            return String.Concat(((url.IndexOf("?") == -1) ? "?" : "&"), "__resultid=", this.CollectionId, "&__collect=", (int)this.CollectionType);
+            return String.Concat(((url.IndexOf("?") == -1) ? "?" : "&"), "__resultid=", this.CollectionID, "&__collect=", (int)this.CollectionType);
         }
 
         public String LaunchWithURL = null;
@@ -76,7 +77,9 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 		public int ProxyPort = 8080;
 		
 		public String TempFolder = Directory.GetCurrentDirectory();
-		public String DumpFolder = Directory.GetCurrentDirectory();
+        
+        private String _dumpFolder = Directory.GetCurrentDirectory();
+        private int _collectionId = 1;
 
 		public int Timeout = 15;
 		public bool IsDebug = true;
@@ -86,7 +89,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 		public String SnifferDeviceId = null;
 		public int[] SnifferPorts = new int[]{80};
 		
-		public int CollectionId = 1;
+		
 		public CollectPageInformation CollectionType = CollectPageInformation.Render | CollectPageInformation.Screenshots_Small | CollectPageInformation.Performance | CollectPageInformation.Download_Proxy;
 
 		public bool ClearCache = false;
@@ -130,12 +133,12 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
             ArgsParsers.Add("/pa:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.ProxyAddress = value; }));
 			//ArgsParsers.Add("/debug", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.IsDebug = true; }));
 			ArgsParsers.Add("/ct:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si.CollectionType = (CollectPageInformation)Enum.ToObject(typeof(CollectPageInformation), int.Parse(value)); } catch { } }));
-			ArgsParsers.Add("/ci:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si.CollectionId = int.Parse(value); } catch { } }));
+			ArgsParsers.Add("/ci:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si._collectionId = int.Parse(value); } catch { } }));
 			
 			ArgsParsers.Add("/clear-cache", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.ClearCache = true; }));
 			ArgsParsers.Add("/verbose", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.IsVerbose = true; }));
-			
-			ArgsParsers.Add("/dump:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.DumpFolder = value.Replace("\\","/"); }));
+
+            ArgsParsers.Add("/dump:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si._dumpFolder = value.Replace("\\", "/"); }));
 			ArgsParsers.Add("/temp:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.TempFolder = value.Replace("\\", "/"); }));
 			
 			ArgsParsers.Add("/sniff:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { 
@@ -209,10 +212,10 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 				sb.Append("\" ");
 			}
 
-			if (this.CollectionId != -1)
+			if (this.CollectionID != -1)
 			{
 				sb.Append(" /ci:");
-				sb.Append(this.CollectionId);
+				sb.Append(this.CollectionID);
 
 				sb.Append(" /ct:");
 				sb.Append((int)this.CollectionType);
@@ -246,10 +249,10 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 				sb.Append("\" ");
 			}
 
-			if (this.DumpFolder != null)
+            if (this.DumpFolder != null)
 			{
 				sb.Append(" /dump:\"");
-				sb.Append(this.DumpFolder.Replace("\\","/"));
+                sb.Append(this.DumpFolder.Replace("\\", "/"));
 				sb.Append("\" ");
 			}
 
@@ -321,5 +324,29 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 
 		#endregion
 
-	}
+
+        #region CollectionMetaInfo Members
+
+        public int CollectionID
+        {
+            get { 
+                return _collectionId; }
+            set
+            {
+                _collectionId = value;
+            }
+        }
+
+        public string DumpFolder
+        {
+            get { 
+                return _dumpFolder; }
+            set
+            {
+                _dumpFolder = value;
+            }
+        }
+
+        #endregion
+    }
 }

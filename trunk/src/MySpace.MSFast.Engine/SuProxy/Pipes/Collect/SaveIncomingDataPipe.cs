@@ -28,6 +28,9 @@ using System.IO;
 using MySpace.MSFast.Engine.SuProxy.Pipes.Tracking;
 using MySpace.MSFast.SuProxy.Pipes.Utils;
 using MySpace.MSFast.Core.Http;
+using MySpace.MSFast.Core.Configuration.Common;
+using MySpace.MSFast.Engine.SuProxy.Utils;
+using MySpace.MSFast.Engine.SuProxy.Proxy;
 
 namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 {
@@ -64,24 +67,25 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
             if (this.PipesChain.ChainState.ContainsKey(HttpTracerPipe.STATE_KEY) == false)
                 return;
 
-            if ( (outStreamBody == null || outStreamHeader == null) && this.Configuration.ContainsKey("DumpFolder"))
+            if ((outStreamBody == null || outStreamHeader == null) && this.Configuration is EngineSuProxyConfiguration)
             {
                 try
                 {
-                    String filenameBody = null;
-                    String filenameHeader = null;
+                    ResponseHeaderDumpFilesInfo header = new ResponseHeaderDumpFilesInfo((EngineSuProxyConfiguration)this.Configuration);
+                    ResponseBodyDumpFilesInfo body = new ResponseBodyDumpFilesInfo((EngineSuProxyConfiguration)this.Configuration);
+
                     String guid = null;
-                    
+
                     do
                     {
                         guid = Guid.NewGuid().ToString().Replace("-", "").ToLower();
-                        filenameBody = String.Format("{0}\\B{1}", this.Configuration["DumpFolder"], guid);
-                        filenameHeader = String.Format("{0}\\H{1}", this.Configuration["DumpFolder"], guid);
+                    } while (header.Exist(guid) || body.Exist(guid));
 
-                    } while (File.Exists(filenameBody) && File.Exists(filenameHeader));
+                    Stream b = body.Open(FileAccess.Write, guid);
+                    if (b != null) outStreamBody = new BinaryWriter(b);
 
-                    outStreamBody = new BinaryWriter(File.Create(filenameBody));
-                    outStreamHeader = new BinaryWriter(File.Create(filenameHeader));
+                    Stream h = header.Open(FileAccess.Write, guid);
+                    if (h != null) outStreamHeader = new BinaryWriter(h);
 
                     HttpTransaction httpTranc = (HttpTransaction)this.PipesChain.ChainState[HttpTracerPipe.STATE_KEY];
                     httpTranc.FileGUID = guid;
@@ -101,9 +105,9 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
                     outStreamHeader.Write(buffer, offset, length);
                 }
             }
-            catch 
+            catch
             {
-            
+
             }
         }
 
@@ -123,7 +127,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
         {
             CloseStream(outStreamBody);
             CloseStream(outStreamHeader);
-            
+
             outStreamBody = null;
             outStreamHeader = null;
         }
@@ -131,7 +135,8 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
         private void CloseStream(BinaryWriter stream)
         {
             if (stream != null)
-                try{
+                try
+                {
                     if (stream.BaseStream != null)
                     {
                         if (stream.BaseStream.CanWrite)
@@ -141,9 +146,11 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
                         catch { }
                     }
                 }
-                catch{
+                catch
+                {
                 }
-         }
-    }
+        }
 
+    }
 }
+ 

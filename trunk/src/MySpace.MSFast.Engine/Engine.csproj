@@ -58,6 +58,8 @@
     <Compile Include="SuProxy\Pipes\Tracking\HttpFlushPipe.cs" />
     <Compile Include="SuProxy\Pipes\Tracking\HttpTracerPipe.cs" />
     <Compile Include="SuProxy\Pipes\Tracking\HttpTracerStatePipe.cs" />
+    <Compile Include="SuProxy\Proxy\EngineSuProxyConfiguration.cs" />
+    <Compile Include="SuProxy\Utils\CollectionInfoParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DataCollectors.config" />

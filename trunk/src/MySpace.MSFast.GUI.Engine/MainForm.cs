@@ -26,14 +26,20 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System;
 
 namespace MySpace.MSFast.GUI.Engine
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        public MainForm(String loadData)
         {
-            InitializeComponent();
+            InitializeComponent(loadData);
+        }
+        public MainForm() : 
+            this(null)
+        {
+            
         }
     }
 }

@@ -63,8 +63,18 @@ namespace MySpace.MSFast.GUI.Engine.Panels.Status
             this.startTestPanel.Visible = true;
 
             PictureBox pb = new PictureBox();
-            pb.Image = MSFast.GUI.Engine.Resources.Resources.startTest;
-            pb.Size = MSFast.GUI.Engine.Resources.Resources.startTest.Size;
+
+
+            if (this.IsStandAlone)
+            {
+                pb.Image = MSFast.GUI.Engine.Resources.Resources.loadSavedTests;
+                pb.Size = MSFast.GUI.Engine.Resources.Resources.loadSavedTests.Size;
+            }
+            else
+            {
+                pb.Image = MSFast.GUI.Engine.Resources.Resources.startTest;
+                pb.Size = MSFast.GUI.Engine.Resources.Resources.startTest.Size;
+            }
             this.startTestPanel.Controls.Add(pb);
             #endregion
 

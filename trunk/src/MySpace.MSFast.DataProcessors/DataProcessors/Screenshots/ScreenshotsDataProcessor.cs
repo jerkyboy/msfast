@@ -24,31 +24,33 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.DataProcessors.Screenshots
 {
 	public class ScreenshotsDataProcessor : DataProcessor<ScreenshotsData>
 	{
-		private static String screenShotsFilePattern = "TC_{0}_*.jpg";
+		
 	
 		#region DataProcessor<ScreenshotsData> Members
 
 		public override ScreenshotsData GetProcessedData(ProcessedDataPackage state)
 		{
-			if (IsDataExists(state) == false)
-				return null;
-
-			DirectoryInfo di = new DirectoryInfo(state.DumpFolder);
-			FileInfo[] fi = di.GetFiles(String.Format(screenShotsFilePattern, state.CollectionID));
+            ScreenshotsDumpFilesInfo pdfi = new ScreenshotsDumpFilesInfo(state);
+            
+            FileInfo[] fi = pdfi.GetFiles();
 
 			ScreenshotsData sd = new ScreenshotsData();
+
+            if (fi == null || fi.Length == 0)
+                return sd;
 
 			foreach (FileInfo f in fi)
 			{
 				sd.Add(new Screenshot(f.FullName));
 			}
 
-			sd.FilenameStructure = screenShotsFilePattern;
+            sd.FilenameStructure = ScreenshotsDumpFilesInfo.ScreenShotsFilePattern;
 
 			return sd;
 		}
@@ -59,10 +61,8 @@ namespace MySpace.MSFast.DataProcessors.Screenshots
 
 		public override bool IsDataExists(ProcessedDataPackage state)
 		{
-			DirectoryInfo di = new DirectoryInfo(state.DumpFolder);
-			FileInfo[] fi = di.GetFiles(String.Format(screenShotsFilePattern, state.CollectionID));
-
-			return fi.Length > 0;
+            ScreenshotsDumpFilesInfo pdfi = new ScreenshotsDumpFilesInfo(state);
+            return pdfi.FilesCount() > 0;
 		}
 
 		#endregion

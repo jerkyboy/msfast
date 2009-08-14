@@ -50,22 +50,15 @@ namespace MySpace.MSFast.DataProcessors
 
 		public static ProcessedDataPackage CollectFor(Type type, String folder, int collectionId)
 		{
-			ProcessedDataPackage cmd = new ProcessedDataPackage();
-
-			cmd.DumpFolder = folder;
-			cmd.CollectionID = collectionId;
-
+            ProcessedDataPackage cmd = new ProcessedDataPackage(collectionId, folder);
 			return CollectFor(type, cmd);
 		}
 
 
 
-		public static ProcessedDataPackage CollectAll(String folder, int collectionId)
+        public static ProcessedDataPackage CollectAll(String folder, int collectionId)
 		{
-			ProcessedDataPackage cmd = new ProcessedDataPackage();
-
-			cmd.DumpFolder = folder;
-			cmd.CollectionID = collectionId;
+            ProcessedDataPackage cmd = new ProcessedDataPackage(collectionId, folder);
 
 			foreach (Type t in processors.Keys)
 			{

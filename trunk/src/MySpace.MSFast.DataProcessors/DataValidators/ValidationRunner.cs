@@ -30,12 +30,14 @@ using MySpace.MSFast.DataProcessors;
 using System.Threading;
 using MySpace.MSFast.DataProcessors.DataValidators.ValidationResultTypes;
 using DataValidatorAttribute = MySpace.MSFast.DataValidators.DataValidatorAttribute;
+using MySpace.MSFast.Core.Logger;
 
 namespace MySpace.MSFast.DataValidators
 {
 	public class ValidationRunner
 	{
-        private static readonly MySpace.MSFast.Core.Logger.MSFastLogger log = new MySpace.MSFast.Core.Logger.MSFastLogger();
+        private static readonly MySpace.MSFast.Core.Logger.MSFastLogger log = MSFastLogger.GetLogger(typeof(ValidationRunner));
+
 		public delegate void OnValidatorEventHandler(ValidationRunner sender);
 		public delegate void OnValidatorProgressEventHandler(ValidationRunner sender, 
                                                              IDataValidator  validator,
@@ -373,12 +375,12 @@ namespace MySpace.MSFast.DataValidators
                     {
                         ass = Assembly.LoadFrom(assemblyPath);
                     }
-                    catch (BadImageFormatException ex0)
+                    catch (BadImageFormatException ex)
                     {
                         if (log.IsDebugEnabled)
                         {
                             log.DebugFormat("Exception while loading plugin \"{0}\" skipping...", assemblyPath);
-                            log.Debug(ex0);
+                            log.Debug(ex);
                         }
                         continue;
                     }

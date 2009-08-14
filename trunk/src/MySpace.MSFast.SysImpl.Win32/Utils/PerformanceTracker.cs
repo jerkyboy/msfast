@@ -26,13 +26,18 @@ using System.Text;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using MySpace.MSFast.Core.Logger;
 
 namespace MySpace.MSFast.SysImpl.Win32.Utils
 {
 	public class PerformanceTracker
 	{
-		public PerformanceTracker(int pid)
+
+        private static readonly MySpace.MSFast.Core.Logger.MSFastLogger log = MSFastLogger.GetLogger(typeof(PerformanceTracker));
+		
+        public PerformanceTracker(int pid)
 		{
+            if (log.IsDebugEnabled) log.Debug("Starting performance tracker for PID(" + pid + ")");
 			try
 			{
 				String instanceName = GetProcessInstanceName(pid);
@@ -49,7 +54,9 @@ namespace MySpace.MSFast.SysImpl.Win32.Utils
 		}
 
 		public void StartTracking()
-		{
+        {
+            if (log.IsDebugEnabled) log.Debug("Starting tracking performance...");
+
 			Thread t = new Thread(this.TimerThread);
 			t.Start();
 			
@@ -64,9 +71,13 @@ namespace MySpace.MSFast.SysImpl.Win32.Utils
 
 				Monitor.PulseAll(trackingLock);
 			}
+            if (log.IsDebugEnabled) log.Debug("Performance tracking Started!");
 		}
-		public void StopTracking(String saveFilename)
+
+		public void StopTracking(Stream saveTo)
 		{
+            if (log.IsDebugEnabled) log.Debug("Stop tracking performance...(" + isTracking + ")");
+
 			LinkedList<PerfCuhnk> pc = null;
 			lock (trackingLock)
 			{
@@ -77,23 +88,27 @@ namespace MySpace.MSFast.SysImpl.Win32.Utils
 
 				isTracking = false;
 
-				if (saveFilename != null)
+                if (saveTo != null)
 				{
 					pc = new LinkedList<PerfCuhnk>(this.allPerfChunks);
 				}
 
 				this.allPerfChunks.Clear();
 			}
-
-			if (saveFilename != null && pc != null && pc.Count > 0)
+            if (log.IsDebugEnabled) log.Debug("Collected " + pc.Count + " Performance Segments");
+            
+            if (saveTo != null && pc != null && pc.Count > 0)
 			{
-				TextWriter streamWriter = new StreamWriter(saveFilename);
+                TextWriter streamWriter = new StreamWriter(saveTo);
 				foreach (PerfCuhnk chunk in pc)
 				{
 					streamWriter.WriteLine("?" + SecondsFromEpoch(chunk.MarkingDateTime) + ":PT" + Math.Min(100,chunk.ProcessorTime) + ":UT" + Math.Min(100,chunk.UserTime) + ":WS" + chunk.WorkingSet + ":PWS" + chunk.WorkingSetPrivate);
 				}
+                streamWriter.Flush();
 				streamWriter.Close();
 			}
+            if (log.IsDebugEnabled) log.Debug("Performance tracking ended!");
+
 		}
 
 		#region Performance Monitor

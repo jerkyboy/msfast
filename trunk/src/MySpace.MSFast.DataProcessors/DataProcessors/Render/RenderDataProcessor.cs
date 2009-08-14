@@ -25,36 +25,38 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.DataProcessors.Render
 {
 	class RenderDataProcessor : DataProcessor<RenderData>
 	{
         private static Regex render_Dump_Pattern = new Regex("(S|E)([0-9]*?)(\\|(PE|PB|BP|BC|HB|HC|UN|LI|LO|IN|CO|OL)\\|){0,1}:([0-9]{13,15});", RegexOptions.Compiled);
-		private static String filenameFormat = "renderdump_{0}.dat";
 		
 		#region DataProcessor<RenderData> Members
 
 		public override bool IsDataExists(ProcessedDataPackage state)
 		{
-			FileInfo fi = new FileInfo(state.DumpFolder + "\\" + String.Format(filenameFormat,state.CollectionID));
+            RenderDumpFilesInfo rdfi = new RenderDumpFilesInfo(state);
+            
+            if (String.IsNullOrEmpty(rdfi.GetFullPath()))
+                return false;
+
+            FileInfo fi = new FileInfo(rdfi.GetFullPath());
 			return (fi.Exists && fi.Length > 0);
 		}
 
-
 		public override RenderData GetProcessedData(ProcessedDataPackage state)
 		{
-
-			if (IsDataExists(state) == false)
-				return null;
-
-			String filename = state.DumpFolder + "\\" + String.Format(filenameFormat, state.CollectionID);
-
-			StreamReader source = new StreamReader(filename);
+            RenderDumpFilesInfo rdfi = new RenderDumpFilesInfo(state);
+            StreamReader source = new StreamReader(rdfi.Open(FileAccess.Read));
 
 			RenderData renderData = new RenderData();
 
-			renderData.RenderDumpFilename = String.Format(filenameFormat, state.CollectionID);
+            if (source == null)
+                return renderData;
+
+            renderData.RenderDumpFilename = rdfi.GetFilename();
 
 			String buffer = source.ReadToEnd();
 

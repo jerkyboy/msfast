@@ -24,41 +24,49 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.DataProcessors.PageSource
 {
 	public class BrokenSourceDataProcessor : DataProcessor<BrokenSourceData>
 	{
-		private static String filenameFormat = "source_{0}.src";
-		private static String filenameFormat_Broken = "source_{0}.src_b";
-
 		#region DataProcessor<BrokenSourceData> Members
 
 		public override bool IsDataExists(ProcessedDataPackage state)
 		{
-			FileInfo fi = new FileInfo(state.DumpFolder + "\\" + String.Format(filenameFormat, state.CollectionID));
-			FileInfo fib = new FileInfo(state.DumpFolder + "\\" + String.Format(filenameFormat_Broken, state.CollectionID));
+            SourceDumpFilesInfo sdfi = new SourceDumpFilesInfo(state);
+            BrokenSourceDumpFilesInfo bsdfi = new BrokenSourceDumpFilesInfo(state);
+
+            if (sdfi.Exist() == false || bsdfi.Exist() == false)
+                return false;
+
+            FileInfo fi = new FileInfo(sdfi.GetFullPath());
+            FileInfo fib = new FileInfo(bsdfi.GetFullPath());
+
 			return (fi.Exists && fi.Length > 0 && fib.Exists && fib.Length > 0);
 		}
 
 		public override BrokenSourceData GetProcessedData(ProcessedDataPackage state)
 		{
-			if (IsDataExists(state) == false)
-				return null;
-
-			String filename = state.DumpFolder + "\\" + String.Format(filenameFormat, state.CollectionID);
-			String filename_b = state.DumpFolder + "\\" + String.Format(filenameFormat_Broken, state.CollectionID);
-
 			BrokenSourceData sourceData = new BrokenSourceData();
 
-			StreamReader source = new StreamReader(filename);
+            SourceDumpFilesInfo sdfi = new SourceDumpFilesInfo(state);
+            BrokenSourceDumpFilesInfo bsdfi = new BrokenSourceDumpFilesInfo(state);
+
+            Stream sourceStream = sdfi.Open(FileAccess.Read);
+            Stream binarySourceStream = bsdfi.Open(FileAccess.Read);
+
+            if (sourceStream == null || binarySourceStream == null)
+                return sourceData;
+
+            StreamReader source = new StreamReader(sourceStream);
 			sourceData.PageSource = source.ReadToEnd();
-			sourceData.SourceFilename = String.Format(filenameFormat, state.CollectionID);
-			sourceData.SourceBreaksFilename = String.Format(filenameFormat_Broken, state.CollectionID);
+            sourceData.SourceFilename = sdfi.GetFilename();
+			sourceData.SourceBreaksFilename = bsdfi.GetFilename();
 			source.Close();
 			source.Dispose();
 
-			BinaryReader sourceBreaks = new BinaryReader(File.Open(filename_b,FileMode.Open,FileAccess.Read));
+            BinaryReader sourceBreaks = new BinaryReader(binarySourceStream);
 			
 			MemoryStream ms = new MemoryStream();
 

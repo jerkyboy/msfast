@@ -43,13 +43,17 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 		private void InitializeComponent()
 		{
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-			this.startCollectingDataBtn = new System.Windows.Forms.ToolStripButton();
+			
+            this.loadCollectionBtn = new ToolStripButton();
+            this.saveCollectionBtn = new ToolStripButton();
+            this.startCollectingDataBtn = new System.Windows.Forms.ToolStripButton();
 			this.abortCollectingDataBtn = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator4 = new ToolStripSeparator();
             this.toolStripSeparator5 = new ToolStripSeparator();
+            this.toolStripSeparator6 = new ToolStripSeparator();
             this.pageGraphBtn = new System.Windows.Forms.ToolStripButton();
 			this.validationResultsBtn = new System.Windows.Forms.ToolStripButton();
 			this.configCollectingDataBtn = new System.Windows.Forms.ToolStripButton();
@@ -59,7 +63,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 
 			this.toolStrip1.SuspendLayout();
 
-			this.testStatusPanel = new TestStatutsPanel();
+            this.testStatusPanel = new TestStatutsPanel(this.browser == null);
 			this.graphViewPanel = new PageGraphPanel();
 			this.validationResultsViewPanel = new ValidationResultsPanel();
 
@@ -67,20 +71,40 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 			// 
 			// toolStrip1
 			// 
-			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.startCollectingDataBtn,
-            this.abortCollectingDataBtn,
-            this.toolStripSeparator1,
-            this.pageGraphBtn,
-            this.toolStripSeparator2,
-            this.validationResultsBtn,
-            this.toolStripSeparator3,
-            this.aboutUsDataBtn,
-            this.toolStripSeparator4,
-            this.configCollectingDataBtn,
-            this.toolStripSeparator5,
-            this.updatesReadyBtn});
-
+            if (this.browser != null)
+            {
+                this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                    this.startCollectingDataBtn,
+                    this.abortCollectingDataBtn,
+                    this.toolStripSeparator1,
+                    this.saveCollectionBtn,
+                    this.loadCollectionBtn,
+                    this.toolStripSeparator6,
+                    this.pageGraphBtn,
+                    this.toolStripSeparator2,
+                    this.validationResultsBtn,
+                    this.toolStripSeparator3,
+                    this.aboutUsDataBtn,
+                    this.toolStripSeparator4,
+                    this.configCollectingDataBtn,
+                    this.toolStripSeparator5,
+                    this.updatesReadyBtn});
+            }
+            else
+            {
+                this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                    this.loadCollectionBtn,
+                    this.toolStripSeparator6,
+                    this.pageGraphBtn,
+                    this.toolStripSeparator2,
+                    this.validationResultsBtn,
+                    this.toolStripSeparator3,
+                    this.aboutUsDataBtn,
+                    this.toolStripSeparator4,
+                    this.configCollectingDataBtn,
+                    this.toolStripSeparator5,
+                    this.updatesReadyBtn});
+            }
             this.toolStrip1.Dock = DockStyle.Top;
 			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
 			this.toolStrip1.Name = "toolStrip1";
@@ -114,7 +138,27 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 			this.validationResultsViewPanel.Size = new System.Drawing.Size(248, 189);
 			this.validationResultsViewPanel.TabIndex = 2;
 			this.validationResultsViewPanel.Visible = false;
+
+            // 
+			// saveCollectionBtn
 			// 
+			this.saveCollectionBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.saveCollectionBtn.Image = MSFast.GUI.Engine.Resources.Resources.save;
+			this.saveCollectionBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveCollectionBtn.Name = "saveCollectionBtn";
+			this.saveCollectionBtn.Size = new System.Drawing.Size(23, 22);
+			this.saveCollectionBtn.Text = "Save...";
+            // 
+			// loadCollectionBtn
+			// 
+			this.loadCollectionBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.loadCollectionBtn.Image = MSFast.GUI.Engine.Resources.Resources.open;
+			this.loadCollectionBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.loadCollectionBtn.Name = "loadCollectionBtn";
+			this.loadCollectionBtn.Size = new System.Drawing.Size(23, 22);
+			this.loadCollectionBtn.Text = "Open...";
+
+            // 
 			// startCollectingDataBtn
 			// 
 			this.startCollectingDataBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -225,7 +269,10 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
-			this.configCollectingDataBtn.Click += new EventHandler(configCollectingDataBtn_Click);
+
+            this.saveCollectionBtn.Click += new EventHandler(saveCollectionBtn_Click);
+            this.loadCollectionBtn.Click += new EventHandler(loadCollectionBtn_Click);
+            this.configCollectingDataBtn.Click += new EventHandler(configCollectingDataBtn_Click);
             this.aboutUsDataBtn.Click += new EventHandler(aboutUsDataBtn_Click);
             this.updatesReadyBtn.Click += new EventHandler(updatesReadyBtn_Click);
 			this.abortCollectingDataBtn.Click += new EventHandler(abortCollectingDataBtn_Click);
@@ -234,9 +281,20 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 			this.validationResultsBtn.Click += new EventHandler(validationResultsBtn_Click);
 		}
 
+
         void updatesReadyBtn_Click(object sender, EventArgs e)
         {
             OpenNewVersionAvailable();
+        }
+
+        void saveCollectionBtn_Click(object sender, EventArgs e)
+        {
+            SaveCollection();
+        }
+
+        void loadCollectionBtn_Click(object sender, EventArgs e)
+        {
+            LoadCollection();
         }
 
         void aboutUsDataBtn_Click(object sender, EventArgs e)
@@ -274,13 +332,18 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 
 
 		private System.Windows.Forms.ToolStrip toolStrip1;
-		private System.Windows.Forms.ToolStripButton startCollectingDataBtn;
+        
+        private System.Windows.Forms.ToolStripButton saveCollectionBtn;
+        private System.Windows.Forms.ToolStripButton loadCollectionBtn;
+        
+        private System.Windows.Forms.ToolStripButton startCollectingDataBtn;
 		private System.Windows.Forms.ToolStripButton abortCollectingDataBtn;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripButton pageGraphBtn;
         private System.Windows.Forms.ToolStripButton validationResultsBtn;
         private System.Windows.Forms.ToolStripButton configCollectingDataBtn;

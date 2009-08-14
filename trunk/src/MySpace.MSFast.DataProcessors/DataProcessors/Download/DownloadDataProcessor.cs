@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.DataProcessors.Download
 {
@@ -32,20 +33,16 @@ namespace MySpace.MSFast.DataProcessors.Download
 	{
         private static Regex download_Dump_Pattern = new Regex("GUID([a-z0-9]{32})CNST([\\-0-9]{13,15})SRST([\\-0-9]{13,15})SRET([\\-0-9]{13,15})RRST([\\-0-9]{13,15})RRET([\\-0-9]{13,15})CNET([\\-0-9]{13,15})TTSN([0-9]*)TTRC([0-9]*)~(.*)\r\n", RegexOptions.Compiled | RegexOptions.Multiline);
 
-		private String filenameFormat_Winpcap = "wdownload_{0}.dat";
-		private String filenameFormat_Proxy = "pdownload_{0}.dat";
-
 		#region DataProcessor<DownloadData> Members
 
 		public override bool IsDataExists(ProcessedDataPackage state)
 		{
-			String filename = GetDownloadDumpFilename(state.DumpFolder, state.CollectionID);
-			
-			if(filename == null)
-				return false;
-			
+            DownloadDumpFilesInfo ddfi = new DownloadDumpFilesInfo(state);
+            if (ddfi.Exist() == false)
+                return false;
+
 			try{
-				FileInfo fi = new FileInfo(filename);
+                FileInfo fi = new FileInfo(ddfi.GetFullPath());
 				return (fi.Exists && fi.Length > 0);
 			}
 			catch
@@ -56,11 +53,16 @@ namespace MySpace.MSFast.DataProcessors.Download
 
 		public override DownloadData GetProcessedData(ProcessedDataPackage state)
 		{
-			if (this.IsDataExists(state) == false)
-				return null;
+            DownloadDumpFilesInfo ddfi = new DownloadDumpFilesInfo(state);
 
-			String filename = GetDownloadDumpFilename(state.DumpFolder, state.CollectionID);
-			StreamReader source = new StreamReader(filename);
+            Stream file = ddfi.Open(FileAccess.Read);
+
+            DownloadData processedData = new DownloadData();
+
+            if (file == null)
+                return processedData;
+            
+            StreamReader source = new StreamReader(file);
 			String buffer = source.ReadToEnd();
 			
 			source.Close();
@@ -71,9 +73,7 @@ namespace MySpace.MSFast.DataProcessors.Download
 				return null;
 			}
 
-			DownloadData processedData = new DownloadData();
-
-			processedData.DownloadDataDumpFilename = new FileInfo(filename).Name;
+            processedData.DownloadDataDumpFilename = ddfi.GetFilename();
 
 			DownloadState downloadState = null;
 
@@ -170,18 +170,6 @@ namespace MySpace.MSFast.DataProcessors.Download
 			return URLType.Unknown;
 		}
 
-		private string GetDownloadDumpFilename(string folder, int collectionId)
-		{
-			FileInfo w = new FileInfo(folder + "\\" + String.Format(filenameFormat_Winpcap, collectionId));
-			FileInfo p = new FileInfo(folder + "\\" + String.Format(filenameFormat_Proxy, collectionId));
-
-			if (w.Exists && w.Length > 0)
-				return w.FullName;
-			else if (p.Exists && p.Length > 0)
-				return p.FullName;
-
-			return null;
-		}
 		#endregion
 
 	}

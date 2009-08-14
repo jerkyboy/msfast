@@ -29,40 +29,24 @@ using System.Text.RegularExpressions;
 using MySpace.MSFast.Engine.CollectorsConfiguration;
 using System.IO;
 using System.Reflection;
+using MySpace.MSFast.Engine.SuProxy.Utils;
+using MySpace.MSFast.Engine.SuProxy.Proxy;
 
 namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 {
 	public class PreCollectionPagePipe : HttpBreakerPipe
 	{
-		private Regex collectQueryParsers = new Regex("PRE_COLLECTION=(.*)&__r=([0-9]*)&__c=([0-9]*)$");
 		private static String responseHeader = "HTTP/1.1 200 OK\r\n" +
 																			  "Server: SuProxy\r\n" +
 																			  "Accept-Ranges: bytes\r\n" +
 																			  "Vary: Accept-Encoding\r\n" +
 																			  "Content-Length: {0}\r\n\r\n";
 
-		private int CollectFlags = 0;
-		private int CollectId = 0;
-		private String URLEncoded = "";
-		private String URL = "";
+        private CollectionInfoParser CollectionInfoParser = null;
 
 		public override void SendHeader(string header)
 		{
-			if (this.PipesChain.ChainState.ContainsKey("REQUEST_URI"))
-			{
-				String uriStr = (String)this.PipesChain.ChainState["REQUEST_URI"];
-				Match m = collectQueryParsers.Match(uriStr);
-
-				try { 
-					this.URLEncoded = m.Groups[1].Value;
-					this.URL = Encoding.UTF8.GetString(Convert.FromBase64String(this.URLEncoded));
-				}
-				catch { }
-				try { this.CollectId = int.Parse(m.Groups[2].Value); }
-				catch { }
-				try { this.CollectFlags = int.Parse(m.Groups[3].Value); }
-				catch { }
-			}
+            this.CollectionInfoParser = new CollectionInfoParser(this.PipesChain.ChainState);
 		}
 
 		public override void SendBodyData(byte[] buffer, int offset, int length)
@@ -94,7 +78,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
                 configStream = null;
             }
 
-			if (  CollectFlags == 0 ||
+            if (this.CollectionInfoParser.CollectFlags == 0 ||
 				   cc == null ||
                     cc.Collection == null ||
 					String.IsNullOrEmpty(cc.Collection.JSMain) ||
@@ -106,7 +90,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 			CollectPageInformation cpi = CollectPageInformation.Render;
 			
 			try{
-				cpi = (CollectPageInformation)Enum.ToObject(typeof(CollectPageInformation), CollectFlags);
+                cpi = (CollectPageInformation)Enum.ToObject(typeof(CollectPageInformation), this.CollectionInfoParser.CollectFlags);
 			}catch
 			{
 			}
@@ -121,15 +105,18 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 				}
 			}
 
-			scripts.Insert(0, String.Format(cc.Collection.JSSetTestID, 0,0,CollectId, this.URL, this.URLEncoded));
-			scripts.Insert(0, cc.Collection.JSMain);
+            if (this.CollectionInfoParser != null && this.Configuration is EngineSuProxyConfiguration)
+            {
+                scripts.Insert(0, String.Format(cc.Collection.JSSetTestID, 0, 0, ((EngineSuProxyConfiguration)this.Configuration).CollectionID, this.CollectionInfoParser.URL, this.CollectionInfoParser.URLEncoded));
+                scripts.Insert(0, cc.Collection.JSMain);
 
-			String page = String.Format(cc.Collection.Html, scripts.ToString(), cc.Collection.JSStartCollecting);
+                String page = String.Format(cc.Collection.Html, scripts.ToString(), cc.Collection.JSStartCollecting);
 
-			byte[] b = Encoding.UTF8.GetBytes(page);
+                byte[] b = Encoding.UTF8.GetBytes(page);
 
-			base.SendHeader(String.Format(responseHeader, b.Length));
-			base.SendBodyData(b,0,b.Length);
+                base.SendHeader(String.Format(responseHeader, b.Length));
+                base.SendBodyData(b, 0, b.Length);
+            }
 			base.Flush();
 		}
 	}

@@ -1,6 +1,6 @@
 ﻿<log4net>
   <appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender">
-    <file value="/MySpace/PerfTrackerClient/logs/msfast.log" />
+    <file value="./logs/msfast.log" />
     <appendToFile value="true" />
     <rollingStyle value="Size" />
     <maxSizeRollBackups value="100" />
@@ -10,8 +10,8 @@
       <conversionPattern value="%d [%t] %-5p %c [%x] - %m%n" />
     </layout>
   </appender>
-  <root>
+  <logger name="MySpace.MSFast">
     <level value="ALL" />
     <appender-ref ref="RollingFileAppender" />
-  </root>
+  </logger>  
 </log4net>

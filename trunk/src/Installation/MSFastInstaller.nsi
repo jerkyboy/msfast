@@ -126,7 +126,13 @@ FunctionEnd
 Section "IE Plugin" SecIEPlugin ;No components page, name is not important
     
     ;Register
-    
+
+    WriteRegStr HKCR "MSFastResults" "" "MSFast Results File"
+    WriteRegStr HKCR "MSFastResults\DefaultIcon" "" "$INSTDIR\Resources\icon2.ico"
+    WriteRegStr HKCR "MSFastResults\shell\edit\command" "" '"$INSTDIR\msfast.exe" "%1"'
+    WriteRegStr HKCR "MSFastResults\shell\open\command" "" '"$INSTDIR\msfast.exe" "%1"'
+    WriteRegStr HKCR ".msf" "" "MSFastResults"
+
     WriteRegStr HKLM "${REGISTRY_KEY}" "InstallPath" "$INSTDIR\"
 	WriteRegStr HKLM "${REGISTRY_KEY}" "TemporaryFolder" "$INSTDIR\dump"
 	WriteRegStr HKLM "${REGISTRY_KEY}" "DumpFolder" "$INSTDIR\dump"
@@ -142,8 +148,8 @@ Section "IE Plugin" SecIEPlugin ;No components page, name is not important
 	WriteRegStr HKLM "SOFTWARE\Microsoft\Internet Explorer\Extensions\${REGISTRY_BAND_BUTTON_CLSID}" "CLSID" "{E0DD6CAB-2D10-11D2-8F1A-0000F87ABD16}"
 	WriteRegStr HKLM "SOFTWARE\Microsoft\Internet Explorer\Extensions\${REGISTRY_BAND_BUTTON_CLSID}" "Default Visible" "Yes"
 	WriteRegStr HKLM "SOFTWARE\Microsoft\Internet Explorer\Extensions\${REGISTRY_BAND_BUTTON_CLSID}" "ButtonText" "${APP_NAME}"
-	WriteRegStr HKLM "SOFTWARE\Microsoft\Internet Explorer\Extensions\${REGISTRY_BAND_BUTTON_CLSID}" "Icon" "$INSTDIR\icon.ico"
-	WriteRegStr HKLM "SOFTWARE\Microsoft\Internet Explorer\Extensions\${REGISTRY_BAND_BUTTON_CLSID}" "HotIcon" "$INSTDIR\icon.ico"
+	WriteRegStr HKLM "SOFTWARE\Microsoft\Internet Explorer\Extensions\${REGISTRY_BAND_BUTTON_CLSID}" "Icon" "$INSTDIR\Resources\icon.ico"
+	WriteRegStr HKLM "SOFTWARE\Microsoft\Internet Explorer\Extensions\${REGISTRY_BAND_BUTTON_CLSID}" "HotIcon" "$INSTDIR\Resources\icon.ico"
 	WriteRegStr HKLM "SOFTWARE\Microsoft\Internet Explorer\Extensions\${REGISTRY_BAND_BUTTON_CLSID}" "BandCLSID" "${REGISTRY_BAND_CLSID}"
 	WriteRegStr HKLM "SOFTWARE\Microsoft\Internet Explorer\Extensions\${REGISTRY_BAND_BUTTON_CLSID}" "MenuText" "${APP_NAME}"
 	WriteRegStr HKLM "SOFTWARE\Microsoft\Internet Explorer\Extensions\${REGISTRY_BAND_BUTTON_CLSID}" "ToolTip" "${APP_NAME}"
@@ -175,7 +181,8 @@ Section "IE Plugin" SecIEPlugin ;No components page, name is not important
     
     !include ApplicationFiles.nsi
     !include ConfigurationFiles.nsi
-
+	!include Resources.nsi
+	
 	;Configure the windows firewall. 
 	nsExec::ExecToLog '$WINDIR\system32\netsh.exe firewall add allowedprogram "$INSTDIR\engine.exe" "MySpace Performance Tracker"'
 	
@@ -200,6 +207,7 @@ Section "IE Plugin" SecIEPlugin ;No components page, name is not important
     
 		CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
 		CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Configuration.lnk" "$INSTDIR\configuration.exe" 
+		CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\MSFast.lnk" "$INSTDIR\msfast.exe" 
 		CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk" "$INSTDIR\Uninstall.exe" 
     
     !insertmacro MUI_STARTMENU_WRITE_END

@@ -37,6 +37,9 @@
     <CreateItem Include="$(BuildOutputPath)\**\*.*;" Exclude="$(BuildOutputPath)\conf\**\*.*">
       <Output TaskParameter="Include" ItemName="CompiledAssemblies"/>
     </CreateItem>
+    <CreateItem Include="$(MSBuildProjectDirectory)\src\Resources\*.ico;">
+      <Output TaskParameter="Include" ItemName="Resources"/>
+    </CreateItem>
     <CreateItem Include="$(BuildOutputPath)\conf\**\*.*">
       <Output TaskParameter="Include" ItemName="ConfigurationFiles"/>
     </CreateItem>
@@ -44,6 +47,7 @@
   <Target Name="createInstaller" DependsOnTargets="build">
     <WriteInstallFileInclude ParentFolder="$INSTDIR" OutputFile="$(InstallerFolder)\ApplicationFiles.nsi" Files="@(CompiledAssemblies)"/>
     <WriteInstallFileInclude ParentFolder="$INSTDIR\Conf" OutputFile="$(InstallerFolder)\ConfigurationFiles.nsi" Files="@(ConfigurationFiles)"/>
+    <WriteInstallFileInclude ParentFolder="$INSTDIR\Resources" OutputFile="$(InstallerFolder)\Resources.nsi" Files="@(Resources)"/>
     <MakeNSIS NSISPath="tools\nsis\makensis.exe" Script="$(InstallerFolder)\MSFastInstaller.nsi" OutputPath="@(OutputInstaller)">
       <Output TaskParameter="CompiledInstaller" ItemName="CompiledInstaller"/>
     </MakeNSIS>

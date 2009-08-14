@@ -39,6 +39,7 @@ using MySpace.MSFast.Core.UserExperience;
 
 #if InternetExplorer
 using MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser;
+using MySpace.MSFast.Engine.SuProxy.Proxy;
 #endif
 
 namespace MySpace.MSFast.Engine.Console
@@ -138,7 +139,7 @@ namespace MySpace.MSFast.Engine.Console
 				//Start Proxy
 				if (startInfo.IsStartProxy)
 				{
-					SuProxyConfiguration spc = SuProxyConfiguration.Default;
+                    EngineSuProxyConfiguration spc = EngineSuProxyConfiguration.Default;
 
 					String folder = null;
 					try
@@ -157,18 +158,9 @@ namespace MySpace.MSFast.Engine.Console
 					String[] configFiles = new String[] { folder + "\\SuProxy.default.config", folder + "\\SuProxy.msfast.config" };
 
 					spc.ProxyPort = startInfo.ProxyPort;
-
-                    if (spc.ContainsKey("DumpFolder"))
-                    {
-                        spc["DumpFolder"] = startInfo.DumpFolder;
-                    }
-                    else
-                    {
-                        spc.Add("DumpFolder", startInfo.DumpFolder);
-                    }
-
-                    spc.Add("TESTING_URI", startInfo.URL);
-                    
+                    spc.DumpFolder = startInfo.DumpFolder;
+                    spc.URL = startInfo.URL;
+                    spc.CollectionID = startInfo.CollectionID;
 
 					spc.ConfigurationFiles = configFiles;
 
@@ -205,7 +197,7 @@ namespace MySpace.MSFast.Engine.Console
 				String launchWith = String.Format("http://{0}?PRE_COLLECTION={1}&__r={2}&__c={3}",
 													host,
                                                     Convert.ToBase64String(Encoding.UTF8.GetBytes(new Uri(startInfo.URLWithCollectionArgs).AbsoluteUri.ToString())),
-													startInfo.CollectionId,
+													startInfo.CollectionID,
 													((int)startInfo.CollectionType).ToString());
 
 				if (launchWith == null)

@@ -25,20 +25,22 @@ using System.Collections.Generic;
 using System.Text;
 using MySpace.MSFast.SuProxy.Pipes;
 using MySpace.MSFast.Core.Http;
+using MySpace.MSFast.Core.Configuration.Common;
+using System.IO;
 
 namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 {
 	public class HttpFlushPipe : HttpPipe
 	{
-        private static Dictionary<String, LinkedList<HttpTransaction>> que = new Dictionary<string, LinkedList<HttpTransaction>>();
+        private static Dictionary<DownloadDumpFilesInfo, LinkedList<HttpTransaction>> que = new Dictionary<DownloadDumpFilesInfo, LinkedList<HttpTransaction>>();
 		private static object queLock = new object();
 
-        public static void AddFlushQue(String filename, LinkedList<HttpTransaction> httpTransactions)
+        public static void AddFlushQue(DownloadDumpFilesInfo fileInfo, LinkedList<HttpTransaction> httpTransactions)
 		{
 			lock (queLock)
 			{
-				if(que.ContainsKey(filename) == false)
-					que.Add(filename, httpTransactions);
+                if (que.ContainsKey(fileInfo) == false)
+                    que.Add(fileInfo, httpTransactions);
 			}
 		}
 
@@ -46,12 +48,12 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 		{
 			lock (queLock)
 			{
-                Dictionary<String, LinkedList<HttpTransaction>> tmpque = new Dictionary<string, LinkedList<HttpTransaction>>(que);
-				foreach (String filename in tmpque.Keys)
+                Dictionary<DownloadDumpFilesInfo, LinkedList<HttpTransaction>> tmpque = new Dictionary<DownloadDumpFilesInfo, LinkedList<HttpTransaction>>(que);
+                foreach (DownloadDumpFilesInfo fileInfo in tmpque.Keys)
 				{
 					bool cap = true;
 
-                    foreach (HttpTransaction t in tmpque[filename])
+                    foreach (HttpTransaction t in tmpque[fileInfo])
 					{
                         if (t.Mode != HttpMode.Completed)
 						{
@@ -62,8 +64,12 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 
 					if (cap)
 					{
-                        DataSerializer.SaveHttpTransactions(filename, tmpque[filename]);
-						que.Remove(filename);
+                        Stream s = fileInfo.Open(FileAccess.Write);
+                        if (s != null)
+                        {
+                            DataSerializer.SaveHttpTransactions(s, tmpque[fileInfo]);
+                        }
+                        que.Remove(fileInfo);
 					}
 
 				}

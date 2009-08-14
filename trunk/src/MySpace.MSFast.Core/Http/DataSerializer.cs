@@ -32,11 +32,11 @@ namespace MySpace.MSFast.Core.Http
 	{
 		public static DateTime JAN_01_1970 = DateTime.SpecifyKind(new DateTime(1970, 1, 1, 0, 0, 0), DateTimeKind.Utc);
 
-        public static bool SaveHttpTransactions(String filename, IEnumerable<HttpTransaction> data)
+        public static bool SaveHttpTransactions(Stream output, IEnumerable<HttpTransaction> data)
 		{
 			try
 			{
-				StreamWriter sw = new StreamWriter(filename);
+                StreamWriter sw = new StreamWriter(output);
 
                 foreach (HttpTransaction transaction in data)
 				{
