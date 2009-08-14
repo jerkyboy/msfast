@@ -82,7 +82,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
         private int _collectionId = 1;
 
 		public int Timeout = 15;
-		public bool IsDebug = true;
+		public bool IsDebug = false;
 
         public bool IsVerbose = false;
 
@@ -131,7 +131,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
             ArgsParsers.Add("/u:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.URL = value.Replace("\\", "/"); }));
             ArgsParsers.Add("/uw:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si._urlWithCollectionArgs = value.Replace("\\", "/"); }));
             ArgsParsers.Add("/pa:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.ProxyAddress = value; }));
-			//ArgsParsers.Add("/debug", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.IsDebug = true; }));
+			ArgsParsers.Add("/debug", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.IsDebug = true; }));
 			ArgsParsers.Add("/ct:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si.CollectionType = (CollectPageInformation)Enum.ToObject(typeof(CollectPageInformation), int.Parse(value)); } catch { } }));
 			ArgsParsers.Add("/ci:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si._collectionId = int.Parse(value); } catch { } }));
 			
@@ -224,8 +224,8 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 			if (this.IsDebug)
 				sb.Append(" /debug ");
 
-            //if (this.IsVerbose)
-            sb.Append(" /verbose ");
+            if (this.IsVerbose)
+                sb.Append(" /verbose ");
 			
             if(this.SnifferDeviceId != null)
 			{
