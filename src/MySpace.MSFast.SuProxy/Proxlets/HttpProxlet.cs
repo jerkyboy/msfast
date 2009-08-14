@@ -56,7 +56,7 @@ namespace MySpace.MSFast.SuProxy.Proxlets
 				return;
 			}
 
-			HttpPipe pipe = currentChain.GetFirstPipe();
+            HttpPipe pipe = currentChain.GetFirstPipe();
 			HttpPipe pipet = null;
 
 			while (pipe != null)

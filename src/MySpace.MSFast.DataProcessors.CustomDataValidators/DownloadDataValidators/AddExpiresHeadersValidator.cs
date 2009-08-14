@@ -29,6 +29,7 @@ using MySpace.MSFast.DataProcessors;
 using MySpace.MSFast.DataProcessors.Download;
 using System.IO;
 using MySpace.MSFast.DataValidators;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidators
 {
@@ -44,7 +45,6 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidat
             message_more = config["msgs"];
         }
 
-
         public override ValidationResults<DownloadStateOccurance> ValidateData(ProcessedDataPackage package)
         {
             ValidationResults<DownloadStateOccurance> results = new ValidationResults<DownloadStateOccurance>();
@@ -52,10 +52,10 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidat
 
             DownloadData data = package.GetData<DownloadData>();
 
+            ResponseHeaderDumpFilesInfo rbdfi = new ResponseHeaderDumpFilesInfo(package);         
+
             if (data == null || 
-                data.Count == 0 || 
-                String.IsNullOrEmpty(package.DumpFolder) || 
-                Directory.Exists(package.DumpFolder) == false)
+                data.Count == 0)
 
                 return results;
 
@@ -64,52 +64,60 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidat
             String headerBuffer = null;
             StreamReader sr = null;
             Match m = null;
-            String folder = package.DumpFolder.Replace("/","\\");
-            if(folder.EndsWith("\\") == false)
-                folder += "\\";
 
             DateTime now = DateTime.Now.AddDays(2);
+
+            Stream stream = null;
 
             foreach (DownloadState ds in data)
             {
                 try
                 {
-                    sr = new StreamReader(String.Format("{0}H{1}", folder, ds.FileGUID));
-                    
-                    if(sr != null){
-                        headerBuffer = sr.ReadToEnd();
-                        sr.Close();
-                        sr.Dispose();
+                    stream = rbdfi.Open(FileAccess.Read, ds.FileGUID);
 
-                        m = regex.Match(headerBuffer);
-                        
-                        if (m.Success == false || m.Groups.Count <= 1 || String.IsNullOrEmpty(m.Groups[1].ToString()))
-                        {
-                            DownloadStateOccurance dso = new DownloadStateOccurance(ds);
-                            dso.Comment = "(no expires)";
-                            results.Add(dso);
-                        }
-                        else
-                        {
-                            try{
-                                if (m.Groups[1].ToString() == "-1")
-                                {
-                                    DownloadStateOccurance dso = new DownloadStateOccurance(ds);
-                                    dso.Comment = "(-1)";
-                                    results.Add(dso);
-                                }
-                                else
-                                {
-                                    DateTime dt = DateTime.Parse(m.Groups[1].ToString());
+                    if (stream != null)
+                    {
+                        sr = new StreamReader(stream);
 
-                                    if (dt < now)
+                        if (sr != null)
+                        {
+                            headerBuffer = sr.ReadToEnd();
+                            sr.Close();
+                            sr.Dispose();
+
+                            m = regex.Match(headerBuffer);
+
+                            if (m.Success == false || m.Groups.Count <= 1 || String.IsNullOrEmpty(m.Groups[1].ToString()))
+                            {
+                                DownloadStateOccurance dso = new DownloadStateOccurance(ds);
+                                dso.Comment = "(no expires)";
+                                results.Add(dso);
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    if (m.Groups[1].ToString() == "-1")
                                     {
                                         DownloadStateOccurance dso = new DownloadStateOccurance(ds);
-                                        dso.Comment = String.Format("({0})", dt.Date);
+                                        dso.Comment = "(-1)";
                                         results.Add(dso);
                                     }
+                                    else
+                                    {
+                                        DateTime dt = DateTime.Parse(m.Groups[1].ToString());
+
+                                        if (dt < now)
+                                        {
+                                            DownloadStateOccurance dso = new DownloadStateOccurance(ds);
+                                            dso.Comment = String.Format("({0})", dt.Date);
+                                            results.Add(dso);
+                                        }
+                                    }
                                 }
-                            }catch{
+                                catch
+                                {
+                                }
                             }
                         }
                     }

@@ -58,6 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\CommonDataTypes\DataTypes.cs" />
+    <Compile Include="Configuration\Common\CollectionMetaInfo.cs" />
+    <Compile Include="Configuration\Common\FilesConfiguration.cs" />
     <Compile Include="Configuration\ConfigProviders\ConfigProvider.cs" />
     <Compile Include="Configuration\ConfigProviders\IConfigGetter.cs" />
     <Compile Include="Configuration\ConfigProviders\IConfigSetter.cs" />

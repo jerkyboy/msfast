@@ -26,6 +26,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using MySpace.MSFast.SuProxy.Pipes;
 using MySpace.MSFast.Core.Http;
+using System.IO;
+using MySpace.MSFast.Core.Configuration.Common;
+using MySpace.MSFast.Engine.SuProxy.Utils;
+using MySpace.MSFast.Engine.SuProxy.Proxy;
 
 namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 {
@@ -55,7 +59,6 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 				
 				bool isStart = false;
 				String originalUrl = "";
-				int collectionId = 0;
 
 				Match m = parseQueryString.Match(url);
 
@@ -68,19 +71,16 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 
 						if (isStart)
 						{
-                            if (m.Groups.Count >= 4)
+                            if (m.Groups.Count >= 4 && this.Configuration is EngineSuProxyConfiguration)
                             {
-                                HttpTracerPipe.AddURLMask(originalUrl, (String)this.Configuration["TESTING_URI"]);
+                                HttpTracerPipe.AddURLMask(originalUrl, ((EngineSuProxyConfiguration)this.Configuration).URL);
                             }
                             HttpTracerPipe.StartTracking();
 						}
-						else
-						{							
-							collectionId = int.Parse(m.Groups[2].Value);
-                            if (this.Configuration.ContainsKey("DumpFolder"))
-                            {
-                                HttpTracerPipe.FlushTracker(((String)this.Configuration["DumpFolder"]) + "\\pdownload_" + collectionId + ".dat", originalUrl);
-                            }
+						else if(this.Configuration is EngineSuProxyConfiguration)
+						{
+                            DownloadDumpFilesInfo ddfi = new DownloadDumpFilesInfo((EngineSuProxyConfiguration)this.Configuration);
+                            HttpTracerPipe.FlushTracker(ddfi, originalUrl);
 						}
 					}
 					catch 

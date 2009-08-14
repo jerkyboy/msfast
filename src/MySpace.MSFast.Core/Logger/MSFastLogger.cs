@@ -33,7 +33,7 @@ namespace MySpace.MSFast.Core.Logger
 	public class MSFastLogger
 	{
         
-        public MSFastLogger()
+        private MSFastLogger()
         {
             StackFrame frame = new StackFrame(1);
             MethodBase method = frame.GetMethod();

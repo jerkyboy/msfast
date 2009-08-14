@@ -28,6 +28,9 @@ using System.IO;
 using System.Text.RegularExpressions;
 using MySpace.MSFast.Engine.CollectorsConfiguration;
 using System.Reflection;
+using MySpace.MSFast.Core.Configuration.Common;
+using MySpace.MSFast.Engine.SuProxy.Utils;
+using MySpace.MSFast.Engine.SuProxy.Proxy;
 
 namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 {
@@ -35,16 +38,13 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 	{
 		private MemoryStream collectedBody = null;
 
-		private Regex collectQueryParsers = new Regex("(__collecthash=([abcdef0123456789]*)&)*(__resultid=([0-9]*)&)*__collect=([0-9]*)$");
-
 		private static Dictionary<String, ChunkedPage> CachedPages = new Dictionary<string,ChunkedPage>();
 		private static CollectorsConfig collectorsConfig = null;
 
 		private static object initLock = new object();
 
-		private int CollectFlags = 0;
-		private int CollectId = 0;
-		private String CollectHash = "";
+        private CollectionInfoParser CollectionInfoParser;
+
 		private bool isFirstHit = false;
 
 		public override void Init(System.Collections.Generic.Dictionary<object, object> dictionary)
@@ -84,35 +84,23 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 
 		public override void SendHeader(string header)
 		{
-			if (this.PipesChain.ChainState.ContainsKey("REQUEST_URI"))
-			{
-				String uriStr = (String)this.PipesChain.ChainState["REQUEST_URI"];
-				Match m = collectQueryParsers.Match(uriStr);
+            this.CollectionInfoParser = new CollectionInfoParser(this.PipesChain.ChainState);
 
-				try{this.CollectId = int.Parse(m.Groups[4].Value);}catch{}
-				try{this.CollectFlags = int.Parse(m.Groups[5].Value);}catch{}
-				try {this.CollectHash = m.Groups[2].Value; }catch { }
-
-				if (String.IsNullOrEmpty(this.CollectHash))
-				{
-					this.CollectHash = Guid.NewGuid().ToString().ToLower().Replace("-", "");
-				}
-			}
-
-			if (CachedPages.ContainsKey(this.CollectHash) == false)
+            if (CachedPages.ContainsKey(this.CollectionInfoParser.CollectHash) == false)
 			{
 				this.isFirstHit = true;
-				CachedPages.Add(this.CollectHash, new ChunkedPage(header));
+                CachedPages.Add(this.CollectionInfoParser.CollectHash, new ChunkedPage(header));
 			}
 		}
 
 		public override void SendBodyData(byte[] buffer, int offset, int length)
 		{
-			if (CachedPages.ContainsKey(this.CollectHash) == false)
+            if (this.CollectionInfoParser == null || CachedPages.ContainsKey(this.CollectionInfoParser.CollectHash) == false)
 			{
 				return;
 			}
-			if(CachedPages[this.CollectHash].IsParsed == false){
+            if (CachedPages[this.CollectionInfoParser.CollectHash].IsParsed == false)
+            {
 				if (collectedBody == null)
 					collectedBody = new MemoryStream();
 
@@ -122,25 +110,27 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 
 		public override void Flush()
 		{
-			if (CachedPages.ContainsKey(this.CollectHash) == false)
+            if (this.CollectionInfoParser == null || CachedPages.ContainsKey(this.CollectionInfoParser.CollectHash) == false)
 			{
 				return;
 			}
 
-			base.SendHeader(CachedPages[this.CollectHash].Header);
-			
-			if (CachedPages[this.CollectHash].IsParsed == false && collectedBody != null)
+            base.SendHeader(CachedPages[this.CollectionInfoParser.CollectHash].Header);
+
+            if (CachedPages[this.CollectionInfoParser.CollectHash].IsParsed == false && collectedBody != null && this.Configuration is EngineSuProxyConfiguration)
 			{
-				CachedPages[this.CollectHash].Parse(Encoding.UTF8.GetString(collectedBody.ToArray()), 60);
-                if (this.Configuration.ContainsKey("DumpFolder"))
+                CachedPages[this.CollectionInfoParser.CollectHash].Parse(Encoding.UTF8.GetString(collectedBody.ToArray()), 60);
+
+                Stream sdfi = (new SourceDumpFilesInfo((EngineSuProxyConfiguration)this.Configuration)).Open(FileAccess.Write);
+                Stream bsdfi = (new BrokenSourceDumpFilesInfo((EngineSuProxyConfiguration)this.Configuration)).Open(FileAccess.Write);
+
+                if (bsdfi != null && sdfi != null)
                 {
-                    CachedPages[this.CollectHash].SaveToDisc(
-                        String.Concat(this.Configuration["DumpFolder"], "\\source_", this.CollectId, ".src"), 
-                        String.Concat(this.Configuration["DumpFolder"], "\\source_", this.CollectId + ".src_b"));
+                    CachedPages[this.CollectionInfoParser.CollectHash].SaveToDisc(sdfi, bsdfi);
                 }
 			}
 
-			byte[] bodyData = Encoding.UTF8.GetBytes(InjectJavascript(CachedPages[this.CollectHash]));
+            byte[] bodyData = Encoding.UTF8.GetBytes(InjectJavascript(CachedPages[this.CollectionInfoParser.CollectHash]));
 			base.SendBodyData(bodyData, 0, bodyData.Length);
 
 			base.Flush();
@@ -157,7 +147,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 
 			foreach (CollectorsConfig.Collector cs in collectorsConfig)
 			{
-				if (((this.CollectFlags & (int)cs.CollectType) == (int)cs.CollectType) && cs.IsStandalone == false)
+                if (((this.CollectionInfoParser.CollectFlags & (int)cs.CollectType) == (int)cs.CollectType) && cs.IsStandalone == false)
 				{
 					allAreStandAlone = false;
 					break;
@@ -168,7 +158,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 			{
 				foreach (CollectorsConfig.Collector cs in collectorsConfig)
 				{
-					if ((this.CollectFlags & (int)cs.CollectType) == (int)cs.CollectType && cs.IsStandalone == false)
+                    if ((this.CollectionInfoParser.CollectFlags & (int)cs.CollectType) == (int)cs.CollectType && cs.IsStandalone == false)
 					{
 						removeFlags |= (int)cs.CollectType;
                         currentTest |= (int)cs.CollectType;
@@ -179,7 +169,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 			{
 				foreach (CollectorsConfig.Collector cs in collectorsConfig)
 				{
-					if ((this.CollectFlags & (int)cs.CollectType) == (int)cs.CollectType && cs.IsStandalone)
+                    if ((this.CollectionInfoParser.CollectFlags & (int)cs.CollectType) == (int)cs.CollectType && cs.IsStandalone)
 					{
 						removeFlags |= (int)cs.CollectType;
                         currentTest |= (int)cs.CollectType;
@@ -189,25 +179,25 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 				}
 			}
 
-			int nextCollect = this.CollectFlags & (~removeFlags);
+            int nextCollect = this.CollectionInfoParser.CollectFlags & (~removeFlags);
 			String nextURL = "";
 
 			if (nextCollect == 0)
 			{
-				CachedPages.Remove(this.CollectHash);
+                CachedPages.Remove(this.CollectionInfoParser.CollectHash);
 			}
-			else if (this.PipesChain.ChainState.ContainsKey("REQUEST_URI"))
+            else if (this.PipesChain.ChainState.ContainsKey("REQUEST_URI") && this.Configuration is EngineSuProxyConfiguration)
 			{
-				nextURL = collectQueryParsers.Replace((String)this.PipesChain.ChainState["REQUEST_URI"],"");
-				nextURL += "__collecthash=" + this.CollectHash + "&__resultid=" + CollectId + "&__collect=" + nextCollect;
+                nextURL = CollectionInfoParser.CollectQueryParsers_Normal.Replace((String)this.PipesChain.ChainState["REQUEST_URI"], "");
+                nextURL += "__collecthash=" + this.CollectionInfoParser.CollectHash + "&__resultid=" + ((EngineSuProxyConfiguration)this.Configuration).CollectionID + "&__collect=" + nextCollect;
 			}
 
 			modifiedPage.Append(chunkedPage.StartToHead);
 
-			if (scripts.Length > 0)
+            if (scripts.Length > 0 && this.Configuration is EngineSuProxyConfiguration)
 			{
 				modifiedPage.Append(GetScript(collectorsConfig.Collection.JSMain));
-                modifiedPage.Append(GetScript(collectorsConfig.Collection.JSSetTestID, CollectId, chunkedPage.Body.Length + 4, currentTest, (String)this.PipesChain.ChainState["REQUEST_URI"], base64Encode((String)this.PipesChain.ChainState["REQUEST_URI"])));
+                modifiedPage.Append(GetScript(collectorsConfig.Collection.JSSetTestID, ((EngineSuProxyConfiguration)this.Configuration).CollectionID, chunkedPage.Body.Length + 4, currentTest, (String)this.PipesChain.ChainState["REQUEST_URI"], base64Encode((String)this.PipesChain.ChainState["REQUEST_URI"])));
 				modifiedPage.Append(String.Format("<script>{0}</script>", scripts.ToString()));
 				modifiedPage.Append(GetScript(collectorsConfig.Collection.JSInit));
 				if(isFirstHit)

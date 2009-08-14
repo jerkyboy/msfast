@@ -34,9 +34,11 @@ namespace MySpace.MSFast.GUI.Engine.Panels.Status
 
     public partial class TestStatutsPanel : Panel
 	{
-        public TestStatutsPanel():base()
+        public bool IsStandAlone;
+        
+        public TestStatutsPanel(bool isStandAlone):base()
 		{
-
+            this.IsStandAlone = isStandAlone;
             InitializeComponent();
 		}
 

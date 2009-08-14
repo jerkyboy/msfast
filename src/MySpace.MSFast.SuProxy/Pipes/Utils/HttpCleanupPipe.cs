@@ -23,11 +23,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MySpace.MSFast.Core.Logger;
 
 namespace MySpace.MSFast.SuProxy.Pipes.Utils
 {
 	public class HttpCleanupPipe : HttpPipe
 	{
+        private static readonly MSFastLogger log = MSFastLogger.GetLogger(typeof(HttpCleanupPipe));
+
 		public override void StartReceive()
 		{
 			if (IsClosed) return;
@@ -37,6 +40,7 @@ namespace MySpace.MSFast.SuProxy.Pipes.Utils
 
 		public override void HandleError(Exception e)
 		{
+            if (log.IsErrorEnabled) log.Error("SuProxy Error ", e);
 			base.HandleError(e);
 			Cleanup();
 		}

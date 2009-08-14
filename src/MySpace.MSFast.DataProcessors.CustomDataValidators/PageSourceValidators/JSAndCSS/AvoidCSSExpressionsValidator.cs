@@ -29,6 +29,7 @@ using MySpace.MSFast.DataProcessors;
 using System.Text.RegularExpressions;
 using System.IO;
 using MySpace.MSFast.DataValidators;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.DataProcessors.CustomDataValidators.PageSourceValidators.JSAndCSS
 {
@@ -62,10 +63,10 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.PageSourceValidator
 
             DownloadData data = package.GetData<DownloadData>();
 
+            ResponseBodyDumpFilesInfo rbdfi = new ResponseBodyDumpFilesInfo(package); 
+
             if (data == null ||
-                data.Count == 0 ||
-                String.IsNullOrEmpty(package.DumpFolder) ||
-                Directory.Exists(package.DumpFolder) == false)
+                data.Count == 0)
 
                 return results;
 
@@ -74,11 +75,11 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.PageSourceValidator
             String bodyBuffer = null;
             StreamReader sr = null;
             MatchCollection m = null;
-            String folder = package.DumpFolder.Replace("/", "\\");
-            if (folder.EndsWith("\\") == false)
-                folder += "\\";
 
             int count = 0;
+
+            Stream stream = null;
+
 
             foreach (DownloadState ds in data)
             {
@@ -87,21 +88,26 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.PageSourceValidator
 
                 try
                 {
-                    sr = new StreamReader(String.Format("{0}B{1}", folder, ds.FileGUID));
-
-                    if (sr != null)
+                    stream = rbdfi.Open(FileAccess.Read, ds.FileGUID);
+                    
+                    if (stream != null)
                     {
-                        bodyBuffer = sr.ReadToEnd();
-                        sr.Close();
-                        sr.Dispose();
+                        sr = new StreamReader(stream);
 
-                        m = regex.Matches(bodyBuffer);
-
-                        if (m.Count > 0)
+                        if (sr != null)
                         {
-                            count += m.Count;
-                            results.Add(new DownloadStateOccurance(ds));
-                        }                       
+                            bodyBuffer = sr.ReadToEnd();
+                            sr.Close();
+                            sr.Dispose();
+
+                            m = regex.Matches(bodyBuffer);
+
+                            if (m.Count > 0)
+                            {
+                                count += m.Count;
+                                results.Add(new DownloadStateOccurance(ds));
+                            }
+                        }
                     }
                 }
                 catch

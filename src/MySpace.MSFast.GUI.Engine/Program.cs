@@ -30,9 +30,16 @@ namespace MySpace.MSFast.GUI.Engine
 		[STAThread]
 		static void Main()
 		{
-			Application.EnableVisualStyles();
+            
+            string[] args = Environment.GetCommandLineArgs();
+            String openFile = null;
+
+            if (args != null && args.Length == 2)
+                openFile = args[1];
+
+            Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainForm());
+            Application.Run(new MainForm(openFile));
 
 		}
 

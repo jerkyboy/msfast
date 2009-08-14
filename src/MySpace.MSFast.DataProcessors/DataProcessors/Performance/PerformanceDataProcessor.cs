@@ -25,33 +25,41 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.DataProcessors.Performance
 {
 	public class PerformanceDataProcessor : DataProcessor<PerformanceData>
 	{
 		private static Regex performance_Dump_Pattern = new Regex("\\?([0-9]*):PT([0-9\\.]*):UT([0-9\\.]*):WS([0-9]*):PWS([0-9\\.]*)", RegexOptions.Compiled);
-		private static String filenameFormat = "perfdump_{0}.dat";
-
+		
 		#region DataProcessor<PerformanceData> Members
 
 		public override bool IsDataExists(ProcessedDataPackage state)
 		{
-			FileInfo fi = new FileInfo(state.DumpFolder + "\\" + String.Format(filenameFormat, state.CollectionID));
-			return (fi.Exists && fi.Length > 0);
-		}
+            PerformanceDumpFilesInfo pdfi = new PerformanceDumpFilesInfo(state);
+
+            if (String.IsNullOrEmpty(pdfi.GetFullPath()))
+                return false;
+
+            FileInfo fi = new FileInfo(pdfi.GetFullPath());
+            return (fi.Exists && fi.Length > 0);
+        }
 
 		public override PerformanceData GetProcessedData(ProcessedDataPackage state)
 		{
-			if (IsDataExists(state) == false)
-				return null;
+            PerformanceDumpFilesInfo pdfi = new PerformanceDumpFilesInfo(state);
+            
+            PerformanceData performanceData = new PerformanceData();
 
-			String filename = state.DumpFolder + "\\" + String.Format(filenameFormat, state.CollectionID);
-			StreamReader source = new StreamReader(filename);
+            Stream s = pdfi.Open(FileAccess.Read);
 
-			PerformanceData performanceData = new PerformanceData();
+            if (s == null)
+                return performanceData;
 
-			performanceData.PerformanceDumpFilename = String.Format(filenameFormat, state.CollectionID);
+			StreamReader source = new StreamReader(s);
+
+            performanceData.PerformanceDumpFilename = pdfi.GetFilename(); 
 
 			String buffer = source.ReadToEnd();
 			source.Close();

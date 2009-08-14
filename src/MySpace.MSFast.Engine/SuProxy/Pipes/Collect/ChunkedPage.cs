@@ -259,7 +259,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 		}
 
 		#region Save To Disc
-		public bool SaveToDisc(String sourceFilename, String breaksFilename)
+        public bool SaveToDisc(Stream source, Stream breaks)
 		{
 			StringBuilder sb = new StringBuilder();
 			MemoryStream ms = new MemoryStream();
@@ -298,14 +298,15 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 			i = sb.Length;
 			sb.Append(AddCRIfNeeded(this.PostBodyToEnd));
 			ms.Write(GetIndexLengthTypeAndId(i, sb.Length, ResultsType.PostBodyToEnd, rid++), 0, 10);
-			try
+			
+            try
 			{
-				StreamWriter sw = new StreamWriter(sourceFilename, false, Encoding.UTF8);
+                StreamWriter sw = new StreamWriter(source, Encoding.UTF8);
 				sw.Write(sb.ToString());
 				sw.Flush();
 				sw.Close();
 
-				BinaryWriter bsw = new BinaryWriter(File.Create(breaksFilename));
+				BinaryWriter bsw = new BinaryWriter(breaks);
 				bsw.Write(ms.ToArray());
 				bsw.Flush();
 				bsw.Close();
@@ -353,21 +354,21 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 		}
 		#endregion
 
-		private byte[] tempBuffer = new byte[10];
+        private byte[] tmpBuffer = new byte[10];
 		private byte[] GetIndexLengthTypeAndId(int index, int totalLength, ResultsType resultsType, int id)
 		{
 			int length = totalLength - index;
-			tempBuffer[0] = (byte)resultsType;
-			tempBuffer[1] = (byte)id;
-			tempBuffer[2] = (byte)(index >> 24);
-			tempBuffer[3] = (byte)(index >> 16);
-			tempBuffer[4] = (byte)(index >> 8);
-			tempBuffer[5] = (byte)(index);
-			tempBuffer[6] = (byte)(length >> 24);
-			tempBuffer[7] = (byte)(length >> 16);
-			tempBuffer[8] = (byte)(length >> 8);
-			tempBuffer[9] = (byte)(length);
-			return tempBuffer;
+            tmpBuffer[0] = (byte)resultsType;
+            tmpBuffer[1] = (byte)id;
+            tmpBuffer[2] = (byte)(index >> 24);
+            tmpBuffer[3] = (byte)(index >> 16);
+            tmpBuffer[4] = (byte)(index >> 8);
+            tmpBuffer[5] = (byte)(index);
+            tmpBuffer[6] = (byte)(length >> 24);
+            tmpBuffer[7] = (byte)(length >> 16);
+            tmpBuffer[8] = (byte)(length >> 8);
+            tmpBuffer[9] = (byte)(length);
+            return tmpBuffer;
 		}
 		#endregion
 	}

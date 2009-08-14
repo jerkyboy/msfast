@@ -28,7 +28,7 @@ using System.IO;
 
 namespace MySpace.MSFast.SuProxy.Proxy
 {					 
-	public class SuProxyConfiguration : Dictionary<String,Object>
+	public class SuProxyConfiguration
 	{
 		public int ProxyPort;
 		public int MaxConnectionsQue;
@@ -39,8 +39,7 @@ namespace MySpace.MSFast.SuProxy.Proxy
         public String[] ConfigurationFiles= null;
 		
 		public SuProxyConfiguration(int ProxyPort)
-		{
-            this.Add("DumpFolder", "C:\\temp");
+		{           
 			this.ProxyPort = ProxyPort;
 		}
 		public SuProxyConfiguration(int ProxyPort, int MaxConnectionsQue) : this(ProxyPort)

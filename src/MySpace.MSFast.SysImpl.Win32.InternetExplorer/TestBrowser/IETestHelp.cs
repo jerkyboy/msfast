@@ -37,6 +37,7 @@ using MySpace.MSFast.Engine.CollectorStartInfo;
 using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.Engine.Events;
 using MySpace.MSFast.Engine.DataCollector;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 {
@@ -198,73 +199,69 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 				this.browser.URL = args;
 		}
 
-		private void TakeScreenshot(string cmdId, string args)
-		{
+        private void TakeScreenshot(string cmdId, string args)
+        {
 
-			if (this.browser == null || this.browser.MainHWND == IntPtr.Zero || this.browser.CanvasHWND == IntPtr.Zero)
-				return;
+            if (this.browser == null || this.browser.MainHWND == IntPtr.Zero || this.browser.CanvasHWND == IntPtr.Zero)
+                return;
 
-			if (this.StartInfo == null || this.StartInfo.DumpFolder == null || Directory.Exists(this.StartInfo.DumpFolder) == false)
-				return;
+            if (this.StartInfo == null || args == null)
+                return;
 
-			String path = this.StartInfo.DumpFolder;
 
-			if (String.IsNullOrEmpty(path) == false)
-			{
-				if (!path.EndsWith("/"))
-					path = path + "/";
+            String[] argsarr = Regex.Split(args, "~");
 
-				String[] argsarr = Regex.Split(args, "~");
+            int width = -1;
+            int height = -1;
 
-				int width = -1;
-				int height = -1;
-				string filename = null;
+            if (argsarr == null || argsarr.Length == 0)
+                return;
 
-				if (argsarr == null || argsarr.Length == 0)
-					return;
+            String key = argsarr[0];
 
-				filename = argsarr[0];
+            if (argsarr.Length >= 3)
+            {
+                try { width = int.Parse(argsarr[1]); }
+                catch { }
+                try { height = int.Parse(argsarr[2]); }
+                catch { }
+            }
 
-				if (argsarr.Length >= 3)
-				{
-					try { width = int.Parse(argsarr[1]); }
-					catch { }
-					try { height = int.Parse(argsarr[2]); }
-					catch { }
-				}
+            bool maximize = true;
 
-				bool maximize = true;
+            if (argsarr.Length == 4)
+                try
+                {
+                    maximize = (int.Parse(argsarr[3]) == 1);
+                }
+                catch { }
 
-				if (argsarr.Length == 4)
-					try
-					{
-						maximize = (int.Parse(argsarr[3]) == 1);
-					}
-					catch { }
+            Stream outs = new ScreenshotsDumpFilesInfo(this.StartInfo).Open(FileAccess.Write, key);
+            
+            if (outs != null)
+            {
+                Bitmap bm = ScreenGrabber.GrabScreen(browser.MainHWND, browser.CanvasHWND, maximize);
 
-				path = path + filename;
+                if (bm != null)
+                {
+                    if (width != -1 && height != -1)
+                    {
+                        bm = ResizeBitmap(bm, width, height);
+                    }
+                    bm.Save(outs, ImageFormat.Jpeg);
 
-				Bitmap bm = ScreenGrabber.GrabScreen(browser.MainHWND, browser.CanvasHWND, maximize);
+                    try
+                    {
+                        bm.Dispose();
+                    }
+                    catch
+                    {
 
-				if (bm != null)
-				{
-					if (width != -1 && height != -1)
-					{
-						bm = ResizeBitmap(bm, width, height);
-					}
-					bm.Save(path, ImageFormat.Jpeg);
+                    }
+                }
+            }
 
-					try
-					{
-						bm.Dispose();
-					}
-					catch
-					{
-
-					}
-				}
-			}			
-		}
+        }
 		private static Bitmap ResizeBitmap(Bitmap b, int nWidth, int nHeight)
 		{
 			Bitmap result = new Bitmap(nWidth, nHeight);
@@ -292,20 +289,12 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 			if (performanceTracker == null)
 				return;
 
-			if (this.StartInfo == null || this.StartInfo.DumpFolder == null || Directory.Exists(this.StartInfo.DumpFolder) == false)
+            if (this.StartInfo == null || args == null)
 				return;
 
-			String path = this.StartInfo.DumpFolder;
+            Stream outs = new PerformanceDumpFilesInfo(this.StartInfo).Open(FileAccess.Write);
 
-			if (String.IsNullOrEmpty(path) == false)
-			{
-				if (!path.EndsWith("/"))
-					path = path + "/";
-
-				path = path + args;
-			}
-
-			performanceTracker.StopTracking(path);
+            performanceTracker.StopTracking(outs);
 			performanceTracker.Dispose();
 			performanceTracker = null;
 		}
@@ -345,27 +334,19 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 		}
 
 		private void SaveDump(string cmdId, string args)
-		{
-			int i = args.IndexOf(";");
-			String filename = args.Substring(0, i);
-
-			if (this.StartInfo == null || this.StartInfo.DumpFolder == null || Directory.Exists(this.StartInfo.DumpFolder) == false)
+		{			
+            if (this.StartInfo == null || args == null)
 				return;
 
-			String path = this.StartInfo.DumpFolder;
 
-			if (String.IsNullOrEmpty(path) == false)
-			{
-				if (!path.EndsWith("/"))
-					path = path + "/";
-
-				path = path + filename;
-
-				String content = args.Substring(i + 1, args.Length - i - 1);
-
-                SaveTextfile.Save(path, content);
-			}
-
+            Stream outs = new RenderDumpFilesInfo(this.StartInfo).Open(FileAccess.Write);
+            if (outs != null)
+            {                
+                StreamWriter sw = new StreamWriter(outs, Encoding.UTF8);
+                sw.Write(args);
+                sw.Flush();
+                sw.Close();
+            }
 		}
 
 		private void SignalTestEnded(string cmdId, string args)

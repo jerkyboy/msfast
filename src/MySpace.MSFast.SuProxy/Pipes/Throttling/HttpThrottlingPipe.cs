@@ -30,22 +30,16 @@ namespace MySpace.MSFast.SuProxy.Pipes.Throttling
 {
 	public class HttpThrottlingPipe : HttpPipe
 	{
-		private bool isSenderRunning = false;
-		private bool isFlush = false;
-		private Object senderSyncLock = new object();
-		private MemoryStream msBuffer = null;
-		private long positionOffset = 0;
-
-		private byte[] kbps = null;
-		private static int TID = 0;
-		private int tid = TID++;
+		private int kbps = -1;
+        private int sentWithoutSleep = 0;
 
 		public override void Init(Dictionary<object, object> dictionary)
 		{
 			base.Init(dictionary);
 
 			int i_kbps = int.Parse((String)dictionary["kbps"]);
-			kbps = new byte[1024 * i_kbps];
+			kbps = 102 * i_kbps;
+            sentWithoutSleep = kbps;
 		}
 
 		public override void SendData(byte[] buffer, int offset, int length)
@@ -53,111 +47,25 @@ namespace MySpace.MSFast.SuProxy.Pipes.Throttling
 			if (length == 0)
 				return;
 
-			if (kbps == null)
+			if (kbps == -1)
 			{
 				base.SendData(buffer, offset, length);
 				return;
 			}
 
-			lock (senderSyncLock) 
-			{
-				if (isSenderRunning == false) 
-				{
-					isSenderRunning = true;
-					isFlush = false;
-					new Thread(this.SendThrottledData).Start();
-				}
-				if (msBuffer == null) 
-				{
-					msBuffer = new MemoryStream();
-				}
-				msBuffer.Write(buffer, offset, length);
-				Monitor.PulseAll(senderSyncLock);
-			}
+            do{
+                if(sentWithoutSleep <= 0){
+                    Thread.Sleep(100);
+                    sentWithoutSleep = kbps;
+                }
+                int min = Math.Min(length,sentWithoutSleep);
+                
+                base.SendData(buffer,offset,min);
+                sentWithoutSleep -= min;
+                offset += min;
+                length -= min;
 
+            }while( length > 0 && offset + length <= buffer.Length);
 		}
-
-
-		public override void Close()
-		{
-			lock (senderSyncLock)
-			{
-				if (isSenderRunning)
-				{
-					isSenderRunning = false;
-					isFlush = true;
-				}
-				if (msBuffer != null)
-				{
-					msBuffer.Close();
-					msBuffer.Dispose();
-				}
-				Monitor.PulseAll(senderSyncLock);
-			}
-			base.Close();
-		}
-        
-        private int sentWithoutSleep = 0;
-
-		private void SendThrottledData()
-		{
-			int read = 0;
-			
-			while (isSenderRunning) 
-			{
-				lock (senderSyncLock)
-				{
-                    try
-                    {
-                        if (!isSenderRunning)
-                            return;
-
-                        long currentPos = msBuffer.Position;
-                        msBuffer.Position = positionOffset;
-                        read = msBuffer.Read(kbps, 0, kbps.Length);
-                        msBuffer.Position = currentPos;
-                        positionOffset += read;
-
-                        if (read != 0)
-                        {
-                            if (sentWithoutSleep + read >= kbps.Length)
-                            {
-                                sentWithoutSleep = 0;
-                                Thread.Sleep(1000);
-                            }
-                            sentWithoutSleep += read;
-                            base.SendData(kbps, 0, read);
-                        }
-                        else
-                        {
-                            if (isFlush == false)
-                            {
-                                Monitor.Wait(senderSyncLock);
-                            }
-                            else
-                            {
-                                msBuffer.Close();
-                                base.Flush();
-                                return;
-                            }
-                        }
-                    }
-                    catch 
-                    {
-                        return;
-                    }
-				}
-			}
-		}
-
-		public override void Flush()
-		{
-			isFlush = true;
-			lock (senderSyncLock)
-			{
-				Monitor.PulseAll(senderSyncLock);
-			}
-		}
-
 	}
 }

@@ -27,6 +27,7 @@ using MySpace.MSFast.SuProxy.Pipes;
 using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.Core.Http;
 using MySpace.MSFast.Engine.Events;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 {
@@ -139,7 +140,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 			}
 		}
 
-		public static void FlushTracker(String filename,String fromUrl)
+        public static void FlushTracker(DownloadDumpFilesInfo fileInfo, String fromUrl)
 		{
 			lock (httpTransactions)
 			{
@@ -174,7 +175,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
                 }
 				if (httpTransactions.Count > 0)
 				{
-                    HttpFlushPipe.AddFlushQue(filename, new LinkedList<HttpTransaction>(httpTransactions));
+                    HttpFlushPipe.AddFlushQue(fileInfo, new LinkedList<HttpTransaction>(httpTransactions));
 				}
 
 				httpTransactions.Clear();

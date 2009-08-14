@@ -54,7 +54,6 @@
   <ItemGroup>
     <Compile Include="ComIterop\ComIterop.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\SaveTextfile.cs" />
     <Compile Include="Utils\PerformanceTracker.cs" />
     <Compile Include="Utils\ScreenGrabber.cs" />
     <Compile Include="Win32\Win32API.cs" />

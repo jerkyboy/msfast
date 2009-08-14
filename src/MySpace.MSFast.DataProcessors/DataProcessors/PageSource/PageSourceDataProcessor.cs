@@ -24,33 +24,40 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.DataProcessors.PageSource
 {
 	public class PageSourceDataProcessor : DataProcessor<PageSourceData>
 	{
-		private static String filenameFormat = "source_{0}.src";
-
 		#region DataProcessor<PageSourceData> Members
 
 		public override bool IsDataExists(ProcessedDataPackage state)
 		{
-			FileInfo fi = new FileInfo(state.DumpFolder + "\\" + String.Format(filenameFormat, state.CollectionID));
+            SourceDumpFilesInfo sdfi = new SourceDumpFilesInfo(state);
+
+            if (sdfi.Exist() == false)
+                return false;
+
+            FileInfo fi = new FileInfo(sdfi.GetFullPath());
+
 			return (fi.Exists && fi.Length > 0);
 		}
 
 		public override PageSourceData GetProcessedData(ProcessedDataPackage state)
 		{
-			if(IsDataExists(state) == false)
-				return null;
 
-			String filename = state.DumpFolder + "\\" + String.Format(filenameFormat, state.CollectionID);
+            SourceDumpFilesInfo sdfi = new SourceDumpFilesInfo(state);
+            Stream sourceStream = sdfi.Open(FileAccess.Read);
 
-			StreamReader source = new StreamReader(filename);
+            PageSourceData sourceData = new PageSourceData();
 
-			PageSourceData sourceData = new PageSourceData();
+            if (sourceStream == null)
+                return sourceData;
 
-			sourceData.SourceFilename = String.Format(filenameFormat, state.CollectionID);
+            StreamReader source = new StreamReader(sourceStream);
+
+            sourceData.SourceFilename = sdfi.GetFilename();
 			sourceData.PageSource = source.ReadToEnd();
 			source.Close();
 			source.Dispose();

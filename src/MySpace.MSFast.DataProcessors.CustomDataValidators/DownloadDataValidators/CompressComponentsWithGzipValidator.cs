@@ -29,6 +29,7 @@ using MySpace.MSFast.DataProcessors;
 using MySpace.MSFast.DataProcessors.Download;
 using System.IO;
 using MySpace.MSFast.DataValidators;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidators
 {
@@ -54,10 +55,11 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidat
 
             DownloadData data = package.GetData<DownloadData>();
 
+            ResponseHeaderDumpFilesInfo rbdfi = new ResponseHeaderDumpFilesInfo(package);         
+
+
             if (data == null ||
-                data.Count == 0 ||
-                String.IsNullOrEmpty(package.DumpFolder) ||
-                Directory.Exists(package.DumpFolder) == false)
+                data.Count == 0)
 
                 return results;
 
@@ -66,31 +68,33 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidat
             String headerBuffer = null;
             StreamReader sr = null;
             
-            String folder = package.DumpFolder.Replace("/", "\\");
-            
-            if (folder.EndsWith("\\") == false)
-                folder += "\\";
-
             DateTime now = DateTime.Now.AddDays(2);
+
+            Stream stream = null;
 
             foreach (DownloadState ds in data)
             {
                 try
                 {
-                    sr = new StreamReader(String.Format("{0}H{1}", folder, ds.FileGUID));
+                    stream = rbdfi.Open(FileAccess.Read, ds.FileGUID);
 
-                    if (sr != null)
+                    if (stream != null)
                     {
-                        headerBuffer = sr.ReadToEnd();
-                        sr.Close();
-                        sr.Dispose();
+                        sr = new StreamReader(stream);
 
-                        if (regexContentType.IsMatch(headerBuffer) == false)
-                            continue;
-
-                        if (regexContentEncoding.IsMatch(headerBuffer) == false)
+                        if (sr != null)
                         {
-                            results.Add(new DownloadStateOccurance(ds));
+                            headerBuffer = sr.ReadToEnd();
+                            sr.Close();
+                            sr.Dispose();
+
+                            if (regexContentType.IsMatch(headerBuffer) == false)
+                                continue;
+
+                            if (regexContentEncoding.IsMatch(headerBuffer) == false)
+                            {
+                                results.Add(new DownloadStateOccurance(ds));
+                            }
                         }
                     }
                 }

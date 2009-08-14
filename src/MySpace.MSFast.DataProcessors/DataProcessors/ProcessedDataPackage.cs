@@ -28,17 +28,24 @@ using MySpace.MSFast.DataProcessors.Performance;
 using MySpace.MSFast.DataProcessors.Render;
 using MySpace.MSFast.DataProcessors.Download;
 using MySpace.MSFast.DataProcessors.PageSource;
+using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.DataProcessors
 {
-	public class ProcessedDataPackage : Dictionary<Type, ProcessedData>
+    public class ProcessedDataPackage : Dictionary<Type, ProcessedData>, CollectionMetaInfo
 	{
-		public String DumpFolder = "";
-		public int CollectionID = -1;
-
 		public long CollectionStartTime = long.MaxValue;
 		public long CollectionEndTime = long.MinValue;
 		public String ThumbnailsRoot = null;
+
+        private int _collectionID;
+        private String _dumpFolder;
+
+        public ProcessedDataPackage(int collectionID, String dumpFolder)
+        {
+            this._dumpFolder = dumpFolder;
+            this._collectionID = collectionID;
+        }
 
         public T GetData<T>()
         {
@@ -198,7 +205,7 @@ namespace MySpace.MSFast.DataProcessors
 			XmlElement t = null;
 			
 			t = xml.CreateElement("testid");
-			t.InnerText = CollectionID.ToString();
+            t.InnerText = CollectionID.ToString();
 			results.AppendChild(t);
 
 			t = xml.CreateElement("starttime");
@@ -219,5 +226,26 @@ namespace MySpace.MSFast.DataProcessors
 
 		#endregion
 
-	}
+
+
+
+
+        #region CollectionMetaInfo Members
+
+        public int CollectionID
+        {
+            get {
+                return this._collectionID;
+            }
+        }
+
+        public string DumpFolder
+        {
+            get {
+                return _dumpFolder;
+            }
+        }
+     
+        #endregion
+    }
 }

@@ -110,7 +110,7 @@ namespace MySpace.MSFast.GUI.Engine.DataCollector
             int res = pd.StartTest(settings);
 
 			if (OnTestEnded != null)
-                OnTestEnded(this, settings, (res == 0), (PageDataCollectorErrors)Enum.ToObject(typeof(PageDataCollectorErrors), res), (res == 0) ? settings.CollectionId : -1);
+                OnTestEnded(this, settings, (res == 0), (PageDataCollectorErrors)Enum.ToObject(typeof(PageDataCollectorErrors), res), (res == 0) ? settings.CollectionID : -1);
 		}
 
         void pd_OnTestProgress(TestEventType progressEventType, int progress, int total, string url)

@@ -153,6 +153,13 @@ namespace MySpace.MSFast.GUI.Engine.Resources {
             }
         }
         
+        internal static System.Drawing.Bitmap loadSavedTests {
+            get {
+                object obj = ResourceManager.GetObject("loadSavedTests", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap newVersion {
             get {
                 object obj = ResourceManager.GetObject("newVersion", resourceCulture);
@@ -181,6 +188,13 @@ namespace MySpace.MSFast.GUI.Engine.Resources {
             }
         }
         
+        internal static System.Drawing.Bitmap open {
+            get {
+                object obj = ResourceManager.GetObject("open", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap perTestInfo {
             get {
                 object obj = ResourceManager.GetObject("perTestInfo", resourceCulture);
@@ -191,6 +205,13 @@ namespace MySpace.MSFast.GUI.Engine.Resources {
         internal static System.Drawing.Bitmap prev {
             get {
                 object obj = ResourceManager.GetObject("prev", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap save {
+            get {
+                object obj = ResourceManager.GetObject("save", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

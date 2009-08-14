@@ -47,12 +47,15 @@ using MySpace.MSFast.GUI.Configuration.MSFast;
 using MySpace.MSFast.GUI.Engine.DataCollector;
 using MySpace.MSFast.Engine.BrowserWrapper;
 using MySpace.MSFast.DataProcessors.DataValidators.ValidationResultTypes;
+using MySpace.MSFast.Core.Logger;
+using MySpace.MSFast.Core.Configuration.Common;
+using MySpace.MSFast.MSFFiles;
 
 namespace MySpace.MSFast.GUI.Engine.Panels
 {
 	public partial class MSFastMainPanel : Panel
 	{
-        private static readonly MySpace.MSFast.Core.Logger.MSFastLogger log = new MySpace.MSFast.Core.Logger.MSFastLogger();
+        private static readonly MySpace.MSFast.Core.Logger.MSFastLogger log = MSFastLogger.GetLogger(typeof(MSFastMainPanel));
 
 		private AsyncBufferPageDataCollector pageDataCollector = null;
 		private Browser browser = null;
@@ -60,10 +63,16 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 		private int proxyRangeOffset = 0;
 		private ValidationRunner validationRunner = null;
 
-		public MSFastMainPanel(Browser b) 
-		{
-			InitializeComponent();
+        private ProcessedDataPackage currentPackage = null;
 
+        public MSFastMainPanel(Browser b)
+            : this(b, null)
+        {
+            
+        }
+
+        public MSFastMainPanel(Browser b, String loadData) 
+		{
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
             if (b != null)
@@ -71,11 +80,17 @@ namespace MySpace.MSFast.GUI.Engine.Panels
                 this.browser = b;
                 this.browser.OnBrowserStateChanged += new BrowserStateChanged(browser_OnBrowserStateChanged);
             }
+            
+            InitializeComponent();
+
             SetTestRunning(false);
             ResetUpdate();
+
+            if (String.IsNullOrEmpty(loadData) == false)
+            {
+                LoadCollection(loadData);
+            }
 		}
-
-
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
@@ -94,8 +109,6 @@ namespace MySpace.MSFast.GUI.Engine.Panels
                 ExceptionsHandler.FlushExceptions();
             }
         }
-
-
 
         private void ResetUpdate()
         {
@@ -146,6 +159,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 			this.graphViewPanel.SetResults(null,null);
 			this.validationResultsViewPanel.SetResults(null);
 			this.browser = null;
+            this.currentPackage = null;
 		}
 
 		void tm_OnTestEnded(AsyncBufferPageDataCollector sender,PageDataCollectorStartInfo settings, bool success, PageDataCollectorErrors errCode, int resultsId)
@@ -302,8 +316,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels
         }
 
         #endregion        
-        
-
+   
         #endregion
 
         #region Test Control
@@ -378,10 +391,10 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 
 					BufferedPageDataCollectorStartInfo b = new BufferedPageDataCollectorStartInfo();
 					b.URL = url;
-					b.CollectionId = Math.Max(1, getter.GetInt(MSFastGlobalConfigKeys.LAST_COLLECTION_ID));
+					b.CollectionID = Math.Max(1, getter.GetInt(MSFastGlobalConfigKeys.LAST_COLLECTION_ID));
 
 					IConfigSetter setter = ConfigProvider.Instance.GetConfigSetter("MSFast.Global");
-					setter.SetInt(MSFastGlobalConfigKeys.LAST_COLLECTION_ID, b.CollectionId+1);
+					setter.SetInt(MSFastGlobalConfigKeys.LAST_COLLECTION_ID, b.CollectionID+1);
 
                     String tempFolder = getter.GetString(MSFastGlobalConfigKeys.TEMP_FOLDER);
 
@@ -394,7 +407,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels
                     b.Buffer = buffer;
                     b.ClearCache = getter.GetBoolean(MSFastGlobalConfigKeys.CLEAR_CACHE_BEFORE_TEST);
                     b.TempFolder = tempFolder;
-					b.DumpFolder = tempFolder;
+                    b.DumpFolder = tempFolder;
                     b.ProxyPort = GetProxyPorts()[proxyRangeOffset];
 					b.IsDebug = false;
 					pageDataCollector.StartTest(b);
@@ -417,6 +430,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels
             SetTestStatus(progressEventType, progress, total, url);
         }
 
+
 		private void ProcessResults(int collectionID)
 		{
             SetTestStatus(TestEventType.ProcessingResults);
@@ -429,14 +443,29 @@ namespace MySpace.MSFast.GUI.Engine.Panels
                 SetTestStatus(TestEventType.TestEnded, false, PageDataCollectorErrors.InvalidConfiguration, -1);
 			}
 
-			String dumpFolder = getter.GetString(MSFastGlobalConfigKeys.DUMP_FOLDER);
-			ProcessedDataPackage package = ProcessedDataCollector.CollectAll(dumpFolder, collectionID);
+            String DumpFolder = getter.GetString(MSFastGlobalConfigKeys.DUMP_FOLDER);
+            
+            ProcessedDataPackage package = ProcessedDataCollector.CollectAll(DumpFolder, collectionID);
 
 			if (package == null || package.Count == 0)
 			{
 				SetTestRunning(false);
                 SetTestStatus(TestEventType.TestEnded, false, PageDataCollectorErrors.Unknown, -1);
 				return;
+            }
+
+            ProcessResults(package);
+
+        }
+
+        private void ProcessResults(ProcessedDataPackage package)
+        {
+            IConfigGetter getter = ConfigProvider.Instance.GetConfigGetter("MSFast.Global");
+
+            if (getter == null)
+            {
+                SetTestRunning(false);
+                SetTestStatus(TestEventType.TestEnded, false, PageDataCollectorErrors.InvalidConfiguration, -1);
             }
 
             #region Collected Data
@@ -451,21 +480,16 @@ namespace MySpace.MSFast.GUI.Engine.Panels
                     package.ContainsKey(typeof(RenderData)) != false ||
                     package.ContainsKey(typeof(PerformanceData)) != false)
                 {
-                    String df = getter.GetString(MSFastGlobalConfigKeys.DUMP_FOLDER).Replace("\\", "/");
+                    SerializedResultsFilesInfo srfi = new SerializedResultsFilesInfo(package);
 
-                    if (String.IsNullOrEmpty(df) || Directory.Exists(df) == false)
+                    if (String.IsNullOrEmpty(srfi.GetFolderNameAndCheckIfValid()))
                     {
                         SetTestRunning(false);
                         SetTestStatus(TestEventType.TestEnded, false, PageDataCollectorErrors.InvalidConfiguration, -1);
                         return;
                     }
 
-                    if (df.EndsWith("/") == false)
-                        df += "/";
-
-                    String xmlForGraph = df + String.Format("serializedResults{0}.xml", collectionID);
-
-                    package.ThumbnailsRoot = "file://" + df;
+                    package.ThumbnailsRoot = "file://" + srfi.GetFolderNameAndCheckIfValid();
 
                     XmlDocument x = package.Serialize();
 
@@ -478,16 +502,11 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 
                     try
                     {
-                        x.Save(xmlForGraph);
-                        if (File.Exists(xmlForGraph) == false)
-                        {
-                            SetTestRunning(false);
-                            SetTestStatus(TestEventType.TestEnded, false, PageDataCollectorErrors.Unknown, -1);
-                            return;
-                        }
-
-                        graphResults = xmlForGraph;
-
+                        Stream s = srfi.Open(FileAccess.Write);
+                        x.Save(s);
+                        s.Flush();
+                        s.Close();
+                        graphResults = srfi.GetFullPath();
                     }
                     catch
                     {
@@ -592,12 +611,17 @@ namespace MySpace.MSFast.GUI.Engine.Panels
                 this.BeginInvoke(new showOutcome(this.ShowOutcome), new object[] { graphResults, validationResults,package  });
 				return;
 			}
+            
+            this.currentPackage = package;
+
             if (String.IsNullOrEmpty(graphResults) == false)
             {
+                this.saveCollectionBtn.Enabled = true;
                 ShowGraphPanel();
             }
             else if (validationResults != null && validationResults.Count > 0)
             {
+                this.saveCollectionBtn.Enabled = true;
                 ShowValidationResultsPanel();
             }
             else 
@@ -614,6 +638,8 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 
 		private void SetTestRunning(bool p)
 		{
+            this.currentPackage = null;
+
 			isRunning = p;
 			if (this.InvokeRequired)
 			{
@@ -632,16 +658,21 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 
             if (isRunning)
             {
+                this.saveCollectionBtn.Enabled = false;
+                this.loadCollectionBtn.Enabled = (this.browser == null);
                 this.startCollectingDataBtn.Enabled = false;
                 this.configCollectingDataBtn.Enabled = false;
             }
             else if (browser != null && browser.State == BrowserStatus.Ready)
             {
+                this.loadCollectionBtn.Enabled = true;
                 this.startCollectingDataBtn.Enabled = true;
                 this.configCollectingDataBtn.Enabled = true;
             }
             else
             {
+                this.saveCollectionBtn.Enabled = false;
+                this.loadCollectionBtn.Enabled = (this.browser == null);
                 this.startCollectingDataBtn.Enabled = false;
                 this.configCollectingDataBtn.Enabled = false;
             }
@@ -656,8 +687,109 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 				return;
 			}
 			this.testStatusPanel.SetTestStatus(status, args);
-		}
+        }
 
+        #region Save/Load
+
+        private MSFHandler msfHandler = null;
+
+        private void SaveCollection()
+        {
+            if (this.currentPackage == null)
+            {
+                MessageBox.Show("An unexpected error has occurred", "Error Detected!");
+                return;
+            }
+            if (msfHandler == null)
+            {
+                msfHandler = new MSFHandler();
+            }
+            
+            Stream myStream;
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+
+            saveFileDialog1.Filter = "msf files (*.msf)|*.msf";
+            saveFileDialog1.FilterIndex = 2;
+            saveFileDialog1.RestoreDirectory = true;
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if ((myStream = saveFileDialog1.OpenFile()) != null)
+                {
+                    try{
+                        msfHandler.SaveProcessedDataPackage(myStream, this.currentPackage);
+                    }catch{
+                        MessageBox.Show("An unexpected error has occurred", "Error Detected!");
+                    }
+                    finally{
+                        myStream.Flush();
+                        myStream.Close();
+                        myStream.Dispose();
+                    }
+                }
+            }
+
+        }
+
+        private void LoadCollection(String filename)
+        {
+            try
+            {
+                LoadCollection(File.Open(filename, FileMode.Open));
+            }
+            catch
+            {
+                MessageBox.Show("Invalid MSF File!", "Error Detected!");
+            }
+        }
+        
+        private void LoadCollection()
+        {
+            Stream myStream;
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "msf files|*.msf";
+            openFileDialog1.Title = "Select a saved MSFast File";
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if ((myStream = openFileDialog1.OpenFile()) != null)
+                {
+                    LoadCollection(myStream);
+                }
+            }
+
+
+        }
+
+        private void LoadCollection(Stream myStream)
+        {
+            if (msfHandler == null)
+            {
+                msfHandler = new MSFHandler();
+            }
+            try
+            {
+                ProcessedDataPackage pdd = msfHandler.LoadProcessedDataPackage(myStream);
+
+                if (pdd == null)
+                {
+                    throw new FileNotFoundException();
+                }
+
+                ProcessResults(pdd);
+
+            }
+            catch
+            {
+                MessageBox.Show("Invalid MSF File!", "Error Detected!");
+            }
+            finally
+            {
+                myStream.Close();
+                myStream.Dispose();
+            }
+        }
+        #endregion
 
 
         private static Regex portsRegex = new Regex("([0-9]*)");
