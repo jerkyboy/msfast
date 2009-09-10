@@ -51,7 +51,9 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 		private IDocHostUIHandler m_defaultUIHandler;
 		private BrowserIEImpl browser = null;
 		private BrowserWrapperIEImpl browserWrapperIEImpl = null;
-		private PerformanceTracker performanceTracker = null;
+		
+        private PerformanceTracker performanceTracker = null;
+        private object performanceTrackerLock = new object();
 
 		public PageDataCollectorStartInfo StartInfo = null;
 
@@ -174,19 +176,25 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 		{
 			if (m_defaultUIHandler != null)
 				Marshal.ReleaseComObject(m_defaultUIHandler);
-			
-			if (performanceTracker != null)
-			{
-				try
-				{
-					performanceTracker.StopTracking(null);
-					performanceTracker.Dispose();
-				}
-				catch { }
-			}
+            
+            lock (performanceTrackerLock)
+            {
+                if (performanceTracker != null)
+                {
+                    try{
+                        performanceTracker.StopTracking(null);
+                    }catch{
+                    }
+                    try{
+                        performanceTracker.Dispose();
+                    }
+                    catch { }
+                }
+                performanceTracker = null;
+            }
 
 			browserWrapperIEImpl = null;
-			performanceTracker = null;
+			
 			browser = null;
 			m_defaultUIHandler = null;
 		}
@@ -278,25 +286,48 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 
 		private void StartPerformanceTracking(string cmdId, string args)
 		{
-			if (performanceTracker != null)
-				return;
+            lock (performanceTrackerLock)
+            {
+                try
+                {
+                    if (performanceTracker != null)
+                        return;
 
-			performanceTracker = new PerformanceTracker(Process.GetCurrentProcess().Id);
-			performanceTracker.StartTracking();
+                    performanceTracker = new PerformanceTracker(Process.GetCurrentProcess().Id);
+                    performanceTracker.StartTracking();
+                }
+                catch 
+                {
+                }
+            }
 		}
 		private void StopPerformanceTracking(string cmdId, string args)
 		{
-			if (performanceTracker == null)
-				return;
+            lock (performanceTrackerLock)
+            {
+                if (performanceTracker == null)
+                    return;
 
-            if (this.StartInfo == null || args == null)
-				return;
+                if (this.StartInfo == null || args == null)
+                    return;
+                try
+                {
+                    Stream outs = new PerformanceDumpFilesInfo(this.StartInfo).Open(FileAccess.Write);
 
-            Stream outs = new PerformanceDumpFilesInfo(this.StartInfo).Open(FileAccess.Write);
+                    performanceTracker.StopTracking(outs);
+                }catch{
+                
+                }
 
-            performanceTracker.StopTracking(outs);
-			performanceTracker.Dispose();
-			performanceTracker = null;
+                try
+                {
+                    performanceTracker.Dispose();
+                    performanceTracker = null;
+                }
+                catch 
+                {
+                }
+            }
 		}
 
         private void OnProgress(string cmdId, string args)
