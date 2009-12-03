@@ -49,7 +49,7 @@ using MySpace.MSFast.Engine.BrowserWrapper;
 using MySpace.MSFast.DataProcessors.DataValidators.ValidationResultTypes;
 using MySpace.MSFast.Core.Logger;
 using MySpace.MSFast.Core.Configuration.Common;
-using MySpace.MSFast.MSFFiles;
+using MySpace.MSFast.ImportExportsMgrs;
 
 namespace MySpace.MSFast.GUI.Engine.Panels
 {
@@ -623,7 +623,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels
             }
             else 
             {
-                MessageBox.Show("NO RESULTS!");
+                MessageBox.Show("No results found!");
             }
 
             this.pageGraphBtn.Enabled = String.IsNullOrEmpty(graphResults) == false;
@@ -688,8 +688,6 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 
         #region Save/Load
 
-        private MSFHandler msfHandler = null;
-
         private void SaveCollection()
         {
             if (this.currentPackage == null)
@@ -697,15 +695,14 @@ namespace MySpace.MSFast.GUI.Engine.Panels
                 MessageBox.Show("An unexpected error has occurred", "Error Detected!");
                 return;
             }
-            if (msfHandler == null)
-            {
-                msfHandler = new MSFHandler();
-            }
-            
+
+            ImportExportManager iem = null;
+
             Stream myStream;
+            
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
-            saveFileDialog1.Filter = "msf files (*.msf)|*.msf";
+            saveFileDialog1.Filter = "MSFast .MSF File (*.msf)|*.msf|XML File (*.xml)|*.xml|HTTP Archive v1.1 .HAR File (*.har)|*.har";
             saveFileDialog1.FilterIndex = 2;
             saveFileDialog1.RestoreDirectory = true;
 
@@ -713,9 +710,26 @@ namespace MySpace.MSFast.GUI.Engine.Panels
             {
                 if ((myStream = saveFileDialog1.OpenFile()) != null)
                 {
-                    try{
-                        msfHandler.SaveProcessedDataPackage(myStream, this.currentPackage);
-                    }catch{
+                    if (saveFileDialog1.FileName.ToLower().EndsWith("xml"))
+                    {
+                        iem = new XMLImportExportManager();
+                    }
+                    else if (saveFileDialog1.FileName.ToLower().EndsWith("har"))
+                    {
+                        iem = new HARImportExportsManager();
+
+                    }
+                    else
+                    {
+                        iem = new MSFImportExportsManager();
+                    }
+
+                    try
+                    {
+                        iem.SaveProcessedDataPackage(myStream, this.currentPackage);
+                    }
+                    catch
+                    {
                         MessageBox.Show("An unexpected error has occurred", "Error Detected!");
                     }
                     finally{
@@ -760,10 +774,8 @@ namespace MySpace.MSFast.GUI.Engine.Panels
 
         private void LoadCollection(Stream myStream)
         {
-            if (msfHandler == null)
-            {
-                msfHandler = new MSFHandler();
-            }
+            MSFImportExportsManager msfHandler = new MSFImportExportsManager();
+
             try
             {
                 ProcessedDataPackage pdd = msfHandler.LoadProcessedDataPackage(myStream);

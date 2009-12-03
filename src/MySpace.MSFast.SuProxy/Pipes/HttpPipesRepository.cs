@@ -117,7 +117,7 @@ namespace MySpace.MSFast.SuProxy.Pipes
 				{
 				}
 
-				foreach (XmlNode xmlNd in configNode)
+				foreach (XmlNode xmlNd in configNode.ChildNodes)
 				{
 					if (xmlNd.Name.ToLower().Equals("data"))
 					{

@@ -25,13 +25,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using MySpace.MSFast.Core.Http;
+using MySpace.MSFast.Core.Utils;
 
 namespace MySpace.MSFast.Core.Http
 {
 	public class DataSerializer
 	{
-		public static DateTime JAN_01_1970 = DateTime.SpecifyKind(new DateTime(1970, 1, 1, 0, 0, 0), DateTimeKind.Utc);
-
         public static bool SaveHttpTransactions(Stream output, IEnumerable<HttpTransaction> data)
 		{
 			try
@@ -47,24 +46,24 @@ namespace MySpace.MSFast.Core.Http
                     sw.Write(transaction.FileGUID);
 
                     sw.Write("CNST");
-					sw.Write(SecondsFromEpoch(transaction.ConnectionStartTime));
+                    sw.Write(Converter.DateTimeToEpoch(transaction.ConnectionStartTime));
 
 					sw.Write("SRST");
-					sw.Write(SecondsFromEpoch(transaction.SendingRequestStartTime));
+                    sw.Write(Converter.DateTimeToEpoch(transaction.SendingRequestStartTime));
 
 					sw.Write("SRET");
-					sw.Write(SecondsFromEpoch(transaction.SendingRequestEndTime));
+                    sw.Write(Converter.DateTimeToEpoch(transaction.SendingRequestEndTime));
 
 					sw.Write("RRST");
-					sw.Write(SecondsFromEpoch(transaction.ReceivingResponseStartTime));
+                    sw.Write(Converter.DateTimeToEpoch(transaction.ReceivingResponseStartTime));
 
 
 					if (transaction.Mode == HttpMode.Completed)
 					{
 						sw.Write("RRET");
-						sw.Write(SecondsFromEpoch(transaction.ReceivingResponseEndTime));
+                        sw.Write(Converter.DateTimeToEpoch(transaction.ReceivingResponseEndTime));
 						sw.Write("CNET");
-						sw.Write(SecondsFromEpoch(transaction.ConnectionEndTime));
+                        sw.Write(Converter.DateTimeToEpoch(transaction.ConnectionEndTime));
 					}
 					else
 					{
@@ -96,12 +95,6 @@ namespace MySpace.MSFast.Core.Http
 			return true;
 		}
 
-		// Get Unix Timestamp for given DateTime
-		public static long SecondsFromEpoch(DateTime date)
-		{
-			DateTime dt = date.ToUniversalTime();
-			TimeSpan ts = dt.Subtract(JAN_01_1970);
-			return (long)ts.TotalMilliseconds;
-		}
+		
 	}
 }

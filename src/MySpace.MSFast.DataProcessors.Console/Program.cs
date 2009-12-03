@@ -29,6 +29,9 @@ using MySpace.MSFast.DataValidators;
 using System.Reflection;
 using MySpace.MSFast.DataValidators.ValidationResultTypes;
 using MySpace.MSFast.DataProcessors.DataValidators.ValidationResultTypes;
+using MySpace.MSFast.ImportExportsMgrs;
+using MySpace.MSFast.DataProcessors.Download;
+using MySpace.MSFast.DataProcessors.Render;
 
 namespace MySpace.MSFast.DataProcessors.Console
 {
@@ -37,6 +40,12 @@ namespace MySpace.MSFast.DataProcessors.Console
         static void Main(string[] args)
         {
 
+            MSFImportExportsManager m = new MSFImportExportsManager();
+
+            //m.LoadProcessedDataPackage(File.Open("C:\\new.msf", FileMode.OpenOrCreate), newD);
+            ProcessedDataPackage p = m.LoadProcessedDataPackage(File.Open("C:\\temp\\old.msf", FileMode.Open));
+
+            RenderData dd = (RenderData)p[typeof(RenderData)];
 
             CommandLineArguments cla = new CommandLineArguments(args);
 
@@ -48,8 +57,6 @@ namespace MySpace.MSFast.DataProcessors.Console
 
             String outfolder = Directory.GetCurrentDirectory().ToString().Replace("\\", "/");
             String confolder = Path.GetDirectoryName(Assembly.GetAssembly(typeof(Program)).Location) + "\\conf\\";
-            
-            XmlDocument xml = null;
 
             if (String.IsNullOrEmpty(confolder) || 
                 String.IsNullOrEmpty(outfolder) || 
@@ -61,28 +68,92 @@ namespace MySpace.MSFast.DataProcessors.Console
                 return;
             }
 
+            ProcessedDataPackage package = null;
             
-            ProcessedDataPackage package = ProcessedDataCollector.CollectAll(cla.Path, cla.CollectionId);
-            
-            if (package == null || package.Count == 0 || (xml = package.Serialize()) == null)
+            try
             {
-                System.Console.Error.Write("Error while serializing the data!");
+                package = ProcessedDataCollector.CollectAll(cla.Path, cla.CollectionId);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                System.Console.Error.Write("Invalid input folder!");
                 return;
             }
 
-            xml.Save(outfolder + "/collectedData.xml");
-
-
-
-
-
+            if (package == null || package.Count == 0)
+            {
+                System.Console.Error.Write("Error while processing data!");
+                return;
+            }
 
             ValidationRunner vr = new ValidationRunner();
             vr.LoadFromFile(confolder + "DefaultPageValidation.xml");
 
             ValidationResultsPackage rsults = vr.ValidateBlocking(package);
 
-            if (rsults == null || rsults.Count == 0 || (xml = rsults.Serialize()) == null)
+
+            if (rsults == null || rsults.Count == 0)
+            {
+                System.Console.Error.Write("Error while validating results!");
+                return;
+            } 
+            
+            if ("xml".Equals(cla.SaveType))
+            {
+                SavePackage(new XMLImportExportManager(), package, outfolder);
+            }
+            else if ("msf".Equals(cla.SaveType))
+            {
+                SavePackage(new MSFImportExportsManager(), package, outfolder);
+            }
+            else if ("har".Equals(cla.SaveType))
+            {
+                SavePackage(new HARImportExportsManager(), package, outfolder);
+            }
+
+            SaveValidation(rsults, outfolder);
+           
+        }
+
+        private static void SavePackage(ImportExportManager importExportManager, ProcessedDataPackage package, String outfolder)
+        {        
+            Stream myStream = null;
+
+            try
+            {
+                String filename = outfolder + "/collectedData." + importExportManager.DefaultExtension;
+                myStream = File.Open(filename, FileMode.Create);
+                importExportManager.SaveProcessedDataPackage(myStream, package);
+                System.Console.WriteLine("Output saved to:");
+                System.Console.WriteLine(filename);
+            }
+            catch
+            {
+                System.Console.Error.Write("Error while saving data!");
+                return;
+            }
+            finally
+            {
+                if (myStream != null)
+                {
+                    try
+                    {
+                        myStream.Flush();
+                    }
+                    catch 
+                    {
+                    }
+                    myStream.Close();
+                    myStream.Dispose();
+                }
+            }
+        }
+
+        private static void SaveValidation(ValidationResultsPackage rsults, String outfolder)
+        {
+            XmlDocument xml = null;
+            
+            if ((xml = rsults.Serialize()) == null)
             {
                 System.Console.Error.Write("Error while serializing validation results!");
                 return;
@@ -90,8 +161,7 @@ namespace MySpace.MSFast.DataProcessors.Console
 
             xml.Save(outfolder + "/validationResults.xml");
 
-            System.Console.WriteLine("Output saved to:");
-            System.Console.WriteLine("  " + outfolder + "/collectedData.xml");
+            System.Console.WriteLine("Validation saved to:");
             System.Console.WriteLine("  " + outfolder + "/validationResults.xml");
         }
     }
