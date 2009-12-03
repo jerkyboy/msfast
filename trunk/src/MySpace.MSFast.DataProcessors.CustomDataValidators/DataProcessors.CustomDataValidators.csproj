@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{239BEF65-4794-47FB-8642-DBA6DB2B2147}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -60,6 +60,8 @@
     <Compile Include="DownloadDataValidators\CompressComponentsWithGzipValidator.cs" />
     <Compile Include="DownloadDataValidators\ReduceDNSLookupsValidator.cs" />
     <Compile Include="DownloadDataValidators\TooManyFilesValidator.cs" />
+    <Compile Include="JavascriptValidators\JavascriptDataValidatorWrapper.cs" />
+    <Compile Include="JavascriptValidators\JSShellOutputReader\JavascriptOutputReader.cs" />
     <Compile Include="PageSourceValidators\AspNet\ViewStateSizeValidator.cs" />
     <Compile Include="PageSourceValidators\ExternalReferences\DeprecatedDomainsBufferValidator.cs" />
     <Compile Include="DownloadDataValidators\UseCDNValidator.cs" />
@@ -89,6 +91,52 @@
     <EmbeddedResource Include="PageSourceValidators\XHTML\transitional\xhtml-special.ent" />
     <EmbeddedResource Include="PageSourceValidators\XHTML\transitional\xhtml-symbol.ent" />
     <EmbeddedResource Include="PageSourceValidators\XHTML\transitional\xhtml1-transitional.dtd" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="JavascriptValidators\JSTemplate\Base64.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSTemplate\DownloadStateOccurance.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSTemplate\Imports.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSTemplate\JavascriptValidator.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSTemplate\SourceValidationOccurance.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSTemplate\Utils.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSTemplate\ValidationResults.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="JavascriptValidators\JSShell\host_jskwgen.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="JavascriptValidators\JSShell\js32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="JavascriptValidators\JSShell\jsshell.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="JavascriptValidators\JS_VALIDATORS_README.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="JavascriptValidators\JSShell\fdlibm.lib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSShell\js32.lib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSShell\jsshell.exe.manifest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

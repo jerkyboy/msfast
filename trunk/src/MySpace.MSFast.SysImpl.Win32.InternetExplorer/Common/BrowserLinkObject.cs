@@ -195,11 +195,6 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.Common
 			return SetSiteResults.Success;
 		}
 
-        private void NavigateComplete2(object pDisp, ref object URL)
-        {
-            if (pDisp == this.m_pIWebBrowser2)
-                CheckPageReady();
-        }
 		public void GetSite(ref System.Guid riid, out object ppvSite)
 		{
 
@@ -216,18 +211,13 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.Common
 
 				if (!pSite.Equals(IntPtr.Zero))
 				{
-
 					ppvSite = pSite;
-
 				}
 				else
 				{
-
 					Release();
 					Marshal.ThrowExceptionForHR(E_NOINTERFACE);
-
 				}
-
 			}
 			else
 			{
@@ -277,49 +267,59 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.Common
 					}
 				}
 			}
-
-			/*IConnectionPointContainer CnnctPtCont = (IConnectionPointContainer)this.m_pIWebBrowser2.Document;
-			IConnectionPoint CnnctPt;
-			CnnctPtCont.FindConnectionPoint(ref DIID_HTMLDocumentEvents2, out CnnctPt);
-			int cookie = 0;
-			CnnctPt.Advise(this, out cookie);*/
 		}
 		#endregion
 
 		#region Events
 		private void OnBeforeNavigate(object pDisp, ref object URL, ref object Flags, ref object TargetFrameName, ref object PostData, ref object Headers, ref bool Cancel)
 		{
-			if (pDisp == this.m_pIWebBrowser2)// Getting event from top window
-			{
+			if (pDisp == this.m_pIWebBrowser2) // Getting event from top window
 				SetState(BrowserStatus.Loading);
-			}
 		}
 		private void OnDocumentComplete(object pDisp, ref object URL)
 		{
-			if (pDisp == this.m_pIWebBrowser2)
-				CheckPageReady();
-		}
-		private void OnQuit()
+            CheckIsRefreshingForBuffer();
+            CheckPageReady();
+        }
+        private void NavigateComplete2(object pDisp, ref object URL)
+        {
+            CheckIsRefreshingForBuffer();
+            CheckPageReady();
+        }
+        private void OnQuit()
 		{
 			SetState(BrowserStatus.Disposed);
 			Release();
 		}
 		#endregion
 
-		private void CheckPageReady()
+        private void CheckIsRefreshingForBuffer()
+        {
+            if (isRefreshingForBuffer
+                && m_pIWebBrowser2 != null
+                && m_pIWebBrowser2.ReadyState == tagREADYSTATE.READYSTATE_COMPLETE)
+            {
+                GetBuffer(this.getBufferCallback);
+            }
+        }
+        private void CheckPageReady()
 		{
-            if (m_pIWebBrowser2 != null && (m_pIWebBrowser2.ReadyState == tagREADYSTATE.READYSTATE_COMPLETE || m_pIWebBrowser2.ReadyState == tagREADYSTATE.READYSTATE_INTERACTIVE))
+            if (this.State != BrowserStatus.Ready && 
+                m_pIWebBrowser2 != null &&
+                (m_pIWebBrowser2.ReadyState == tagREADYSTATE.READYSTATE_COMPLETE || 
+                m_pIWebBrowser2.ReadyState == tagREADYSTATE.READYSTATE_INTERACTIVE))
 			{
 				RegisterDoc();
 				SetState(BrowserStatus.Ready);
 			}
-		}
+        }
 
 		private void SetState(BrowserStatus status)
 		{
 			this.buffer = null;
 
-			if (isRefreshingForBuffer == false || status != BrowserStatus.Loading)
+			if ( isRefreshingForBuffer == false || 
+                (status != BrowserStatus.Loading && status != BrowserStatus.Processing))
 			{
 				this.State = status;
 			}
@@ -329,9 +329,13 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.Common
 
 		private bool isRefreshingForBuffer = false;
 		private String buffer = "";
+        private GetBufferCallback getBufferCallback;
 
 		public override bool GetBuffer(GetBufferCallback callBack)
 		{
+
+            this.getBufferCallback = callBack;
+
 			if (this.buffer != null && callBack != null)
 			{
 				callBack(this.buffer);
@@ -379,7 +383,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.Common
 				int cb;
 				unsafe
 				{
-					int* pcb = &cb;
+					
 					int hr = ips.Save(istream, false);
 
 					if (hr != HRESULT.S_OK)
@@ -393,7 +397,9 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.Common
 
 					byte[] buffer = new byte[1024];
 					StringBuilder sb = new StringBuilder();
-					IntPtr readOffset = new IntPtr(pcb);
+
+                    int* pcb = &cb;
+                    IntPtr readOffset = new IntPtr(pcb);
 
 					do
 					{

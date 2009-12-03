@@ -310,10 +310,18 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 
                 if (this.StartInfo == null || args == null)
                     return;
+
+                Stream outs = null;
+
                 try
                 {
-                    Stream outs = new PerformanceDumpFilesInfo(this.StartInfo).Open(FileAccess.Write);
+                    outs = new PerformanceDumpFilesInfo(this.StartInfo).Open(FileAccess.Write);
+                }
+                catch
+                {
+                }
 
+                try{
                     performanceTracker.StopTracking(outs);
                 }catch{
                 

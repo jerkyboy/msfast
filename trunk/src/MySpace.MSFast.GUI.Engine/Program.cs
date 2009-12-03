@@ -22,6 +22,11 @@
 //Imports
 using System;
 using System.Windows.Forms;
+using MySpace.MSFast.ImportExportsMgrs;
+using System.IO;
+using MySpace.MSFast.DataProcessors;
+using MySpace.MSFast.DataProcessors.Render;
+using MySpace.MSFast.DataProcessors.Download;
 
 namespace MySpace.MSFast.GUI.Engine
 {
@@ -30,7 +35,6 @@ namespace MySpace.MSFast.GUI.Engine
 		[STAThread]
 		static void Main()
 		{
-            
             string[] args = Environment.GetCommandLineArgs();
             String openFile = null;
 

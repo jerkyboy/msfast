@@ -68,7 +68,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 
         protected String GetOnlyCollectionArgs(String url)
         {
-            return String.Concat(((url.IndexOf("?") == -1) ? "?" : "&"), "__resultid=", this.CollectionID, "&__collect=", (int)this.CollectionType);
+            return String.Concat(((url.IndexOf("?") == -1) ? "?" : "&"), "CLEAN_REQUEST=1&__resultid=", this.CollectionID, "&__collect=", (int)this.CollectionType);
         }
 
         public String LaunchWithURL = null;
@@ -124,7 +124,6 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 
 		static PageDataCollectorStartInfo()
 		{
-
 			ArgsParsers = new Dictionary<string, ArgumentsParser>();
 			ArgsParsers.Add("/pp:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si.ProxyPort = int.Parse(value); } catch { } }));
 			ArgsParsers.Add("/t:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si.Timeout = int.Parse(value); } catch { } }));
@@ -138,8 +137,8 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 			ArgsParsers.Add("/clear-cache", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.ClearCache = true; }));
 			ArgsParsers.Add("/verbose", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.IsVerbose = true; }));
 
-            ArgsParsers.Add("/dump:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si._dumpFolder = value.Replace("\\", "/"); }));
-			ArgsParsers.Add("/temp:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.TempFolder = value.Replace("\\", "/"); }));
+            ArgsParsers.Add("/dump:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si._dumpFolder = value.Replace("\\", "/"); if (si._dumpFolder.EndsWith("/") == false) si._dumpFolder = String.Concat(si._dumpFolder, "/"); }));
+            ArgsParsers.Add("/temp:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.TempFolder = value.Replace("\\", "/"); if (si.TempFolder.EndsWith("/") == false) si.TempFolder = String.Concat(si.TempFolder, "/"); }));
 			
 			ArgsParsers.Add("/sniff:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { 
 				

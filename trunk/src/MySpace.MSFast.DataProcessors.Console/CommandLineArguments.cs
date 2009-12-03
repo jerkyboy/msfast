@@ -30,8 +30,9 @@ namespace MySpace.MSFast.DataProcessors.Console
     public class CommandLineArguments
     {
 
-        public String Path = null;
+        public String Path = Directory.GetCurrentDirectory();
         public int CollectionId = 1;
+        public String SaveType = "xml";
 
 		private static Dictionary<String, ArgumentsParser> ArgsParsers;
         delegate void ArgumentsParser(String name, String value, CommandLineArguments si);
@@ -39,8 +40,9 @@ namespace MySpace.MSFast.DataProcessors.Console
         static CommandLineArguments()
 		{
 			ArgsParsers = new Dictionary<string, ArgumentsParser>();
-            ArgsParsers.Add("/path:", new ArgumentsParser(delegate(String name, String value, CommandLineArguments si) { si.Path = value.Replace("\\", "/"); }));
+            ArgsParsers.Add("/path:", new ArgumentsParser(delegate(String name, String value, CommandLineArguments si) { si.Path = value.Replace("\\", "/"); if (si.Path.EndsWith("/") == false) si.Path += "/"; }));
             ArgsParsers.Add("/id:", new ArgumentsParser(delegate(String name, String value, CommandLineArguments si) { try { si.CollectionId = int.Parse(value); } catch { } }));
+            ArgsParsers.Add("/type:", new ArgumentsParser(delegate(String name, String value, CommandLineArguments si) { si.SaveType = value.ToLower(); }));
 		}
 
 
@@ -53,7 +55,7 @@ namespace MySpace.MSFast.DataProcessors.Console
 
         public virtual bool IsValid()
         {
-            return (String.IsNullOrEmpty(Path) == false && Directory.Exists(Path));
+            return (String.IsNullOrEmpty(Path) == false && Directory.Exists(Path) && ("xml".Equals(this.SaveType) || "msf".Equals(this.SaveType) || "har".Equals(this.SaveType)));
         }
 
 
@@ -99,6 +101,7 @@ namespace MySpace.MSFast.DataProcessors.Console
             tw.WriteLine(" Optional Parameters:");
             tw.WriteLine("");
             tw.WriteLine("    /id:<Collection ID>           ID of the collection\r\n");
+            tw.WriteLine("    /type:<Output Type>           XML, MSF or HAR\r\n");
             tw.WriteLine("--------------------------------------------------------------------");
         }
     }
