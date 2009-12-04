@@ -8,7 +8,7 @@
   !define APP_NAME "MySpace's Performance Tracker"
 !endif
 !ifndef APP_PACKAGE_VERSION
-  !define APP_PACKAGE_VERSION "0.0.0.1 (pre-alpha)"
+  !define APP_PACKAGE_VERSION "1.0.0.130 (BETA)"
 !endif
 !ifndef REGISTRY_ROOT
   !define REGISTRY_ROOT 'HKLM'
