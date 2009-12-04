@@ -58,7 +58,7 @@ namespace MySpace.MSFast.BuildTasks.NSIS
             if (string.Equals("Output", key, StringComparison.OrdinalIgnoreCase))
             {
                 Log.LogMessage("Output file = {0}", message);
-                this.CompiledInstaller = new TaskItem(message);
+                this.CompiledInstaller = new TaskItem(message.Trim());
             }
             else if (string.Equals("File", key, StringComparison.OrdinalIgnoreCase))
             {
