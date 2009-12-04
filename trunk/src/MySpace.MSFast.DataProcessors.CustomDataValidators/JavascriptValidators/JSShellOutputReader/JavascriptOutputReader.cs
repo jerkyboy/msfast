@@ -29,6 +29,11 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.JavascriptValidator
 
         public IValidationResults GetResults()
         {
+            if (results == null && score != -1)
+            {
+                results = new ValidationResults<SourceValidationOccurance>();
+                results.Score = score;
+            }
             return results;
         }
 
