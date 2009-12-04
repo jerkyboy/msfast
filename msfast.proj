@@ -36,7 +36,13 @@
   </Target>
   <Target Name="build" DependsOnTargets="clean">
     <MSBuild Projects="@(Solutions)" Properties="Configuration=$(Configuration)"/>
-    <CreateItem Include="$(BuildOutputPath)\**\*.*;" Exclude="$(BuildOutputPath)\conf\**\*.*">
+    <CreateItem Include="$(BuildOutputPath)\JavascriptValidators\JSShell\**\*.*">
+      <Output TaskParameter="Include" ItemName="JSShellFiles"/>
+    </CreateItem>
+    <CreateItem Include="$(BuildOutputPath)\JavascriptValidators\JSTemplate\**\*.*">
+      <Output TaskParameter="Include" ItemName="JSTemplateFiles"/>
+    </CreateItem>
+    <CreateItem Include="$(BuildOutputPath)\**\*.*;" Exclude="$(BuildOutputPath)\conf\**\*.*;@(JSShellFiles);@(JSTemplateFiles)">
       <Output TaskParameter="Include" ItemName="CompiledAssemblies"/>
     </CreateItem>
     <CreateItem Include="$(MSBuildProjectDirectory)\src\Resources\*.ico;">
@@ -45,12 +51,7 @@
     <CreateItem Include="$(BuildOutputPath)\conf\**\*.*">
       <Output TaskParameter="Include" ItemName="ConfigurationFiles"/>
     </CreateItem>
-	<CreateItem Include="$(BuildOutputPath)\JavascriptValidators\JSShell\**\*.*">
-		<Output TaskParameter="Include" ItemName="JSShellFiles"/>
-	</CreateItem>
-	<CreateItem Include="$(BuildOutputPath)\JavascriptValidators\JSTemplate\**\*.*">
-		<Output TaskParameter="Include" ItemName="JSTemplateFiles"/>
-	</CreateItem>
+
   </Target>
   <Target Name="createInstaller" DependsOnTargets="build">
     <WriteInstallFileInclude ParentFolder="$INSTDIR" OutputFile="$(InstallerFolder)\ApplicationFiles.nsi" Files="@(CompiledAssemblies)"/>
