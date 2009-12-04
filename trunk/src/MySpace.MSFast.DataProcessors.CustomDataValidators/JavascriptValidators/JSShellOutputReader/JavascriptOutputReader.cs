@@ -118,10 +118,8 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.JavascriptValidator
             }
             catch (Exception e)
             {
-#if (DEBUG)
                 if (log.IsErrorEnabled)
                     log.Error("Error parsing validator output", e);
-#endif
             }
         }
     }

@@ -125,14 +125,10 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.JavascriptValidator
                 psi.UseShellExecute = false;
                 psi.Arguments = String.Format("\"{0}\"", tmpFilename);
                 psi.RedirectStandardOutput = true;
-#if (DEBUG)
                 psi.RedirectStandardError = true;
-#endif
                 Process p = new Process();
                 p.OutputDataReceived += new DataReceivedEventHandler(p_OutputDataReceived);
-#if (DEBUG)
                 p.ErrorDataReceived += new DataReceivedEventHandler(p_ErrorDataReceived);
-#endif
                 p.StartInfo = (psi);
                 p.Start();
                 p.BeginErrorReadLine();
@@ -144,10 +140,9 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.JavascriptValidator
             }
             catch(Exception e)
             {
-#if (DEBUG)
+
                 if (log.IsErrorEnabled)
                     log.Error("Javascript Validator Error", e);
-#endif
             }
             finally
             {
@@ -170,13 +165,12 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.JavascriptValidator
             return null;
         }
 
-#if (DEBUG)
+
         void p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             if(log.IsErrorEnabled)
                 log.Error(String.Format("JSShell Error: {0}", e.Data));
         }
-#endif
 
         void p_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
