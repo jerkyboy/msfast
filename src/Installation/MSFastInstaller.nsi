@@ -181,6 +181,8 @@ Section "IE Plugin" SecIEPlugin ;No components page, name is not important
     
     !include ApplicationFiles.nsi
     !include ConfigurationFiles.nsi
+    !include JSTemplate.nsi
+    !include JSShell.nsi
 	!include Resources.nsi
 	
 	;Configure the windows firewall. 
