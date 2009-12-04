@@ -42,10 +42,18 @@
     <CreateItem Include="$(BuildOutputPath)\conf\**\*.*">
       <Output TaskParameter="Include" ItemName="ConfigurationFiles"/>
     </CreateItem>
+	<CreateItem Include="$(BuildOutputPath)\JavascriptValidators\JSShell\**\*.*">
+		<Output TaskParameter="Include" ItemName="JSShellFiles"/>
+	</CreateItem>
+	<CreateItem Include="$(BuildOutputPath)\JavascriptValidators\JSTemplate\**\*.*">
+		<Output TaskParameter="Include" ItemName="JSTemplateFiles"/>
+	</CreateItem>
   </Target>
   <Target Name="createInstaller" DependsOnTargets="build">
     <WriteInstallFileInclude ParentFolder="$INSTDIR" OutputFile="$(InstallerFolder)\ApplicationFiles.nsi" Files="@(CompiledAssemblies)"/>
     <WriteInstallFileInclude ParentFolder="$INSTDIR\Conf" OutputFile="$(InstallerFolder)\ConfigurationFiles.nsi" Files="@(ConfigurationFiles)"/>
+	<WriteInstallFileInclude ParentFolder="$INSTDIR\JavascriptValidators\JSShell" OutputFile="$(InstallerFolder)\JSShell.nsi" Files="@(JSShellFiles)"/>
+	<WriteInstallFileInclude ParentFolder="$INSTDIR\JavascriptValidators\JSTemplate" OutputFile="$(InstallerFolder)\JSTemplate.nsi" Files="@(JSTemplateFiles)"/>
     <WriteInstallFileInclude ParentFolder="$INSTDIR\Resources" OutputFile="$(InstallerFolder)\Resources.nsi" Files="@(Resources)"/>
     <MakeNSIS NSISPath="tools\nsis\makensis.exe" Script="$(InstallerFolder)\MSFastInstaller.nsi" OutputPath="@(OutputInstaller)">
       <Output TaskParameter="CompiledInstaller" ItemName="CompiledInstaller"/>
