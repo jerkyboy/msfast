@@ -5,9 +5,9 @@
   <UsingTask TaskName="EditProjectAddSignAssembly" AssemblyFile="_ExternalReferences\MySpace.MsFast.BuildTasks.dll"/>
   <UsingTask TaskName="WriteInstallFileInclude" AssemblyFile="_ExternalReferences\MySpace.MsFast.BuildTasks.dll"/>
   <UsingTask TaskName="MakeNSIS" AssemblyFile="_ExternalReferences\MySpace.MsFast.BuildTasks.dll"/>
-  <PropertyGroup Condition="$(impBuildNumber)==''">
+  <PropertyGroup Condition="$(CCNetLabel)==''">
     <!--Make this group dependant upon cruisecontrol-->
-    <impBuildNumber>1.0.0.0</impBuildNumber>
+    <CCNetLabel>1.0.0</CCNetLabel>
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration)==''">
     <Configuration>Release</Configuration>
@@ -25,7 +25,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Solutions Include="$(MSBuildProjectDirectory)\src\MSFast.sln"/>
-    <OutputInstaller Include="$(OutputDir)\Setup_MySpace_PerformanceTracker.$(impBuildNumber).exe"/>
+    <OutputInstaller Include="$(OutputDir)\Setup_MySpace_PerformanceTracker.$(CCNetLabel).0.exe"/>
   </ItemGroup>
   <Target Name="clean">
     <RemoveDir Directories="$(OutputDir);$(BuildOutputPath)"/>
