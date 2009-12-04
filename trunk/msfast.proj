@@ -61,9 +61,6 @@
     <MakeNSIS NSISPath="tools\nsis\makensis.exe" Script="$(InstallerFolder)\MSFastInstaller.nsi" OutputPath="@(OutputInstaller)">
       <Output TaskParameter="CompiledInstaller" ItemName="CompiledInstaller"/>
     </MakeNSIS>
-    <CallTarget Condition="Exists('C:\Program Files\MySpace\Buildtools\MySpace.proj')" Targets="SignInstaller"/>
-  </Target>
-  <Target Name="SignInstaller">
-    <MySpaceSignFile Files="@(CompiledInstaller)"/>
+    <MySpaceSignFile Files="@(CompiledInstaller)" ContinueOnError="true"/>
   </Target>
 </Project>
