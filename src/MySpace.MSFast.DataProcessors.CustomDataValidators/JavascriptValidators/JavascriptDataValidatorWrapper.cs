@@ -123,7 +123,7 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.JavascriptValidator
                 psi.CreateNoWindow = true;
                 psi.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
                 psi.UseShellExecute = false;
-                psi.Arguments = tmpFilename;
+                psi.Arguments = String.Format("\"{0}\"", tmpFilename);
                 psi.RedirectStandardOutput = true;
 #if (DEBUG)
                 psi.RedirectStandardError = true;
