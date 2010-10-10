@@ -40,7 +40,8 @@ namespace MySpace.MSFast.Engine.CollectorsConfiguration
 		Screenshots_Full = 4,
 		Download_Proxy = 8,
 		Performance = 16,
-		Download_Sniffer = 32
+		Download_Sniffer = 32,
+        ClearCache = 64
 	}
 
 

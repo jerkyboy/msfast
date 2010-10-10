@@ -401,15 +401,19 @@ namespace MySpace.MSFast.GUI.Engine.Panels
                     TryCleanTempFolder(tempFolder);
 
 					b.CollectionType = CollectPageInformation.Download_Proxy | CollectPageInformation.Performance | CollectPageInformation.Render;
+                    
                     if (getter.GetBoolean(MSFastGlobalConfigKeys.PAGE_GRAPH))
                         b.CollectionType |= CollectPageInformation.Screenshots_Small;
+
+                    if (getter.GetBoolean(MSFastGlobalConfigKeys.CLEAR_CACHE_BEFORE_TEST))
+                        b.CollectionType |= CollectPageInformation.ClearCache;
 
                     b.Buffer = buffer;
                     b.ClearCache = getter.GetBoolean(MSFastGlobalConfigKeys.CLEAR_CACHE_BEFORE_TEST);
                     b.TempFolder = tempFolder;
                     b.DumpFolder = tempFolder;
                     b.ProxyPort = GetProxyPorts()[proxyRangeOffset];
-					b.IsDebug = false;
+					b.IsDebug = !false;
 					pageDataCollector.StartTest(b);
 				}
 				else

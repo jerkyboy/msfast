@@ -51,6 +51,7 @@ namespace MySpace.MSFast.Engine.Console
 		[STAThread]
 		static void Main(string[] args)
         {
+
             commandArgs = args;
 
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
@@ -141,28 +142,23 @@ namespace MySpace.MSFast.Engine.Console
 				{
                     EngineSuProxyConfiguration spc = EngineSuProxyConfiguration.Default;
 
-					String folder = null;
-					try
-					{
-						folder = Path.GetDirectoryName(Assembly.GetAssembly(typeof(PageDataCollector)).Location) + "\\conf";
-					}
-					catch
-					{
-					}
+                    if(startInfo.ConfigFiles == null)
+                        return (int)PageDataCollectorErrors.InvalidConfiguration;
 
-					if (folder == null || Directory.Exists(folder) == false)
-					{
-						return (int)PageDataCollectorErrors.InvalidConfiguration;
-					}
-
-					String[] configFiles = new String[] { folder + "\\SuProxy.default.config", folder + "\\SuProxy.msfast.config" };
+                    foreach (String s in startInfo.ConfigFiles)
+                    {
+                        if (s == null || File.Exists(s) == false)
+                        {
+                            return (int)PageDataCollectorErrors.InvalidConfiguration;
+                        }
+                    }
 
 					spc.ProxyPort = startInfo.ProxyPort;
                     spc.DumpFolder = startInfo.DumpFolder;
                     spc.URL = startInfo.URL;
                     spc.CollectionID = startInfo.CollectionID;
 
-					spc.ConfigurationFiles = configFiles;
+                    spc.ConfigurationFiles = startInfo.ConfigFiles;
 
 					try
 					{

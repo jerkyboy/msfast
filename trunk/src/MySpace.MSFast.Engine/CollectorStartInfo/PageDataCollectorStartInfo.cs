@@ -81,16 +81,18 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
         private String _dumpFolder = Directory.GetCurrentDirectory();
         private int _collectionId = 1;
 
-		public int Timeout = 15;
-		public bool IsDebug = false;
+		public int Timeout = 25;
+		public bool IsDebug = !false;
 
         public bool IsVerbose = false;
 
 		public String SnifferDeviceId = null;
 		public int[] SnifferPorts = new int[]{80};
-		
-		
-		public CollectPageInformation CollectionType = CollectPageInformation.Render | CollectPageInformation.Screenshots_Small | CollectPageInformation.Performance | CollectPageInformation.Download_Proxy;
+
+        public String[] ConfigFiles = new String[] { Path.GetDirectoryName(Assembly.GetAssembly(typeof(PageDataCollector)).Location) + "\\conf\\SuProxy.default.config", 
+                                                     Path.GetDirectoryName(Assembly.GetAssembly(typeof(PageDataCollector)).Location) + "\\conf\\SuProxy.msfast.config" };
+
+		public CollectPageInformation CollectionType = CollectPageInformation.Render | CollectPageInformation.Screenshots_Small | CollectPageInformation.Performance | CollectPageInformation.Download_Proxy | CollectPageInformation.ClearCache;
 
 		public bool ClearCache = false;
 
@@ -133,12 +135,14 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 			ArgsParsers.Add("/debug", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.IsDebug = true; }));
 			ArgsParsers.Add("/ct:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si.CollectionType = (CollectPageInformation)Enum.ToObject(typeof(CollectPageInformation), int.Parse(value)); } catch { } }));
 			ArgsParsers.Add("/ci:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si._collectionId = int.Parse(value); } catch { } }));
-			
+
 			ArgsParsers.Add("/clear-cache", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.ClearCache = true; }));
 			ArgsParsers.Add("/verbose", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.IsVerbose = true; }));
 
             ArgsParsers.Add("/dump:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si._dumpFolder = value.Replace("\\", "/"); if (si._dumpFolder.EndsWith("/") == false) si._dumpFolder = String.Concat(si._dumpFolder, "/"); }));
             ArgsParsers.Add("/temp:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.TempFolder = value.Replace("\\", "/"); if (si.TempFolder.EndsWith("/") == false) si.TempFolder = String.Concat(si.TempFolder, "/"); }));
+
+            ArgsParsers.Add("/config:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) {si.ConfigFiles = value.Split(new String[]{"|"}, StringSplitOptions.RemoveEmptyEntries);}));
 			
 			ArgsParsers.Add("/sniff:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { 
 				
@@ -266,7 +270,18 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 			{
 				sb.Append(" /clear-cache ");
 			}
-			
+
+            if (this.ConfigFiles != null)
+            {
+                sb.Append(" /config:\"");
+                foreach (String s in this.ConfigFiles)
+                {
+                    sb.Append(s);
+                    sb.Append("|");
+                }
+                sb.Append("\"");
+            }
+
 			return sb.ToString();
 		}
 

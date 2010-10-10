@@ -71,7 +71,8 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
             this.JavascriptDelegates.Add("onProgress", new ExecuteJavascriptDelegate(this.OnProgress));
 			this.JavascriptDelegates.Add("signal_test_started", new ExecuteJavascriptDelegate(this.SignalTestStarted));
 			this.JavascriptDelegates.Add("signal_test_ended", new ExecuteJavascriptDelegate(this.SignalTestEnded));
-			this.JavascriptDelegates.Add("redirect", new ExecuteJavascriptDelegate(this.RedirectPage));
+            this.JavascriptDelegates.Add("redirect", new ExecuteJavascriptDelegate(this.RedirectPage));
+            this.JavascriptDelegates.Add("clearcache", new ExecuteJavascriptDelegate(this.ClearCache));
 
 			this.browserWrapperIEImpl = browserWrapperIEImpl; 
 			this.browser = browser;
@@ -207,6 +208,17 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 				this.browser.URL = args;
 		}
 
+		private void ClearCache(string cmdId, string args)
+		{
+            try
+            {
+                WatiN.Core.Native.InternetExplorer.WinInet.ClearCache();
+            }
+            catch
+            {
+            }
+		}
+        
         private void TakeScreenshot(string cmdId, string args)
         {
 

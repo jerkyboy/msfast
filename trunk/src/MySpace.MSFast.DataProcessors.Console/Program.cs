@@ -39,14 +39,6 @@ namespace MySpace.MSFast.DataProcessors.Console
     {
         static void Main(string[] args)
         {
-
-            MSFImportExportsManager m = new MSFImportExportsManager();
-
-            //m.LoadProcessedDataPackage(File.Open("C:\\new.msf", FileMode.OpenOrCreate), newD);
-            ProcessedDataPackage p = m.LoadProcessedDataPackage(File.Open("C:\\temp\\old.msf", FileMode.Open));
-
-            RenderData dd = (RenderData)p[typeof(RenderData)];
-
             CommandLineArguments cla = new CommandLineArguments(args);
 
             if (cla.IsValid() == false)
