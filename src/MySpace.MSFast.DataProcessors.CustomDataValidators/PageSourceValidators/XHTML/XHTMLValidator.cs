@@ -88,27 +88,28 @@ namespace MySpace.MSFast.DataProcessors.CustomDataValidators.PageSourceValidator
 
 				using (XmlReader xmlReader = XmlReader.Create(reader, settings))
 				{
-					try
-					{
-						while (xmlReader.Read())
-						{
 
-						}
-					}
-					catch (System.Xml.XmlException ex)
-					{
-						int position = GetIndex(data.PageSource, ex.LineNumber, ex.LinePosition);
-						int length = data.PageSource.Length - position > DISPLAYBUFFER ? DISPLAYBUFFER : data.PageSource.Length - position;
+                    try
+                    {
+                        while (xmlReader.Read())
+                        {
+                            
+                        }
+                    }
+                    catch (System.Xml.XmlException ex)
+                    {
+                        int position = GetIndex(data.PageSource, ex.LineNumber, ex.LinePosition);
+                        int length = data.PageSource.Length - position > DISPLAYBUFFER ? DISPLAYBUFFER : data.PageSource.Length - position;
 
                         SourceValidationOccurance p = new SourceValidationOccurance(data, position, length);
-						p.Comment = ex.Message;
-						results.Add(p);
+                        p.Comment = ex.Message;
+                        results.Add(p);
 
-					}
-					catch (Exception ex)
-					{
-						Console.WriteLine(ex);
-					}
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
 				}
 			}
 

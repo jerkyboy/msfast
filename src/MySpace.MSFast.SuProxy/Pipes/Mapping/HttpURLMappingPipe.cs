@@ -73,6 +73,11 @@ namespace MySpace.MSFast.SuProxy.Pipes.Mapping
 
 						foreach (Regex match in regexs)
 						{
+                            if (match.ToString().IndexOf("LOCAL_RESPONSE=") != -1 && 
+                                uriStr.IndexOf("http://home.myspace.com/Modules/PageEditor/") != -1)
+                            {
+                                continue;
+                            }
 							if (match.IsMatch(uriStr))
 							{
 								AddPipesChain(mapping[match]);
