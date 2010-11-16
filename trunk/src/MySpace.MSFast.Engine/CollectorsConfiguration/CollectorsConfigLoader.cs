@@ -41,7 +41,8 @@ namespace MySpace.MSFast.Engine.CollectorsConfiguration
 		Download_Proxy = 8,
 		Performance = 16,
 		Download_Sniffer = 32,
-        ClearCache = 64
+        ClearCache = 64,
+        FindZIndexs = 128
 	}
 
 

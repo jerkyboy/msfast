@@ -82,7 +82,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
         private int _collectionId = 1;
 
 		public int Timeout = 25;
-		public bool IsDebug = !false;
+		public bool IsDebug = false;
 
         public bool IsVerbose = false;
 

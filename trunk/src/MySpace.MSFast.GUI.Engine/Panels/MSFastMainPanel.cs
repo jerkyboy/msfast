@@ -413,7 +413,8 @@ namespace MySpace.MSFast.GUI.Engine.Panels
                     b.TempFolder = tempFolder;
                     b.DumpFolder = tempFolder;
                     b.ProxyPort = GetProxyPorts()[proxyRangeOffset];
-					b.IsDebug = !false;
+					b.IsDebug = false;
+
 					pageDataCollector.StartTest(b);
 				}
 				else

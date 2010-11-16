@@ -47,9 +47,18 @@ namespace MySpace.MSFast.Core.Logger
 		{
             try
             {
-                Stream configStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("MySpace.MSFast.Core.LoggingConfig.xml");
-                log4net.Config.XmlConfigurator.Configure(configStream);
-                configStream.Close();
+                String logConfig = Path.GetDirectoryName(Assembly.GetAssembly(typeof(MSFastLogger)).Location) + "\\conf\\MSFastLogging.config";
+
+                if (File.Exists(logConfig))
+                {
+                    log4net.Config.XmlConfigurator.Configure(new FileInfo(logConfig));
+                }
+                else
+                {
+                    Stream configStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("MySpace.MSFast.Core.LoggingConfig.xml");
+                    log4net.Config.XmlConfigurator.Configure(configStream);
+                    configStream.Close();
+                }
             }
             catch 
             {
@@ -57,14 +66,26 @@ namespace MySpace.MSFast.Core.Logger
 		}
 		
         private ILog logger = null;
-		public static MSFastLogger GetLogger(Type t) 
+        
+        public static MSFastLogger GetLogger(String t)
+        {
+            return new MSFastLogger(t);
+        }
+        
+        public static MSFastLogger GetLogger(Type t) 
 		{
 			return new MSFastLogger(t);
 		}
 
-		private MSFastLogger(Type t){
-            this.logger =  LogManager.GetLogger(t);
-		}
+        private MSFastLogger(Type t)
+        {
+            this.logger = LogManager.GetLogger(t);
+        }
+
+        private MSFastLogger(String t)
+        {
+            this.logger = LogManager.GetLogger(t);
+        }
 
 
 		#region Delegate to LOG4NET logger

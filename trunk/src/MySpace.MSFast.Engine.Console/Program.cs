@@ -51,9 +51,7 @@ namespace MySpace.MSFast.Engine.Console
 		[STAThread]
 		static void Main(string[] args)
         {
-
             commandArgs = args;
-
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 			PageDataCollectorStartInfo pdcsi = new PageDataCollectorStartInfo(args);
             
@@ -68,6 +66,8 @@ namespace MySpace.MSFast.Engine.Console
 
                 TestEvents.FireProgressEvent(TestEventType.TestStarted);
                 
+                pdcsi.IsDebug = true;
+
                 _Collector c = new _Collector(pdcsi);
 
 				try

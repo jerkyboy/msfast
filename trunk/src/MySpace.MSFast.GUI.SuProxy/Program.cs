@@ -21,30 +21,22 @@
 
 //Imports
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
-using MySpace.MSFast.ImportExportsMgrs;
-using System.IO;
-using MySpace.MSFast.DataProcessors;
-using MySpace.MSFast.DataProcessors.Render;
-using MySpace.MSFast.DataProcessors.Download;
 
-namespace MySpace.MSFast.GUI.Engine
+namespace MySpace.MSFast.GUI.SuProxy
 {
-	static class Program
-	{
-		[STAThread]
-		static void Main()
-		{
-            string[] args = Environment.GetCommandLineArgs();
-            String openFile = null;
-
-            if (args != null && args.Length == 2)
-                openFile = args[1];
-
+    static class Program
+    {
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
             Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm(openFile));
-
-		}
-	}
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new SuProxyControlPanelForm());
+        }
+    }
 }
