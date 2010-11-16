@@ -39,6 +39,36 @@ namespace MySpace.MSFast.DataProcessors.Console
     {
         static void Main(string[] args)
         {
+
+            String p = @"C:\Data\Development\MySpace\Performance\Tracker\Reports.Performance\bin\Debug\";
+ProcessedDataPackage package1 = null;
+            
+            try
+            {
+                package1 = ProcessedDataCollector.CollectAll(p, 53595);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                System.Console.Error.Write("Invalid input folder!");
+                return;
+            }
+
+
+
+            return;
+
+
+
+
+
+
+
+
+
+
+
+
+
             CommandLineArguments cla = new CommandLineArguments(args);
 
             if (cla.IsValid() == false)

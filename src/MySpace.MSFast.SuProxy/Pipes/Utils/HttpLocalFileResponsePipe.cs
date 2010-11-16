@@ -29,47 +29,43 @@ using System.Net.Sockets;
 
 namespace MySpace.MSFast.SuProxy.Pipes.Utils
 {
-	public class HttpLocalResponsePipe : HttpPipe
+    public class HttpLocalFileResponsePipe : HttpPipe
 	{
-		private static Regex ParseFilename = new Regex("LOCAL_RESPONSE=([^\\?&]*)");
-
-		private static String responseHeader = "HTTP/1.1 200 OK\r\n" +
+		private static String ResponseHeader = "HTTP/1.1 200 OK\r\n" +
 											   "Server: SuProxy\r\n" + 
 											   "Accept-Ranges: bytes\r\n" + 
 											   "Vary: Accept-Encoding\r\n" +
 											   "Content-Length: {0}\r\n\r\n";
 
+        private String LocalFile = null;
+
+        public override void Init(Dictionary<object, object> dictionary)
+        {
+            base.Init(dictionary);
+
+            if (dictionary.ContainsKey("file"))
+            {
+                LocalFile = (String)dictionary["file"];
+            }
+        }
 
 		public override void SendData(byte[] buffer, int offset, int length)
 		{
+            
 		}
 
 		public override void Flush()
 		{
 			try
 			{
-				String url = Uri.UnescapeDataString(this.PipesChain.ChainState["REQUEST_URI"].ToString());
+                if (!String.IsNullOrEmpty(LocalFile) && File.Exists(LocalFile) && this.PipesChain.ChainState.ServerSocket == null)
+                {
+                    byte[] b = File.ReadAllBytes(LocalFile);
+                    String res = String.Format(ResponseHeader, b.Length);
+					byte[] h = Encoding.UTF8.GetBytes(res);
 
-				Match m = ParseFilename.Match(url);
-			
-				if (m.Success && this.PipesChain.ChainState.ServerSocket == null)
-				{
-                    
-                    String s = m.Groups[1].ToString();
-
-					if (File.Exists(s)) 
-					{
-						StreamReader t = new StreamReader(s);
-						String buff = t.ReadToEnd();
-						t.Close();
-
-						byte[] b = Encoding.UTF8.GetBytes(buff);
-						String res = String.Format(responseHeader, b.Length);
-						byte[] h = Encoding.UTF8.GetBytes(res);
-
-						base.SendData(h, 0, h.Length);
-						base.SendData(b, 0, b.Length);
-					}
+					base.SendData(h, 0, h.Length);
+					base.SendData(b, 0, b.Length);
 				}
 			}
 			catch 

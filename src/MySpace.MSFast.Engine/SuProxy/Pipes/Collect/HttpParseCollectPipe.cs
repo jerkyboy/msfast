@@ -56,14 +56,26 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 				if (collectorsConfig == null)
 				{
                     Stream configStream = null;
+
+                    String config = Path.GetDirectoryName(Assembly.GetAssembly(typeof(HttpParseCollectPipe)).Location) + "\\conf\\DataCollectors.config";
+
                     try
                     {
-                        configStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("MySpace.MSFast.Engine.DataCollectors.config");
+                        if (File.Exists(config))
+                        {
+                            configStream = File.Open(config,FileMode.Open);
+                        }
+                        else
+                        {
+                            configStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("MySpace.MSFast.Engine.DataCollectors.config");
+                        }
+
                         collectorsConfig = new CollectorsConfig(configStream);
                     }
                     catch
                     {
                     }
+                    
                     finally
                     {
                         try

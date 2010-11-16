@@ -71,20 +71,18 @@ namespace MySpace.MSFast.SuProxy.Pipes.Mapping
 					{
 						String uriStr = (String)this.PipesChain.ChainState["REQUEST_URI"];
 
-						foreach (Regex match in regexs)
-						{
-                            if (match.ToString().IndexOf("LOCAL_RESPONSE=") != -1 && 
-                                uriStr.IndexOf("http://home.myspace.com/Modules/PageEditor/") != -1)
-                            {
-                                continue;
+                        if (uriStr.IndexOf("/Modules/PageEditor/") == -1 && uriStr.IndexOf("/pagead/ads") == -1)
+                        {
+                            foreach (Regex match in regexs)
+                            {                                
+                                if (match.IsMatch(uriStr))
+                                {
+                                    AddPipesChain(mapping[match]);
+                                    break;
+                                }
                             }
-							if (match.IsMatch(uriStr))
-							{
-								AddPipesChain(mapping[match]);
-								break;
-							}
-						}
-					}
+                        }
+                    }
 				}
 			}
 

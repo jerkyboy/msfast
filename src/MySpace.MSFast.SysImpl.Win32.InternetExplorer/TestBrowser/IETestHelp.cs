@@ -38,6 +38,8 @@ using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.Engine.Events;
 using MySpace.MSFast.Engine.DataCollector;
 using MySpace.MSFast.Core.Configuration.Common;
+using MySpace.MSFast.Core.Logger;
+using System.Windows.Forms;
 
 namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 {
@@ -48,7 +50,11 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 	[ProgId("MSFast.Engine")]
 	public class IETestHelp : JavascriptExecutioner, IDocHostUIHandler
 	{
-		private IDocHostUIHandler m_defaultUIHandler;
+
+        private static readonly MSFastLogger log = MSFastLogger.GetLogger("IETestHelp");
+
+        
+        private IDocHostUIHandler m_defaultUIHandler;
 		private BrowserIEImpl browser = null;
 		private BrowserWrapperIEImpl browserWrapperIEImpl = null;
 		
@@ -68,6 +74,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 			this.JavascriptDelegates.Add("startperftest", new ExecuteJavascriptDelegate(this.StartPerformanceTracking));
 			this.JavascriptDelegates.Add("endperftest", new ExecuteJavascriptDelegate(this.StopPerformanceTracking));
             this.JavascriptDelegates.Add("saveData", new ExecuteJavascriptDelegate(this.SaveDump));
+            this.JavascriptDelegates.Add("log", new ExecuteJavascriptDelegate(this.Log));
             this.JavascriptDelegates.Add("onProgress", new ExecuteJavascriptDelegate(this.OnProgress));
 			this.JavascriptDelegates.Add("signal_test_started", new ExecuteJavascriptDelegate(this.SignalTestStarted));
 			this.JavascriptDelegates.Add("signal_test_ended", new ExecuteJavascriptDelegate(this.SignalTestEnded));
@@ -384,6 +391,17 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
             }
 		}
 
+        private void Log(string cmdId, string args)
+		{			
+            if (this.StartInfo == null || args == null)
+				return;
+
+            if (log.IsInfoEnabled)
+            {
+                log.Info(args);
+            }
+		}
+        
 		private void SaveDump(string cmdId, string args)
 		{			
             if (this.StartInfo == null || args == null)
