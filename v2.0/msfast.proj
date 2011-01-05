@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="build">
+  <Import Project="C:\Program Files\MySpace\Buildtools\MySpace.proj" Condition="Exists('C:\Program Files\MySpace\Buildtools\MySpace.proj')"/>
+  <UsingTask TaskName="RemoveSignAssembly" AssemblyFile="_ExternalReferences\MySpace.MsFast.BuildTasks.dll"/>
+  <UsingTask TaskName="EditProjectAddSignAssembly" AssemblyFile="_ExternalReferences\MySpace.MsFast.BuildTasks.dll"/>
+  <UsingTask TaskName="WriteInstallFileInclude" AssemblyFile="_ExternalReferences\MySpace.MsFast.BuildTasks.dll"/>
+  <UsingTask TaskName="MakeNSIS" AssemblyFile="_ExternalReferences\MySpace.MsFast.BuildTasks.dll"/>
+  <PropertyGroup Condition="$(CCNetNumericLabel)==''">
+    <CCNetNumericLabel>0</CCNetNumericLabel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!--Make this group dependant upon cruisecontrol-->
+    <BuildNumber>1.0.0.$(CCNetNumericLabel)</BuildNumber>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration)==''">
+    <Configuration>Release</Configuration>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration)=='Release'">
+    <BuildOutputPath>$(MSBuildProjectDirectory)\src\bin\Release</BuildOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration)=='Debug'">
+    <BuildOutputPath>$(MSBuildProjectDirectory)\src\bin\Debug</BuildOutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputDir>$(MSBuildProjectDirectory)\build</OutputDir>
+    <NSISPath>$(MSBuildProjectDirectory)\tools\nsis</NSISPath>
+    <InstallerFolder>$(MSBuildProjectDirectory)\src\Installation</InstallerFolder>
+  </PropertyGroup>
+  <ItemGroup>
+    <Solutions Include="$(MSBuildProjectDirectory)\src\MSFast.sln"/>
+    <OutputInstaller Include="$(OutputDir)\Setup_MySpace_PerformanceTracker.$(BuildNumber).exe"/>
+  </ItemGroup>
+  <Target Name="clean">
+    <RemoveDir Directories="$(OutputDir);$(BuildOutputPath)"/>
+    <MakeDir Directories="$(OutputDir)"/>
+  </Target>
+  <Target Name="build" DependsOnTargets="clean">
+    <MSBuild Projects="@(Solutions)" Properties="Configuration=$(Configuration)"/>
+    <CreateItem Include="$(BuildOutputPath)\JavascriptValidators\JSShell\**\*.*">
+      <Output TaskParameter="Include" ItemName="JSShellFiles"/>
+    </CreateItem>
+    <CreateItem Include="$(BuildOutputPath)\JavascriptValidators\JSTemplate\**\*.*">
+      <Output TaskParameter="Include" ItemName="JSTemplateFiles"/>
+    </CreateItem>
+    <CreateItem Include="$(BuildOutputPath)\**\*.*;" Exclude="$(BuildOutputPath)\conf\**\*.*;@(JSShellFiles);@(JSTemplateFiles)">
+      <Output TaskParameter="Include" ItemName="CompiledAssemblies"/>
+    </CreateItem>
+    <CreateItem Include="$(MSBuildProjectDirectory)\src\Resources\*.ico;">
+      <Output TaskParameter="Include" ItemName="Resources"/>
+    </CreateItem>
+    <CreateItem Include="$(BuildOutputPath)\conf\**\*.*">
+      <Output TaskParameter="Include" ItemName="ConfigurationFiles"/>
+    </CreateItem>
+
+  </Target>
+  <Target Name="createInstaller" DependsOnTargets="build">
+    <WriteInstallFileInclude ParentFolder="$INSTDIR" OutputFile="$(InstallerFolder)\ApplicationFiles.nsi" Files="@(CompiledAssemblies)"/>
+    <WriteInstallFileInclude ParentFolder="$INSTDIR\Conf" OutputFile="$(InstallerFolder)\ConfigurationFiles.nsi" Files="@(ConfigurationFiles)"/>
+	<WriteInstallFileInclude ParentFolder="$INSTDIR\JavascriptValidators\JSShell" OutputFile="$(InstallerFolder)\JSShell.nsi" Files="@(JSShellFiles)"/>
+	<WriteInstallFileInclude ParentFolder="$INSTDIR\JavascriptValidators\JSTemplate" OutputFile="$(InstallerFolder)\JSTemplate.nsi" Files="@(JSTemplateFiles)"/>
+    <WriteInstallFileInclude ParentFolder="$INSTDIR\Resources" OutputFile="$(InstallerFolder)\Resources.nsi" Files="@(Resources)"/>
+    <MakeNSIS NSISPath="tools\nsis\makensis.exe" Script="$(InstallerFolder)\MSFastInstaller.nsi" OutputPath="@(OutputInstaller)">
+      <Output TaskParameter="CompiledInstaller" ItemName="CompiledInstaller"/>
+    </MakeNSIS>
+    <MySpaceSignFile Files="@(CompiledInstaller)" ContinueOnError="true"/>
+  </Target>
+</Project>

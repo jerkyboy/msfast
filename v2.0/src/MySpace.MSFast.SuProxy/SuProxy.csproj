@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E0B546FF-2596-45F3-B44F-EA1E7390DD6B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MySpace.MSFast.SuProxy</RootNamespace>
+    <AssemblyName>MySpace.MSFast.SuProxy</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE;WIN32 InternetExplorer</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Web|AnyCPU' ">
+    <OutputPath>bin\Release Web\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug Win32 InternetExplorer|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug Win32 InternetExplorer\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WIN32 InternetExplorer</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exceptions\Exceptions.cs" />
+    <Compile Include="Pipes\Buffering\HttpBufferBodyPipe.cs" />
+    <Compile Include="Pipes\Mapping\HttpURLMappingPipe.cs" />
+    <Compile Include="Pipes\Parsing\HttpUnchunkPipe.cs" />
+    <Compile Include="Pipes\Parsing\HttpUncompressContentPipe.cs" />
+    <Compile Include="Pipes\Throttling\HttpThrottlingPipe.cs" />
+    <Compile Include="Pipes\Utils\HttpBreakerPipe.cs" />
+    <Compile Include="Pipes\HttpPipesChain.cs" />
+    <Compile Include="Pipes\HttpPipesChainsFactory.cs" />
+    <Compile Include="Pipes\HttpPipesRepository.cs" />
+    <Compile Include="Pipes\HttpPipe.cs" />
+    <Compile Include="Pipes\Sockets\HttpInboundSocketPipe.cs" />
+    <Compile Include="Pipes\Sockets\HttpOutboundSocketPipe.cs" />
+    <Compile Include="Pipes\Utils\HttpCleanupPipe.cs" />
+    <Compile Include="Pipes\Utils\HttpCustomRequestPipe.cs" />
+    <Compile Include="Pipes\Utils\HttpLocalFileResponsePipe.cs" />
+    <Compile Include="Pipes\Utils\HttpLocalResponsePipe.cs" />
+    <Compile Include="Pipes\Utils\HttpFixRequestHeaderPipe.cs" />
+    <Compile Include="Pipes\Utils\HttpFixResponseHeaderPipe.cs" />
+    <Compile Include="Proxlets\HttpProxlet.cs" />
+    <Compile Include="Proxlets\Proxlet.cs" />
+    <Compile Include="Proxlets\ProxletsPool.cs" />
+    <Compile Include="Proxy\SuProxyServer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxy\SuProxyConfiguration.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MySpace.MSFast.Core\Core.csproj">
+      <Project>{8286C998-2F1E-413B-9893-CA7C80BDD2BE}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
