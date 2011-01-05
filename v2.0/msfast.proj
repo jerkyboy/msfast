@@ -10,7 +10,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <!--Make this group dependant upon cruisecontrol-->
-    <BuildNumber>1.0.0.$(CCNetNumericLabel)</BuildNumber>
+    <BuildNumber>2.0.0.$(CCNetNumericLabel)</BuildNumber>
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration)==''">
     <Configuration>Release</Configuration>
