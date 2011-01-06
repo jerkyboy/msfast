@@ -52,26 +52,6 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
         }
 
         /// <summary>
-        /// URL of the page we are testing + the collection args attached to it
-        /// (including the extra parameters for the collection + local response if any)
-        /// </summary>
-        private String _testURL;
-        public String TestURL
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(_testURL) == false)
-                    return _testURL;
-
-                return AppendCollectionArgs(this.URL);
-            }
-            set
-            {
-                this._testURL = value;
-            }
-        }
-
-        /// <summary>
         /// URL we are launching in the browser with, 
         /// when we start the test
         /// </summary>
@@ -137,7 +117,6 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
         /// Clear browser cache when instantiate
         /// </summary>
 		public bool ClearCache = false;
-
 		
         public bool IsStartProxy { get { return (this.ProxyAddress == null); } }
 		

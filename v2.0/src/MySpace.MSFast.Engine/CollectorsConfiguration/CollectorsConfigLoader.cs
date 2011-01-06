@@ -93,12 +93,19 @@ namespace MySpace.MSFast.Engine.CollectorsConfiguration
 
                 return _instance;
             }
-        }        
-        
-        public String PreCollectionHtml = String.Empty;
+        }
+
+        public String EmptyHTML = String.Empty;
+
         public String PageDataCollector = String.Empty;
+        
         public String Constructor = String.Empty;
+        
         public String Event_OnInit = String.Empty;
+        
+        public String Event_OnStartingTest = String.Empty;
+        public String Event_OnLoadingFirstCollectionPage = String.Empty;
+
         public String Event_OnStartDocument = String.Empty;
         public String Event_OnStartHtml = String.Empty;
         public String Event_OnStartHead = String.Empty;
@@ -159,10 +166,12 @@ namespace MySpace.MSFast.Engine.CollectorsConfiguration
             {
                 String n = xmlNd.Name.ToLower();
 
-                if (n.Equals("precollectionhtml")) { this.PreCollectionHtml = xmlNd.InnerText; }
+                if (n.Equals("emptyhtml")) { this.EmptyHTML = xmlNd.InnerText; }
                 else if (n.Equals("pagedatacollector")) { this.PageDataCollector = xmlNd.InnerText; }
                 else if (n.Equals("pagedatacollector_constructor")) { this.Constructor = xmlNd.InnerText; }
                 else if (n.Equals("pagedatacollector_event_oninit")) { this.Event_OnInit = xmlNd.InnerText; }
+                else if (n.Equals("pagedatacollector_event_onloadingfirstcollectionpage")) { this.Event_OnLoadingFirstCollectionPage = xmlNd.InnerText; }
+                else if (n.Equals("pagedatacollector_event_onstartingtest")) { this.Event_OnStartingTest = xmlNd.InnerText; }
                 else if (n.Equals("pagedatacollector_event_onstartdocument")) { this.Event_OnStartDocument = xmlNd.InnerText; }
                 else if (n.Equals("pagedatacollector_event_onstarthtml")) { this.Event_OnStartHtml = xmlNd.InnerText; }
                 else if (n.Equals("pagedatacollector_event_onstarthead")) { this.Event_OnStartHead = xmlNd.InnerText; }
@@ -176,15 +185,7 @@ namespace MySpace.MSFast.Engine.CollectorsConfiguration
 
         }
 
-        public uint GroupsCount
-        {
-            get
-            {
-                return 2;
-            }
-        }
-
-        public ICollection<CollectorScript> GetGroupScripts(uint groupId)
+        public ICollection<CollectorScript> GetGroupScripts(int groupId)
         {
             if (groupId == 0)
             {

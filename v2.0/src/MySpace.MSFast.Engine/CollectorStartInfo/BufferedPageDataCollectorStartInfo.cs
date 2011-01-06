@@ -47,8 +47,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 
 		public override PageDataCollectorErrors PrepareStartInfo()
 		{
-
-			generatedTempFilename = base.TempFolder;			
+            generatedTempFilename = base.TempFolder;			
 			generatedTempFilename = generatedTempFilename.Replace("\\", "/");
 
 			if (generatedTempFilename.EndsWith("/") == false)

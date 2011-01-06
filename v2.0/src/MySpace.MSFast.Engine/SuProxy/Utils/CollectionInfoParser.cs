@@ -10,46 +10,76 @@ namespace MySpace.MSFast.Engine.SuProxy.Utils
 {
     public class CollectionInfoParser
     {
-        public static Regex CollectQueryParsers_Pre = new Regex("__PRE_COLLECTION=(.*)$");
-        public static Regex CollectQueryParsers_Normal = new Regex("(__MSFAST_PAGEHASH=([abcdef0123456789]*)&)*__MSFAST_COLLECT_GROUP=([0-9]*)$");
-
+        public static Regex MSFAST_START_TEST_NEXT_URL = new Regex("__MSFAST_START_TEST_NEXT_URL=([^&\\?]*)");
+        public static Regex MSFAST_TEST_URL = new Regex("__MSFAST_TESTING=([^&\\?]*)");
+        public static Regex MSFAST_PAGE_HASH = new Regex("__MSFAST_PAGE_HASH=([abcdef0123456789]*)");
+        public static Regex MSFAST_COLLECT_GROUP = new Regex("__MSFAST_COLLECT_GROUP=([0-9]*)");
+        
         public String URLEncoded = String.Empty;
         public String URL = String.Empty;
-        public uint CurrentCollectionGroup = 0;
+        public String NextURL = String.Empty;
         public String CollectHash = String.Empty;
 
+        public int CurrentCollectionGroup = -1;
+
         public CollectionInfoParser(HttpPipesChainState chainState)
-        {       
-            if (chainState != null && chainState.ContainsKey("REQUEST_URI"))
+        {
+            if (chainState == null || chainState.ContainsKey("REQUEST_URI") == false)
+                return;
+
+            Parse((String)chainState["REQUEST_URI"]);
+        }
+        public CollectionInfoParser(String URL)
+        {
+            Parse(URL);
+        }
+
+        private void Parse(String uriStr)
+        {
+            Match m = MSFAST_TEST_URL.Match(uriStr);
+
+            if (m.Success)
             {
-                String uriStr = (String)chainState["REQUEST_URI"];
-                
-                Match m = CollectQueryParsers_Pre.Match(uriStr);
+                this.URLEncoded = m.Groups[1].Value;
+                this.URL = Encoding.UTF8.GetString(Convert.FromBase64String(this.URLEncoded));
+            }
+            else
+            {
+                this.URLEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(this.uriStr));
+                this.URL = uriStr;
+            }
 
-                try
-                {
-                    if (m.Success)
-                    {
-                        this.URLEncoded = m.Groups[1].Value;
-                        this.URL = Encoding.UTF8.GetString(Convert.FromBase64String(this.URLEncoded));
-                    }
-                }
-                catch 
-                {
-                }
+            //if first page, do nothing just go to next url
+            m = MSFAST_START_TEST_NEXT_URL.Match(uriStr);
 
-                try { this.CurrentCollectionGroup = uint.Parse(m.Groups[2].Value); }catch { }
+            if (m.Success)
+            {
+                this.NextURL = this.URL + (((this.URL.IndexOf("?") == -1) ? "?" : "&") + "__MSFAST_TESTING=") + this.URLEncoded;
+                return;
+            }
 
-                m = CollectQueryParsers_Normal.Match(uriStr);
+            m = MSFAST_PAGE_HASH.Match(uriStr);
+            
+            if (m.Success)
+            {
+                this.CollectHash = m.Groups[1].Value; 
+            }
+            
+            if (String.IsNullOrEmpty(this.CollectHash))
+            {
+                this.CollectHash = Guid.NewGuid().ToString().ToLower().Replace("-", "");
+            }
 
-                try { this.CurrentCollectionGroup = uint.Parse(m.Groups[3].Value); }catch { }
-                try { this.CollectHash = m.Groups[2].Value; }catch { }
+            m = MSFAST_COLLECT_GROUP.Match(uriStr);
 
-                if (String.IsNullOrEmpty(this.CollectHash))
-                {
-                    this.CollectHash = Guid.NewGuid().ToString().ToLower().Replace("-", "");
-                }
-            }            
+            if (m.Success)
+            {
+                try { this.CurrentCollectionGroup = int.Parse(m.Groups[1].Value); } catch { }
+            }
+
+            this.NextURL = this.URL + (((this.URL.IndexOf("?") == -1) ? "?" : "&") + "__MSFAST_TESTING=") + this.URLEncoded +
+                "&__MSFAST_PAGEHASH=" + this.CollectionInfoParser.CollectHash + 
+                ((this.CollectionInfoParser.CurrentCollectionGroup >=0 ) ? "&__MSFAST_COLLECT_GROUP=" + (this.CurrentCollectionGroup + 1) : String.Empty);
         }
     }
 }

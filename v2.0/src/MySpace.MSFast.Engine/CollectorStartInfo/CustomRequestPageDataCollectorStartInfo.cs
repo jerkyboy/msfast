@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using MySpace.MSFast.Engine.DataCollector;
+using MySpace.MSFast.Engine.SuProxy.Utils;
 
 namespace MySpace.MSFast.Engine.CollectorStartInfo
 {
@@ -68,9 +69,9 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 		private const String CUSTOM_REQUEST_START =
 						"<html><body>" +
 						"<h1 style=\"font-family:arial;color:#1556a5\">SuProxy Request Forward</h1><h2 style=\"font-family:arial;color:#789ac3\">Please wait while your request is processed...</h2>" +
-						"<form action=\"http://";
+						"<form action=\"";
 
-        private const String CUSTOM_REQUEST_CONTINUED = "/?__SUPROXY_CUSTOM_REQUEST=1&__MSFASTTEST=1\" method=\"post\" enctype=\"multipart/form-data\"><textarea name=\"customRequestBody\"  style=\"width:900px;height:400px;\">";
+        private const String CUSTOM_REQUEST_CONTINUED = "\" method=\"post\" enctype=\"multipart/form-data\"><textarea name=\"customRequestBody\"  style=\"width:900px;height:400px;\">";
 
 		private const String CUSTOM_REQUEST_END = "</textarea><br/><input type=\"submit\" value=\"Click here if nothing happend...\" /></form><script>setTimeout(\"document.forms[0].submit();\",100);</script></body></html>";
 
@@ -79,10 +80,14 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 			// Save temp html*/
 			try
 			{
+                CollectionInfoParser cip = new CollectionInfoParser(this.URL);
+
+                String postTo = cip.NextURL;
+                postTo += ((postTo.IndexOf("?") == -1) ? "?" : "&") + "__SUPROXY_CUSTOM_REQUEST=1";
+
 				StreamWriter sw = new StreamWriter(filename);
 				sw.Write(CUSTOM_REQUEST_START);
-				Uri ur = new Uri(this.URL);
-				sw.Write(ur.Host);
+                sw.Write(postTo);
 				sw.Write(CUSTOM_REQUEST_CONTINUED);
 				sw.Write(this.Serialize());
 				sw.Write(CUSTOM_REQUEST_END);

@@ -22,25 +22,37 @@ along with MSFast.  If not, see <http://www.gnu.org/licenses/>.
 
 ======================================================================= -->
 	<urlmapping>
-		<map category="request">
+
+    <map category="request">
+      <match><![CDATA[[\?&]__MSFAST_START_TEST=([^\?&]*?)]]></match>
+      <chain>InitCollectionChain</chain>
+    </map>
+    
+    <map category="request">
+      <match><![CDATA[[\?&]__MSFAST_PAGEHASH=[abcdef0123456789]*]]></match>
+      <chain>EmptyChain</chain>
+    </map>
+
+    <map category="request">
+      <match><![CDATA[[\?&]__SUPROXY_CUSTOM_REQUEST=[0-9]*]]></match>
+      <chain>CustomRequestChain</chain>
+    </map>
+
+
+
+
+
+    <map category="request">
 			<match><![CDATA[[\?&]__SUPROXY_LOCAL_RESPONSE=([^\?&]*?)]]></match>
 			<chain>LocalResponseChain</chain>
 		</map>
 
-		<map category="request">
-			<match><![CDATA[[\?&]__SUPROXY_CUSTOM_REQUEST=[0-9]*]]></match>
-			<chain>CustomRequestChain</chain>
-		</map>
 		
 		<map category="request">
 			<match><![CDATA[[\?](START|STOP)_TRACKING=([0-9]*)~([A-Za-z0-9=]*)]]></match>
 			<chain>TrackingChain</chain>
 		</map>
 
-		<map category="request">
-			<match><![CDATA[[\?&]__MSFAST_PAGEHASH=[abcdef0123456789]*]]></match>
-			<chain>EmptyChain</chain>
-		</map>
 
 		<map category="request">
 			<match><![CDATA[[\?&]__MSFASTTEST=1]]></match>
@@ -55,12 +67,14 @@ along with MSFast.  If not, see <http://www.gnu.org/licenses/>.
 
 
 		<!-- Response -->
-		<map category="response">
-			<match><![CDATA[[\?]__PRE_COLLECTION=(.*)]]></match>
-			<chain>PreCollectionChain</chain>
-		</map>
+    
+    <map category="response">
+      <match><![CDATA[[\?&]__SUPROXY_CUSTOM_REQUEST=]]></match>
+      <chain>EmptyChain</chain>
+    </map>
 
-		<map category="response">
+
+    <map category="response">
 			<match><![CDATA[[\?&]__MSFASTTEST=[0-9]*]]></match>
 			<chain>ParseCollectChain</chain>
 		</map>
