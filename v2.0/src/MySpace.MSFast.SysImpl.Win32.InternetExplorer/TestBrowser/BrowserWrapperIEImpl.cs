@@ -282,7 +282,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 			Win32API.ShowWindow(_mainHWND, Win32API.WindowShowStyle.ShowDefault);
 
 			object oEmpty = String.Empty;
-            object oURL = startInfo.FirstURL;
+            object oURL = startInfo.InitURL;
 
 			ieInstance.Navigate2(ref oURL, ref oEmpty, ref oEmpty, ref oEmpty, ref oEmpty);
 		}

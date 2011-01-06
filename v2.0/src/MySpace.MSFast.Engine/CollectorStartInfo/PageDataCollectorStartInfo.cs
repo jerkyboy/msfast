@@ -55,6 +55,32 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
         /// URL we are launching in the browser with, 
         /// when we start the test
         /// </summary>
+        public String InitURL
+        {
+            get
+            {
+                String host = null;
+
+                try
+                {
+                    Uri i = new Uri(URL);
+                    host = i.Host;
+                }
+                catch
+                {
+                }
+
+                if (String.IsNullOrEmpty(host))
+                    host = "msfast.myspace.com";
+
+                return String.Format("http://{0}?__PRE_COLLECTION={1}", host, Convert.ToBase64String(Encoding.UTF8.GetBytes(new Uri(TestURL).AbsoluteUri.ToString())));
+            }
+        }
+
+        /// <summary>
+        /// URL we are launching in the browser with, 
+        /// when we start the test
+        /// </summary>
         public String FirstURL
         {
             get
@@ -76,6 +102,8 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
                 return String.Format("http://{0}?__PRE_COLLECTION={1}", host, Convert.ToBase64String(Encoding.UTF8.GetBytes(new Uri(TestURL).AbsoluteUri.ToString())));
             }
         }
+
+
 
         /// <summary>
         /// Test timeout (minutes)
