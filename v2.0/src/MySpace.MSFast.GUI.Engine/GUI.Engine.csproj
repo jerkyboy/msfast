@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CD073DED-8E58-4882-A98B-C58CC25DE70B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MySpace.MSFast.GUI.Engine</RootNamespace>
+    <AssemblyName>msfast</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <ApplicationIcon>..\Resources\icon.ico</ApplicationIcon>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WIN32 InternetExplorer</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE;WIN32 InternetExplorer</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug Win32 InternetExplorer|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug Win32 InternetExplorer\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WIN32 InternetExplorer</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BrightIdeasSoftware\ObjectListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataCollector\AsyncPageDataCollector.cs" />
+    <Compile Include="Helpers\UpdateHelper.cs" />
+    <Compile Include="Helpers\VersionManagement.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\AboutUs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Panels\AboutUs.Designer.cs">
+      <DependentUpon>AboutUs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\GraphView\DelayCOM\ComEventProvider.cs" />
+    <Compile Include="Panels\GraphView\DelayCOM\ComEventsAttribute.cs" />
+    <Compile Include="Panels\GraphView\DelayCOM\ComEventSink.cs" />
+    <Compile Include="Panels\GraphView\DelayCOM\ComProgIdAttribute.cs" />
+    <Compile Include="Panels\GraphView\DelayCOM\COMWrapper.cs" />
+    <Compile Include="Panels\GraphView\Controls\FlashPlayer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\GraphView\Controls\SourceCodeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\GraphView\PageSourceViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Panels\GraphView\PageSourceViewForm.Designer.cs">
+      <DependentUpon>PageSourceViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\MSFastForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Panels\MSFastMainPanel.Designer.cs" />
+    <Compile Include="Panels\MSFastMainPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\GraphView\PageGraphPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\GraphView\PageGraphPanel.Designer.cs">
+      <DependentUpon>PageGraphPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\Status\DownloadingFilesList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\Status\DownloadProgress.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\Status\StatusPanelBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\Status\TaskProgressLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\Status\TestStatutsPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\Status\TestStatutsPanel.Designer.cs">
+      <DependentUpon>TestStatutsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\UpdateAvailable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Panels\UpdateAvailable.Designer.cs">
+      <DependentUpon>UpdateAvailable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\ValidationResults\ResultsList.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\ValidationResults\ValidationResultsPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\ValidationResults\ValidationResultsPanel.Designer.cs">
+      <DependentUpon>ValidationResultsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\ValidationResults\ViewDownloadStateOccurancePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\ValidationResults\ViewDownloadStateOccurancePanel.Designer.cs">
+      <DependentUpon>ViewDownloadStateOccurancePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\ValidationResults\ViewSourceValidationOccurancePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\ValidationResults\ViewSourceValidationOccurancePanel.Designer.cs">
+      <DependentUpon>ViewSourceValidationOccurancePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\ValidationResults\ViewStringOccurancePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Panels\ValidationResults\ViewStringOccurancePanel.Designer.cs">
+      <DependentUpon>ViewStringOccurancePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MySpace.MSFast.Core\Core.csproj">
+      <Project>{8286C998-2F1E-413B-9893-CA7C80BDD2BE}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MySpace.MSFast.DataProcessors\DataProcessors.csproj">
+      <Project>{B77C5202-E02C-4E71-863D-190B18FA7E55}</Project>
+      <Name>DataProcessors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MySpace.MSFast.Engine\Engine.csproj">
+      <Project>{CAD5800B-F048-44BE-91A0-37AB73C8A93E}</Project>
+      <Name>Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MySpace.MSFast.GUI.Configuration\GUI.Configuration.csproj">
+      <Project>{967C3EE5-29E6-496E-9BE7-F9DA187C52D2}</Project>
+      <Name>GUI.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MySpace.MSFast.SuProxy\SuProxy.csproj">
+      <Project>{E0B546FF-2596-45F3-B44F-EA1E7390DD6B}</Project>
+      <Name>SuProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MySpace.MSFast.SysImpl.Win32\Win32.csproj">
+      <Project>{BD5E9A01-6F4D-4A2F-B729-DF07BFE1B8A9}</Project>
+      <Name>Win32</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\AboutUs.resx">
+      <DependentUpon>AboutUs.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\GraphView\PageSourceViewForm.resx">
+      <DependentUpon>PageSourceViewForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\UpdateAvailable.resx">
+      <DependentUpon>UpdateAvailable.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\next.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\prev.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\startLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\workingLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\statusLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\startTest.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\testInProgress.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\aboutLogo.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\aboutLogo2.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\noThumbnail.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\aboutPrecent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bottomBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bullet_v.gif" />
+    <None Include="Resources\bullet_r.gif" />
+    <None Include="Resources\bullet_p.gif" />
+    <None Include="Resources\perTestInfo.gif" />
+    <None Include="Resources\bottomBackground.gif" />
+    <None Include="Resources\downloadOccList.html" />
+    <None Include="Resources\newVersionBG.png" />
+    <None Include="Resources\newVersion.png" />
+    <None Include="Resources\aboutLogoPNG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\icon.ico" />
+    <None Include="Resources\loadSavedTests.gif" />
+    <None Include="Resources\save.png" />
+    <None Include="Resources\open.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>IF EXIST "$(SolutionDir)Resources\MySpace.MSFast.GUI.Engine.RenderGraph.bin" COPY "$(SolutionDir)Resources\MySpace.MSFast.GUI.Engine.RenderGraph.bin" "$(TargetDir)"
+</PreBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{239BEF65-4794-47FB-8642-DBA6DB2B2147}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MySpace.MSFast.DataProcessors.CustomDataValidators</RootNamespace>
+    <AssemblyName>MySpace.MSFast.DataProcessors.CustomDataValidators</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SignAssembly>false</SignAssembly>
+    <ApplicationIcon>..\Resources\icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WIN32 InternetExplorer</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE;WIN32 InternetExplorer</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug Win32 InternetExplorer|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug Win32 InternetExplorer\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WIN32 InternetExplorer</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DownloadDataValidators\AddExpiresHeadersValidator.cs" />
+    <Compile Include="DownloadDataValidators\CompressComponentsWithGzipValidator.cs" />
+    <Compile Include="DownloadDataValidators\ReduceDNSLookupsValidator.cs" />
+    <Compile Include="DownloadDataValidators\TooManyFilesValidator.cs" />
+    <Compile Include="JavascriptValidators\JavascriptDataValidatorWrapper.cs" />
+    <Compile Include="JavascriptValidators\JSShellOutputReader\JavascriptOutputReader.cs" />
+    <Compile Include="PageSourceValidators\AspNet\ViewStateSizeValidator.cs" />
+    <Compile Include="PageSourceValidators\ExternalReferences\DeprecatedDomainsBufferValidator.cs" />
+    <Compile Include="DownloadDataValidators\UseCDNValidator.cs" />
+    <Compile Include="PageSourceValidators\ExternalReferences\WebResourceBufferValidator.cs" />
+    <Compile Include="PageSourceValidators\JSAndCSS\AvoidCSSExpressionsValidator.cs" />
+    <Compile Include="PageSourceValidators\JSAndCSS\LinkCSSAtTopValidator.cs" />
+    <Compile Include="PageSourceValidators\JSAndCSS\LinkJSAtBottomValidator.cs" />
+    <Compile Include="PageSourceValidators\JSAndCSS\MakeJSandCSSExternalValidator.cs" />
+    <Compile Include="PageSourceValidators\WebFrameworksMatrix\JSLibrariesValidation.cs" />
+    <Compile Include="PageSourceValidators\WebFrameworksMatrix\OldWordBreakersValidation.cs" />
+    <Compile Include="PageSourceValidators\XHTML\XHTMLValidator.cs" />
+    <Compile Include="PageSourceValidators\XHTML\XPathXmlResolver.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MySpace.MSFast.Core\Core.csproj">
+      <Project>{8286C998-2F1E-413B-9893-CA7C80BDD2BE}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MySpace.MSFast.DataProcessors\DataProcessors.csproj">
+      <Project>{B77C5202-E02C-4E71-863D-190B18FA7E55}</Project>
+      <Name>DataProcessors</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PageSourceValidators\XHTML\transitional\xhtml-lat1.ent" />
+    <EmbeddedResource Include="PageSourceValidators\XHTML\transitional\xhtml-special.ent" />
+    <EmbeddedResource Include="PageSourceValidators\XHTML\transitional\xhtml-symbol.ent" />
+    <EmbeddedResource Include="PageSourceValidators\XHTML\transitional\xhtml1-transitional.dtd" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="JavascriptValidators\JSTemplate\Base64.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSTemplate\DownloadStateOccurance.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSTemplate\Imports.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSTemplate\JavascriptValidator.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSTemplate\SourceValidationOccurance.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSTemplate\Utils.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSTemplate\ValidationResults.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="JavascriptValidators\JSShell\host_jskwgen.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="JavascriptValidators\JSShell\js32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="JavascriptValidators\JSShell\jsshell.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="JavascriptValidators\JS_VALIDATORS_README.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="JavascriptValidators\JSShell\fdlibm.lib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSShell\js32.lib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="JavascriptValidators\JSShell\jsshell.exe.manifest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PageSourceValidators\XHTML\html5\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
