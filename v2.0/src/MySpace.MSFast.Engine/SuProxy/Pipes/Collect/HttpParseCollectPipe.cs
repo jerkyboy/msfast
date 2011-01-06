@@ -116,7 +116,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 			base.Flush();
         }
 
-        private String GetPreCollectionPage(ChunkedPage page)
+        private String GetPreCollectionPage(ChunkedPage chunkedPage)
         {
             StringBuilder scripts = new StringBuilder();
 
@@ -137,7 +137,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
                 scripts.Append(CollectorScriptsConfig.Instance.Event_OnInit);
             }
 
-            return String.Format(CollectorScriptsConfig.Instance.LoadFirstCollectionPage, scripts.ToString());
+            return String.Format(CollectorScriptsConfig.Instance.EmptyHTML, scripts.ToString(), CollectorScriptsConfig.Instance.Event_OnLoadingFirstCollectionPage);
         }
 
         #region While Collecting

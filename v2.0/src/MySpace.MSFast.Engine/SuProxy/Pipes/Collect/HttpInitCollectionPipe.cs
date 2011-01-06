@@ -43,8 +43,8 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 
             String page = String.Format(CollectorScriptsConfig.Instance.EmptyHTML, scripts.ToString() , CollectorScriptsConfig.Instance.Event_OnStartingTest);
 
-            byte[] h = Encoding.UTF8.GetBytes(String.Format(responseHeader, b.Length));
             byte[] b = Encoding.UTF8.GetBytes(page);
+            byte[] h = Encoding.UTF8.GetBytes(String.Format(responseHeader, b.Length));
 
             base.SendData(h,0,h.Length);
             base.SendData(b,0,b.Length);

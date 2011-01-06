@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using MySpace.MSFast.Engine.DataCollector;
+using MySpace.MSFast.Engine.SuProxy.Utils;
 
 namespace MySpace.MSFast.Engine.CollectorStartInfo
 {
@@ -59,11 +60,10 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 			if (SaveBuffer(this.Buffer, generatedTempFilename) == false)
 				return PageDataCollectorErrors.CantSaveTempFile;
 
-
-
-            String lw = String.Concat(this.URL, ((URL.IndexOf("?") == -1) ? "?" : "&"), "__SUPROXY_LOCAL_RESPONSE=", generatedTempFilename);
-            lw = AppendCollectionArgs(lw);
-            base.TestURL = lw;
+            String first = CollectionInfoParser.GetFirstURL(URL);
+            first += ((first.IndexOf("?") == -1) ? "?" : "&") + "__SUPROXY_LOCAL_RESPONSE=" + generatedTempFilename;
+            
+            this.FirstURL = first;
 
 			return base.PrepareStartInfo();
 		}

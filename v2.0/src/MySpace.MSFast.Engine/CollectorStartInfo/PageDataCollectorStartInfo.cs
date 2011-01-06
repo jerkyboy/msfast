@@ -29,13 +29,14 @@ using MySpace.MSFast.Engine.CollectorsConfiguration;
 using System.Windows.Forms;
 using MySpace.MSFast.Engine.DataCollector;
 using MySpace.MSFast.Core.Configuration.Common;
+using MySpace.MSFast.Engine.SuProxy.Utils;
 
 namespace MySpace.MSFast.Engine.CollectorStartInfo
 {
     public class PageDataCollectorStartInfo : CollectionMetaInfo
 	{
         /// <summary>
-        /// URL we are testing (url in the browser's navigation bar - no extra parameters)
+        /// URL we are testing
         /// </summary>
         private String _url;
         public String URL
@@ -52,54 +53,32 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
         }
 
         /// <summary>
-        /// URL we are launching in the browser with, 
-        /// when we start the test
+        /// URL we are launching with the browser
         /// </summary>
         public String InitURL
         {
             get
             {
-                String host = null;
-
-                try
-                {
-                    Uri i = new Uri(URL);
-                    host = i.Host;
-                }
-                catch
-                {
-                }
-
-                if (String.IsNullOrEmpty(host))
-                    host = "msfast.myspace.com";
-
-                return String.Format("http://{0}?__PRE_COLLECTION={1}", host, Convert.ToBase64String(Encoding.UTF8.GetBytes(new Uri(TestURL).AbsoluteUri.ToString())));
+                return CollectionInfoParser.GetInitURL(URL, FirstURL);
             }
         }
 
         /// <summary>
-        /// URL we are launching in the browser with, 
-        /// when we start the test
+        /// URL we hit after InitURL
         /// </summary>
+        private String firstURL;
         public String FirstURL
         {
             get
             {
-                String host = null;
-
-                try
-                {
-                    Uri i = new Uri(URL);
-                    host = i.Host;
-                }
-                catch
-                {
-                }
-
-                if (String.IsNullOrEmpty(host))
-                    host = "msfast.myspace.com";
-
-                return String.Format("http://{0}?__PRE_COLLECTION={1}", host, Convert.ToBase64String(Encoding.UTF8.GetBytes(new Uri(TestURL).AbsoluteUri.ToString())));
+                if (String.IsNullOrEmpty(firstURL))
+                    firstURL = CollectionInfoParser.GetFirstURL(URL);
+                
+                return firstURL;
+            }
+            set
+            {
+                firstURL = value;
             }
         }
 
@@ -183,7 +162,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 			ArgsParsers.Add("/pp:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si.ProxyPort = int.Parse(value); } catch { } }));
 			ArgsParsers.Add("/t:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si.Timeout = int.Parse(value); } catch { } }));
             ArgsParsers.Add("/u:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.URL = value.Replace("\\", "/"); }));
-            ArgsParsers.Add("/uw:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si._testURL = value.Replace("\\", "/"); }));
+            ArgsParsers.Add("/uw:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.FirstURL = value.Replace("\\", "/"); }));
             ArgsParsers.Add("/pa:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.ProxyAddress = value; }));
 			ArgsParsers.Add("/debug", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.IsDebug = true; }));
 			ArgsParsers.Add("/ci:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { try { si._collectionId = int.Parse(value); } catch { } }));
@@ -214,10 +193,10 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 
 
 
-            if (String.IsNullOrEmpty(this._testURL) == false)
+            if (String.IsNullOrEmpty(this.FirstURL) == false)
             {
                 sb.Append(" /uw:\"");
-                sb.Append(this._testURL);
+                sb.Append(this.FirstURL);
                 sb.Append("\" ");
             }
 

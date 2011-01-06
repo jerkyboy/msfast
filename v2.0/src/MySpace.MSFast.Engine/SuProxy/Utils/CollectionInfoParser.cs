@@ -10,10 +10,20 @@ namespace MySpace.MSFast.Engine.SuProxy.Utils
 {
     public class CollectionInfoParser
     {
-        public static Regex MSFAST_START_TEST_NEXT_URL = new Regex("__MSFAST_START_TEST_NEXT_URL=([^&\\?]*)");
-        public static Regex MSFAST_TEST_URL = new Regex("__MSFAST_TESTING=([^&\\?]*)");
+        public static Regex MSFAST_START_TEST_NEXT_URL = new Regex("__MSFAST_START_TEST=([^&\\?]*)");
+        public static Regex MSFAST_TEST_URL = new Regex("__MSFAST_TEST_URL=([^&\\?]*)");
         public static Regex MSFAST_PAGE_HASH = new Regex("__MSFAST_PAGE_HASH=([abcdef0123456789]*)");
         public static Regex MSFAST_COLLECT_GROUP = new Regex("__MSFAST_COLLECT_GROUP=([0-9]*)");
+
+        
+        public static string GetInitURL(string URL, string FirstURL)
+        {
+            return URL + ((URL.IndexOf("?") == -1) ? "?" : "&") + "__MSFAST_START_TEST=" + Convert.ToBase64String(Encoding.UTF8.GetBytes(FirstURL)) + "&__MSFAST_TEST_URL=" + Convert.ToBase64String(Encoding.UTF8.GetBytes(URL));
+        }
+        public static String GetFirstURL(String URL)
+        {
+            return URL + ((URL.IndexOf("?") == -1) ? "?" : "&") + "__MSFAST_TESTING=1&__MSFAST_TEST_URL=" + Convert.ToBase64String(Encoding.UTF8.GetBytes(URL));
+        }
         
         public String URLEncoded = String.Empty;
         public String URL = String.Empty;
@@ -45,7 +55,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Utils
             }
             else
             {
-                this.URLEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(this.uriStr));
+                this.URLEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(uriStr));
                 this.URL = uriStr;
             }
 
@@ -54,7 +64,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Utils
 
             if (m.Success)
             {
-                this.NextURL = this.URL + (((this.URL.IndexOf("?") == -1) ? "?" : "&") + "__MSFAST_TESTING=") + this.URLEncoded;
+                this.NextURL = Convert.ToBase64String(Encoding.UTF8.GetBytes(m.Groups[1].Value));
                 return;
             }
 
@@ -77,9 +87,13 @@ namespace MySpace.MSFast.Engine.SuProxy.Utils
                 try { this.CurrentCollectionGroup = int.Parse(m.Groups[1].Value); } catch { }
             }
 
-            this.NextURL = this.URL + (((this.URL.IndexOf("?") == -1) ? "?" : "&") + "__MSFAST_TESTING=") + this.URLEncoded +
-                "&__MSFAST_PAGEHASH=" + this.CollectionInfoParser.CollectHash + 
-                ((this.CollectionInfoParser.CurrentCollectionGroup >=0 ) ? "&__MSFAST_COLLECT_GROUP=" + (this.CurrentCollectionGroup + 1) : String.Empty);
+            this.NextURL = this.URL + ((this.URL.IndexOf("?") == -1) ? "?" : "&") + "__MSFAST_TESTING=1" + 
+                "&__MSFAST_TEST_URL=" + this.URLEncoded +
+                "&__MSFAST_PAGEHASH=" + this.CollectHash + 
+                ((this.CurrentCollectionGroup >=0 ) ? "&__MSFAST_COLLECT_GROUP=" + (this.CurrentCollectionGroup + 1) : String.Empty);
         }
+
+
+
     }
 }

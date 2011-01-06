@@ -80,12 +80,9 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 			// Save temp html*/
 			try
 			{
-                CollectionInfoParser cip = new CollectionInfoParser(this.URL);
-
-                String postTo = cip.NextURL;
+                String postTo = CollectionInfoParser.GetFirstURL(URL);
                 postTo += ((postTo.IndexOf("?") == -1) ? "?" : "&") + "__SUPROXY_CUSTOM_REQUEST=1";
-
-				StreamWriter sw = new StreamWriter(filename);
+                StreamWriter sw = new StreamWriter(filename);
 				sw.Write(CUSTOM_REQUEST_START);
                 sw.Write(postTo);
 				sw.Write(CUSTOM_REQUEST_CONTINUED);
