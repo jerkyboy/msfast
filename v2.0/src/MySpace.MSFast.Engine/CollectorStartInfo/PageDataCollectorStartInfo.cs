@@ -47,7 +47,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
             set
             {
                 if (value != null && value.IndexOf("#") != -1) value = value.Substring(value.IndexOf("#"));
-                this._url = value.Replace("\\", "/");
+                this._url = value.Replace("\\", "/").Trim();
             }
         }
 
@@ -106,53 +106,59 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
         /// Proxy Port
         /// </summary>
         public int ProxyPort = 8080;
+        
+        /// <summary>
+        /// Address of proxy
+        /// </summary>
+        public String ProxyAddress = null;
+        
+        /// <summary>
+        /// Location of temp folder
+        /// </summary>
+        public String TempFolder = Directory.GetCurrentDirectory();
 
+        /// <summary>
+        /// Show make the browser visible when true
+        /// </summary>
+		public bool IsDebug = false;
+
+        /// <summary>
+        /// Print log to browser window
+        /// </summary>
+        public bool IsVerbose = false;		
+
+        /// <summary>
+        /// Location of proxy config files
+        /// </summary>
+        public String[] ConfigFiles = new String[] { Path.GetDirectoryName(Assembly.GetAssembly(typeof(PageDataCollector)).Location) + "\\conf\\SuProxy.default.config", 
+                                                     Path.GetDirectoryName(Assembly.GetAssembly(typeof(PageDataCollector)).Location) + "\\conf\\SuProxy.msfast.config" };
+        
+        /// <summary>
+        /// Clear browser cache when instantiate
+        /// </summary>
+		public bool ClearCache = false;
+
+		
+        public bool IsStartProxy { get { return (this.ProxyAddress == null); } }
+		
+		public virtual bool IsValid() { 
+			return (	this.URL != null && 
+						Timeout >= 1 && 
+						(ProxyPort != -1 || String.IsNullOrEmpty(ProxyAddress) == false) &&
+						String.IsNullOrEmpty(TempFolder) == false &&
+						Directory.Exists(TempFolder));
+		}
+        
         protected String AppendCollectionArgs(String url)
         {
             return String.Concat(url, ((url.IndexOf("?") == -1) ? "?" : "&"), "__MSFASTTEST=1");
         }
 
-        
-		
-        public String ProxyAddress = null;
-		
-		
-		public String TempFolder = Directory.GetCurrentDirectory();
-        
-        private String _dumpFolder = Directory.GetCurrentDirectory();
-        private int _collectionId = 1;
-
-		
-		public bool IsDebug = false;
-
-        public bool IsVerbose = false;
-
-		public String SnifferDeviceId = null;
-		public int[] SnifferPorts = new int[]{80};
-
-        public String[] ConfigFiles = new String[] { Path.GetDirectoryName(Assembly.GetAssembly(typeof(PageDataCollector)).Location) + "\\conf\\SuProxy.default.config", 
-                                                     Path.GetDirectoryName(Assembly.GetAssembly(typeof(PageDataCollector)).Location) + "\\conf\\SuProxy.msfast.config" };
-
-		public bool ClearCache = false;
-
-		public bool IsStartProxy { get { return (this.ProxyAddress == null); } }
-		
-		public virtual bool IsValid() { 
-			return (	this.URL != null && 
-							Timeout >= 1 && 
-							(ProxyPort != -1 || String.IsNullOrEmpty(ProxyAddress) == false) &&
-							String.IsNullOrEmpty(TempFolder) == false &&
-							Directory.Exists(TempFolder)
-						);
-		}
-
-		public PageDataCollectorStartInfo(String[] commandLineArguments)
-		{
+		public PageDataCollectorStartInfo(String[] commandLineArguments){
 			this.ParseCommandLineArgs(commandLineArguments);
 		}
 
-		public PageDataCollectorStartInfo()
-		{
+		public PageDataCollectorStartInfo(){
 
 		}
 
@@ -179,32 +185,6 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
             ArgsParsers.Add("/dump:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si._dumpFolder = value.Replace("\\", "/"); if (si._dumpFolder.EndsWith("/") == false) si._dumpFolder = String.Concat(si._dumpFolder, "/"); }));
             ArgsParsers.Add("/temp:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.TempFolder = value.Replace("\\", "/"); if (si.TempFolder.EndsWith("/") == false) si.TempFolder = String.Concat(si.TempFolder, "/"); }));
             ArgsParsers.Add("/config:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) {si.ConfigFiles = value.Split(new String[]{"|"}, StringSplitOptions.RemoveEmptyEntries);}));
-			ArgsParsers.Add("/sniff:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { 
-				
-				if (value.IndexOf("}:") == -1)
-				{
-					si.SnifferDeviceId = value;
-					return;
-				}
-				int i = value.IndexOf("}:");
-
-				String d = value.Substring(0,i+1);
-				String sports = value.Substring(i + 2);
-
-				String[] portss = sports.Split(';');
-
-				int[] portsi = new int[portss.Length];
-				i = 0;
-
-				foreach (String p in portss)
-				{
-					portsi[i] = int.Parse(p);
-					i++;
-				}
-				si.SnifferDeviceId = d;
-				si.SnifferPorts = portsi;
-
-			}));
 			
 		}
 
@@ -212,7 +192,6 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 		{
 			return PageDataCollectorErrors.NoError;
 		}
-
 		public virtual PageDataCollectorErrors CleanUp()
 		{
 			return PageDataCollectorErrors.NoError;
@@ -261,28 +240,6 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 
             if (this.IsVerbose)
                 sb.Append(" /verbose ");
-			
-            if(this.SnifferDeviceId != null)
-			{
-				sb.Append(" /sniff:\"");
-				sb.Append(this.SnifferDeviceId);
-				
-				if(this.SnifferPorts != null)
-				{
-					sb.Append(":");
-					bool f = true;
-					foreach (int i in this.SnifferPorts)
-					{
-						if(f == false)
-							sb.Append(",");
-
-						sb.Append(i);
-						
-						f = false;
-					}
-				}
-				sb.Append("\" ");
-			}
 
             if (this.DumpFolder != null)
 			{
@@ -370,9 +327,10 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 
 		#endregion
 
-
         #region CollectionMetaInfo Members
-
+        
+        private int _collectionId = 1;
+        
         public int CollectionID
         {
             get { 
@@ -382,6 +340,8 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
                 _collectionId = value;
             }
         }
+        
+        private String _dumpFolder = Directory.GetCurrentDirectory();
 
         public string DumpFolder
         {

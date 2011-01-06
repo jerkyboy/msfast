@@ -25,10 +25,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using MySpace.MSFast.DataProcessors.Performance;
-using MySpace.MSFast.DataProcessors.Render;
 using MySpace.MSFast.DataProcessors.Download;
 using MySpace.MSFast.DataProcessors.PageSource;
 using MySpace.MSFast.Core.Configuration.Common;
+using MySpace.MSFast.DataProcessors.Markers;
 
 namespace MySpace.MSFast.DataProcessors
 {
@@ -70,7 +70,7 @@ namespace MySpace.MSFast.DataProcessors
 			xml.AppendChild(results);
 
 			AddGlobalData(xml, results);
-			AddRenderTimesData(xml, results);
+			AddMarkersTimesData(xml, results);
 			AddDownloadData(xml, results);
 			AddPerformanceData(xml, results);
 
@@ -109,6 +109,53 @@ namespace MySpace.MSFast.DataProcessors
 				b.AppendChild(t);
 			}
 		}
+
+        private void AddMarkersTimesData(XmlDocument xml, XmlElement results)
+        {
+            if (this.ContainsKey(typeof(MarkersData)) == false)
+                return;
+
+            MarkersData r = (MarkersData)this[typeof(MarkersData)];
+
+            XmlElement b = xml.CreateElement("markers");
+
+            b.SetAttribute("mx", r.MaxMarkerTime.ToString());
+            b.SetAttribute("mn", r.MinMarkerTime.ToString());
+
+            results.AppendChild(b);
+
+            XmlElement t = null;
+
+            /*
+            SourcePiece[] ib = null;
+
+            if (this.ContainsKey(typeof(BrokenSourceData)))
+            {
+                BrokenSourceData bs = (BrokenSourceData)this[typeof(BrokenSourceData)];
+                if (bs.InjectionBreaks != null)
+                {
+                    ib = new SourcePiece[bs.InjectionBreaks.Count];
+                    int i = 0;
+
+                    foreach (SourcePiece sp in bs.InjectionBreaks)
+                    {
+                        ib[i] = sp;
+                        i++;
+                    }
+                }
+            }
+            */
+
+            foreach (Marker marker in r)
+            {
+                t = xml.CreateElement("m");
+                t.SetAttribute("n", marker.Name);
+                t.SetAttribute("t", marker.Timestamp.ToString());
+                b.AppendChild(t);
+            }
+        }
+
+        /*
 		private void AddRenderTimesData(XmlDocument xml, XmlElement results)
 		{
 			if (this.ContainsKey(typeof(RenderData)) == false)
@@ -169,7 +216,8 @@ namespace MySpace.MSFast.DataProcessors
 				
 				b.AppendChild(t);
 			}
-		}
+		}*/
+
 		private void AddDownloadData(XmlDocument xml, XmlElement results)
 		{
 			if (this.ContainsKey(typeof(DownloadData)) == false)

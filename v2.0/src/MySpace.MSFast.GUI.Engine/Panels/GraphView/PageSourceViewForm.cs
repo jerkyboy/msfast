@@ -29,7 +29,7 @@ using System.Text.RegularExpressions;
 using System.Drawing;
 using System.IO;
 using MySpace.MSFast.DataProcessors;
-using MySpace.MSFast.DataProcessors.Render;
+using MySpace.MSFast.DataProcessors.Markers;
 
 namespace MySpace.MSFast.GUI.Engine.Panels.GraphView
 {
@@ -45,7 +45,6 @@ namespace MySpace.MSFast.GUI.Engine.Panels.GraphView
         private int currentResultsIndex = 0;
         private int lastPackageHashNumber = 0;
         private object setResultsLock = new Object();
-        private long lastRenderTimestamp = 0;
 
         private ProcessedDataPackage package;
         
@@ -80,6 +79,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels.GraphView
 
         private void RedrawData()
         {
+            /*
             if (this.package == null ||
                  this.package.ContainsKey(typeof(RenderData)) == false ||
                  this.package.ContainsKey(typeof(BrokenSourceData)) == false)
@@ -103,19 +103,19 @@ namespace MySpace.MSFast.GUI.Engine.Panels.GraphView
 
             }
             else
-            {
+            {*/
                 this.lblPercentsOfPageRenderTime.Text = "N/A";
                 this.lblFirstByteToBeginingOfSection.Text = "N/A";
                 this.lblFirstByteToEndOfSection.Text = "N/A";
                 this.lblBeginingOfSectionToEndOfSection.Text = "N/A";
                 this.lblPageRenderPercentsUntilBegining.Text = "N/A";
                 this.lblPageRenderPercentsUntilEnd.Text = "N/A";
-            }
+            //}
         }
         
         internal void SetResults(ProcessedDataPackage package, int index)
         {
-            lastRenderTimestamp = 0;
+            //lastRenderTimestamp = 0;
             if (package == null){
               //  Clear();
                 return;
@@ -147,12 +147,14 @@ namespace MySpace.MSFast.GUI.Engine.Panels.GraphView
                         this.currentResults = sp;
                         SetBuffer(brokenSourceData.PageSource);
                     }
+                    /*
                     if(package.ContainsKey(typeof(RenderData)) != false){
                         RenderData rd = (RenderData)package[typeof(RenderData)];
                         foreach(RenderedSegment rs in rd.Values){
                             lastRenderTimestamp = Math.Max(lastRenderTimestamp, rs.EndTime);
                         }
                     }
+                    */
                 }
                 
                 RedrawResultsNextPrev();
@@ -209,7 +211,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels.GraphView
             this.picBefore.ImageLocation = null;
 
             if (this.package == null || 
-                this.package.ContainsKey(typeof(RenderData)) == false ||
+                this.package.ContainsKey(typeof(MarkersData)) == false ||
                 this.package.ContainsKey(typeof(BrokenSourceData)) == false)
             {
                 return;

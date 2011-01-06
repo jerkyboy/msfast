@@ -45,9 +45,6 @@ namespace MySpace.MSFast.DataProcessors.Console
             ArgsParsers.Add("/type:", new ArgumentsParser(delegate(String name, String value, CommandLineArguments si) { si.SaveType = value.ToLower(); }));
 		}
 
-
-
-
         public CommandLineArguments(String[] commandLineArguments)
 		{
 			this.ParseCommandLineArgs(commandLineArguments);

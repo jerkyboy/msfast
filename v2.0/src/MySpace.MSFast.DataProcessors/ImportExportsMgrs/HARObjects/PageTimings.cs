@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MySpace.MSFast.Core.Utils;
 using MySpace.MSFast.DataProcessors;
-using MySpace.MSFast.DataProcessors.Render;
+using MySpace.MSFast.DataProcessors.Markers;
 
 namespace MySpace.MSFast.ImportExportsMgrs.HARObjects
 {
@@ -18,10 +18,19 @@ namespace MySpace.MSFast.ImportExportsMgrs.HARObjects
 
         public PageTimings(ProcessedDataPackage pacakge)
         {
-            RenderData r = (RenderData)pacakge[typeof(RenderData)];
-            
-            OnContentLoad = ((r.ReadyStateInteractive <= 0) ? -1 : (r.ReadyStateInteractive-pacakge.CollectionStartTime));
-            OnLoad = ((r.ReadyStateComplete <= 0) ? -1 : (r.ReadyStateComplete-pacakge.CollectionStartTime));
+            MarkersData r = (MarkersData)pacakge[typeof(MarkersData)];
+
+            foreach (Marker m in r)
+            {
+                if ("Ready State Interactive".Equals(m.Name) || "Ready State Complete".Equals(m.Name) && m.Timestamp > 0)
+                {
+                    OnContentLoad = m.Timestamp;
+                }
+                else if ("onload".Equals(m.Name) && m.Timestamp > 0)
+                {
+                    OnLoad = m.Timestamp;
+                }
+            }
         }
     }
 }

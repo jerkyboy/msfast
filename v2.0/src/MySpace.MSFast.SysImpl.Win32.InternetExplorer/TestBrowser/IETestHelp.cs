@@ -88,7 +88,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
         
 		public void ExecuteJs(string cmdId, string args)
 		{
-            if(log.IsInfoEnabled)
+            if (log.IsInfoEnabled)
                 log.Info(cmdId + "(" + args + ")");
 
 			if (this.browser != null)
@@ -408,7 +408,8 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 				return;
 
 
-            Stream outs = new RenderDumpFilesInfo(this.StartInfo).Open(FileAccess.Write);
+            Stream outs = new MarkersDumpFilesInfo(this.StartInfo).Open(FileAccess.Write);
+
             if (outs != null)
             {                
                 StreamWriter sw = new StreamWriter(outs, Encoding.UTF8);

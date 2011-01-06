@@ -305,10 +305,20 @@ namespace MySpace.MSFast.Core.Configuration.Common
 
         }       
     }
+    /*
     public class RenderDumpFilesInfo : OnlyCollectionIDDumpFileInfo
     {
         public RenderDumpFilesInfo(CollectionMetaInfo collectionMetaInfo)
             : base(collectionMetaInfo, "renderdump_{0}.dat")
+        {
+
+        }
+    }
+    */
+    public class MarkersDumpFilesInfo : OnlyCollectionIDDumpFileInfo
+    {
+        public MarkersDumpFilesInfo(CollectionMetaInfo collectionMetaInfo)
+            : base(collectionMetaInfo, "markers_{0}.dat")
         {
 
         }

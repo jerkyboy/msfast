@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using MySpace.MSFast.Core.Utils;
 using MySpace.MSFast.DataProcessors;
-using MySpace.MSFast.DataProcessors.Render;
 using MySpace.MSFast.DataProcessors.PageSource;
 
 namespace MySpace.MSFast.ImportExportsMgrs.HARObjects
@@ -28,8 +27,6 @@ namespace MySpace.MSFast.ImportExportsMgrs.HARObjects
 
         public Page(ProcessedDataPackage pacakge)
         {
-            RenderData r = (RenderData)pacakge[typeof(RenderData)];
-
             ID = "page_" + pacakge.CollectionID;
             Title = "MSFast Collection #" + pacakge.CollectionID;
             StartedDateTime = Converter.EpochToDateTime(pacakge.CollectionStartTime);

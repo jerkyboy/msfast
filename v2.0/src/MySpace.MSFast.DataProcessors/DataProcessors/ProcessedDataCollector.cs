@@ -23,11 +23,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MySpace.MSFast.DataProcessors.Render;
 using MySpace.MSFast.DataProcessors.Download;
 using MySpace.MSFast.DataProcessors.Screenshots;
 using MySpace.MSFast.DataProcessors.Performance;
 using MySpace.MSFast.DataProcessors.PageSource;
+using MySpace.MSFast.DataProcessors.Markers;
 
 namespace MySpace.MSFast.DataProcessors
 {
@@ -41,7 +41,7 @@ namespace MySpace.MSFast.DataProcessors
 			processors = new Dictionary<Type, DataProcessor>();
 
 			processors.Add(typeof(DownloadData), new DownloadDataProcessor());
-			processors.Add(typeof(RenderData), new RenderDataProcessor());
+            processors.Add(typeof(MarkersData), new MarkersDataProcessor());
 			processors.Add(typeof(ScreenshotsData), new ScreenshotsDataProcessor());
 			processors.Add(typeof(PerformanceData), new PerformanceDataProcessor());
 			processors.Add(typeof(PageSourceData), new PageSourceDataProcessor());

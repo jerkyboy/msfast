@@ -51,7 +51,7 @@ namespace MySpace.MSFast.Engine.Console
 		[STAThread]
 		static void Main(string[] args)
         {
-            MessageBox.Show("XX");
+            MessageBox.Show("X");
             commandArgs = args;
 
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);

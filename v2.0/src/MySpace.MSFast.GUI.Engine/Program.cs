@@ -25,8 +25,8 @@ using System.Windows.Forms;
 using MySpace.MSFast.ImportExportsMgrs;
 using System.IO;
 using MySpace.MSFast.DataProcessors;
-using MySpace.MSFast.DataProcessors.Render;
-using MySpace.MSFast.DataProcessors.Download;
+using MySpace.MSFast.Engine;
+using MySpace.MSFast.Engine.CollectorStartInfo;
 
 namespace MySpace.MSFast.GUI.Engine
 {
@@ -35,6 +35,13 @@ namespace MySpace.MSFast.GUI.Engine
 		[STAThread]
 		static void Main()
 		{
+            CustomRequestPageDataCollectorStartInfo chr = new CustomRequestPageDataCollectorStartInfo();
+            chr.URL = "http://www.google.com/";
+
+            int result = new PageDataCollector().StartTest(chr);
+
+
+
             string[] args = Environment.GetCommandLineArgs();
             String openFile = null;
 

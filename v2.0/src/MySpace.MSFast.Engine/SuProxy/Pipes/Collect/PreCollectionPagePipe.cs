@@ -57,8 +57,6 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 		{
             StringBuilder scripts = new StringBuilder();
 
-
-
             if (this.Configuration is EngineSuProxyConfiguration)
             {
                 scripts.Append(CollectorScriptsConfig.Instance.PageDataCollector);

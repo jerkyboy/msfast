@@ -1,0 +1,39 @@
+﻿<flash_project name="ClientSideResultsDisplay" version="1">
+    <project_folder name="FLA" expanded="true">
+        <project_file path="./main.fla" filetype="fla" profile="" />
+    </project_folder>
+    <project_folder name="Classes" expanded="true">
+        <project_folder name="GUI" expanded="true">
+            <project_file path="./Classes/MSFast/Engine/GUI/AbsDataGraphDisplay.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/DownloadGraph.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/PerformanceGraph.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/Scrollbar.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/Scrollable.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/Zoomable.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/GraphsContainer.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/ThumbnailsRenderer.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/Popup.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/ThumbnailsPair.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/Thumbnail.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/Seperator.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/ThumbnailPreview.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/MapRead.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/CustomMouseCursor.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/Navigator.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/PopupsListener.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/InternalPopupsListener.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/GUI/ExternalPopupsListener.as" filetype="as" />
+        </project_folder>
+        <project_folder name="Events" expanded="true">
+            <project_file path="./Classes/MSFast/Engine/Events/PerfDataEvent.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/Events/UIEvent.as" filetype="as" />
+        </project_folder>
+        <project_folder name="Data" expanded="true">
+            <project_file path="./Classes/MSFast/Engine/Data/PerfDataProvider.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/Data/PerfData.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/Data/PerformanceState.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/Data/DownloadState.as" filetype="as" />
+            <project_file path="./Classes/MSFast/Engine/Data/RenderedPeice.as" filetype="as" />
+        </project_folder>
+    </project_folder>
+</flash_project>

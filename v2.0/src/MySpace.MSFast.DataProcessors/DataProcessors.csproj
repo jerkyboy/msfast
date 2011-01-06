@@ -60,6 +60,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataProcessors\Markers\MarkersData.cs" />
+    <Compile Include="DataProcessors\Markers\MarkersDataProcessor.cs" />
     <Compile Include="DataProcessors\PageSource\BrokenSourceData.cs" />
     <Compile Include="DataProcessors\PageSource\BrokenSourceDataProcessor.cs" />
     <Compile Include="DataProcessors\ProcessedDataPackage.cs" />

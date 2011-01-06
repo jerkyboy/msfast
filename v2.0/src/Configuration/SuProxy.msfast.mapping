@@ -28,10 +28,10 @@ along with MSFast.  If not, see <http://www.gnu.org/licenses/>.
 		</map>
 
 		<map category="request">
-			<match><![CDATA[[\?]__PRE_COLLECTION=(.*)]]></match>
-			<chain>PreCollectionChain</chain>
+			<match><![CDATA[[\?&]__SUPROXY_CUSTOM_REQUEST=[0-9]*]]></match>
+			<chain>CustomRequestChain</chain>
 		</map>
-
+		
 		<map category="request">
 			<match><![CDATA[[\?](START|STOP)_TRACKING=([0-9]*)~([A-Za-z0-9=]*)]]></match>
 			<chain>TrackingChain</chain>
@@ -43,15 +43,11 @@ along with MSFast.  If not, see <http://www.gnu.org/licenses/>.
 		</map>
 
 		<map category="request">
-			<match><![CDATA[[\?&]__SUPROXY_CUSTOM_REQUEST=[0-9]*]]></match>
-			<chain>CustomRequestChain</chain>
-		</map>
-
-		<map category="request">
 			<match><![CDATA[[\?&]__MSFASTTEST=1]]></match>
 			<chain>GetContentFromServerChain_MSFastTest</chain>
 		</map>
 
+		
 		<map category="request">
 			<match><![CDATA[.*]]></match>
 			<chain>GetContentFromServerChain</chain>
@@ -59,6 +55,11 @@ along with MSFast.  If not, see <http://www.gnu.org/licenses/>.
 
 
 		<!-- Response -->
+		<map category="response">
+			<match><![CDATA[[\?]__PRE_COLLECTION=(.*)]]></match>
+			<chain>PreCollectionChain</chain>
+		</map>
+
 		<map category="response">
 			<match><![CDATA[[\?&]__MSFASTTEST=[0-9]*]]></match>
 			<chain>ParseCollectChain</chain>

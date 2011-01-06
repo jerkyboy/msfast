@@ -27,6 +27,7 @@ using MySpace.MSFast.DataProcessors.PageSource;
 
 namespace MySpace.MSFast.DataProcessors.Render
 {
+    /*
 	public enum SegmentType
 	{
 		Unknown,
@@ -69,4 +70,5 @@ namespace MySpace.MSFast.DataProcessors.Render
 		public long AvgRenderTime = 0;
 		public long TotalRenderTime = 0;
 	}
+     */
 }

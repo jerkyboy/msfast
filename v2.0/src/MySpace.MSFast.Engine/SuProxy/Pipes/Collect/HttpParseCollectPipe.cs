@@ -42,8 +42,6 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 
         private CollectionInfoParser CollectionInfoParser;
 
-		private bool isFirstHit = false;
-
 		public override void SendHeader(string header)
 		{
             this.CollectionInfoParser = new CollectionInfoParser(this.PipesChain.ChainState);
@@ -51,8 +49,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
             if (CachedPages.ContainsKey(this.CollectionInfoParser.CollectHash))
                 return;
 			
-			this.isFirstHit = true;
-            CachedPages.Add(this.CollectionInfoParser.CollectHash, new ChunkedPage(header));
+            CachedPages.Add(this.CollectionInfoParser.CollectHash, new ChunkedPage(header)); //Request Header
 		}
 
 		public override void SendBodyData(byte[] buffer, int offset, int length)
@@ -61,6 +58,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 				return;
 
             ChunkedPage page = null;
+
             CachedPages.TryGetValue(this.CollectionInfoParser.CollectHash,out page);
 
             if(page == null || page.IsParsed)
@@ -78,6 +76,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
                 return;
 
             ChunkedPage page = null;
+
             CachedPages.TryGetValue(this.CollectionInfoParser.CollectHash, out page);
 
             if (page == null)
@@ -85,7 +84,9 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 
             base.SendHeader(page.Header);
 
-            if (page.IsParsed == false && bodyMemoryStream != null && this.Configuration is EngineSuProxyConfiguration)
+            if (page.IsParsed == false && 
+                bodyMemoryStream != null && 
+                this.Configuration is EngineSuProxyConfiguration)
 			{
                 page.Parse(Encoding.UTF8.GetString(bodyMemoryStream.ToArray()), 60);
 
@@ -144,6 +145,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
                 AppendScript(modifiedPage, scripts.ToString());
                 AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnInit);
                 AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnStartDocument);
+                AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnStartHtml);
                 AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnStartHead);
 			}
 			
@@ -153,10 +155,11 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 			modifiedPage.Append(chunkedPage.HeadToBody);
             if (appendScripts) AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnStartBody);
 
+            int chuckid = 1;
 			foreach (BodyChunk bc in chunkedPage.Body)
 			{
 				modifiedPage.Append(bc.Content);
-                if (appendScripts) AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnSegment);
+                if (appendScripts) AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnSegment, chuckid++);
 			}
             
             if (appendScripts) AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnEndBody);
@@ -172,12 +175,10 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 
 			return modifiedPage.ToString();
 		}
-
         private void AppendScript(StringBuilder modifiedPage, string script)
         {
             AppendScript(modifiedPage, script, null);
         }
-
         private void AppendScript(StringBuilder modifiedPage, string script, params object[] args)
         {
             modifiedPage.Append("<script>");
@@ -187,7 +188,6 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
                 modifiedPage.Append(script);
             modifiedPage.Append("</script>");
         }
-
 		private string base64Encode(string data)
 		{
 			try

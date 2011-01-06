@@ -70,10 +70,9 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 						"<h1 style=\"font-family:arial;color:#1556a5\">SuProxy Request Forward</h1><h2 style=\"font-family:arial;color:#789ac3\">Please wait while your request is processed...</h2>" +
 						"<form action=\"http://";
 
-        private const String CUSTOM_REQUEST_CONTINUED = "/?__SUPROXY_CUSTOM_REQUEST=1\" method=\"post\" enctype=\"multipart/form-data\"><textarea name=\"customRequestBody\"  style=\"width:900px;height:400px;\">";
+        private const String CUSTOM_REQUEST_CONTINUED = "/?__SUPROXY_CUSTOM_REQUEST=1&__MSFASTTEST=1\" method=\"post\" enctype=\"multipart/form-data\"><textarea name=\"customRequestBody\"  style=\"width:900px;height:400px;\">";
 
 		private const String CUSTOM_REQUEST_END = "</textarea><br/><input type=\"submit\" value=\"Click here if nothing happend...\" /></form><script>setTimeout(\"document.forms[0].submit();\",100);</script></body></html>";
-
 
 		private bool CreateCustomRequest(string filename)
 		{
@@ -82,7 +81,6 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 			{
 				StreamWriter sw = new StreamWriter(filename);
 				sw.Write(CUSTOM_REQUEST_START);
-
 				Uri ur = new Uri(this.URL);
 				sw.Write(ur.Host);
 				sw.Write(CUSTOM_REQUEST_CONTINUED);
@@ -208,12 +206,12 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 			#endregion
 
 			#region URL
-            if (String.IsNullOrEmpty(base.TestURL))
+            if (String.IsNullOrEmpty(base.URL))
 			{
 				throw new UriFormatException();
 			}
-            Uri uri = new Uri(base.TestURL);
-            sb.Append(base.TestURL);
+            Uri uri = new Uri(base.URL);
+            sb.Append(base.URL);
 			#endregion
 
             #region HttpVersions

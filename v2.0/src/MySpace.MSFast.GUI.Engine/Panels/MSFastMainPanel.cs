@@ -31,7 +31,6 @@ using MySpace.MSFast.Core.Configuration.ConfigProviders;
 using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.DataProcessors;
 using MySpace.MSFast.DataProcessors.Download;
-using MySpace.MSFast.DataProcessors.Render;
 using MySpace.MSFast.DataProcessors.Performance;
 using System.Xml;
 using MySpace.MSFast.DataValidators;
@@ -50,6 +49,7 @@ using MySpace.MSFast.DataProcessors.DataValidators.ValidationResultTypes;
 using MySpace.MSFast.Core.Logger;
 using MySpace.MSFast.Core.Configuration.Common;
 using MySpace.MSFast.ImportExportsMgrs;
+using MySpace.MSFast.DataProcessors.Markers;
 
 namespace MySpace.MSFast.GUI.Engine.Panels
 {
@@ -474,7 +474,7 @@ namespace MySpace.MSFast.GUI.Engine.Panels
                 
 
                 if (package.ContainsKey(typeof(DownloadData)) != false ||
-                    package.ContainsKey(typeof(RenderData)) != false ||
+                    package.ContainsKey(typeof(MarkersData)) != false ||
                     package.ContainsKey(typeof(PerformanceData)) != false)
                 {
                     SerializedResultsFilesInfo srfi = new SerializedResultsFilesInfo(package);

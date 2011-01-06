@@ -29,6 +29,7 @@ using MySpace.MSFast.Core.Configuration.Common;
 
 namespace MySpace.MSFast.DataProcessors.Render
 {
+    /*
 	class RenderDataProcessor : DataProcessor<RenderData>
 	{
         private static Regex render_Dump_Pattern = new Regex("(S|E)([0-9]*?)(\\|(PE|PB|BP|BC|HB|HC|UN|LI|LO|IN|CO|OL)\\|){0,1}:([0-9]{13,15});", RegexOptions.Compiled);
@@ -181,4 +182,5 @@ namespace MySpace.MSFast.DataProcessors.Render
 		}
 		#endregion
 	}
+    */
 }
