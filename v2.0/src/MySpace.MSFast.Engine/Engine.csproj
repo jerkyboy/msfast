@@ -55,7 +55,6 @@
     <Compile Include="SuProxy\Pipes\Collect\HttpInitCollectionPipe.cs" />
     <Compile Include="SuProxy\Pipes\Collect\HttpParseCollectPipe.cs" />
     <Compile Include="SuProxy\Pipes\Collect\SaveIncomingDataPipe.cs" />
-    <Compile Include="SuProxy\Pipes\Tracking\HttpCustomRequestTrackerPipe.cs" />
     <Compile Include="SuProxy\Pipes\Tracking\HttpDontTrackPipe.cs" />
     <Compile Include="SuProxy\Pipes\Tracking\HttpFlushPipe.cs" />
     <Compile Include="SuProxy\Pipes\Tracking\HttpTracerPipe.cs" />

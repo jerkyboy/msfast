@@ -1,0 +1,21 @@
+<projectDescription>
+  <id>1294361810411</id>
+  <name>ResultsViewr</name>
+  <asVersion>0</asVersion>
+  <boundTemplate>file:///C|/Users/yramot/AppData/Local/Adobe/Flash CS5/en_US/Configuration/ActionScript 3.0/Templates/boundClass_as3.as</boundTemplate>
+  <classTemplate>file:///C|/Users/yramot/AppData/Local/Adobe/Flash CS5/en_US/Configuration/ActionScript 3.0/Templates/standardClass_as3.as</classTemplate>
+  <classPath>.</classPath>
+  <defaultApp/>
+  <rootURI>file:///C|/Data/Development/MSFast/src/MySpace.MSFast.GUI.ResultsView/</rootURI>
+  <flexSDK/>
+  <sources editable="false"/>
+  <libraries editable="false"/>
+  <externalLibraries editable="false"/>
+  <compileList editable="false"/>
+  <recentFiles editable="false">
+    <uri label="RenderedPeice.as">file:///C|/Data/Development/MSFast/src/MySpace.MSFast.GUI.ResultsView/Classes/MSFast/Engine/Data/RenderedPeice.as</uri>
+    <uri label="MarkerPeice.as">file:///C|/Data/Development/MSFast/src/MySpace.MSFast.GUI.ResultsView/Classes/MSFast/Engine/Data/MarkerPeice.as</uri>
+    <uri label="PerfDataProvider.as">file:///C|/Data/Development/MSFast/src/MySpace.MSFast.GUI.ResultsView/Classes/MSFast/Engine/Data/PerfDataProvider.as</uri>
+  </recentFiles>
+  <locations editable="false"/>
+</projectDescription>

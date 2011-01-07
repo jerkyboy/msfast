@@ -5,6 +5,7 @@
 	import MSFast.Engine.Data.PerformanceState;
 	import MSFast.Engine.Data.DownloadState;
 	import MSFast.Engine.Data.RenderedPeice;
+	import MSFast.Engine.Data.MarkerPeice;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.events.EventDispatcher;
@@ -50,6 +51,8 @@
 					pd.thumbnail_path = res.firstChild.childNodes[i].firstChild.nodeValue;
 				}else if(res.firstChild.childNodes[i].nodeName == "render"){
 					parseRender(pd,res.firstChild.childNodes[i]);
+				}else if(res.firstChild.childNodes[i].nodeName =="markers"){
+					parseMarkers(pd,res.firstChild.childNodes[i]);
 				}else if(res.firstChild.childNodes[i].nodeName == "download"){
 					parseDownload(pd,res.firstChild.childNodes[i]);
 				}else if(res.firstChild.childNodes[i].nodeName == "performance"){
@@ -58,6 +61,29 @@
 			}
 			this.dispatchEvent(new PerfDataEvent(PerfDataEvent.ON_NEW_DATA_RECEIVED, pd));
 		}
+		
+		private function parseMarkers(pd:PerfData, xml:XMLNode)
+		{ 
+			if(xml.attributes["mx"] != undefined && xml.attributes["mx"] != "" && xml.attributes["mx"] != "-1"){ 
+				pd.timeReadyStateUninitialized = Math.max(0,parseInt(xml.attributes["mx"]));
+			}
+			if(xml.attributes["mn"] != undefined && xml.attributes["mn"] != "" && xml.attributes["mn"] != "-1"){ 
+				pd.timeReadyStateLoading = Math.max(0,parseInt(xml.attributes["mn"]));
+			}		
+			
+			pd.markersData = new Array();
+			
+			for(var i = 0 ; i < xml.childNodes.length ; i ++)
+			{
+				pd.renderData.push(new RenderedPeice(parseInt(xml.childNodes[i].attributes["s"]),
+													 parseInt(xml.childNodes[i].attributes["e"]),
+													 parseInt(xml.childNodes[i].attributes["i"]),
+													 parseInt(xml.childNodes[i].attributes["ss"]),
+													 parseInt(xml.childNodes[i].attributes["sl"]),
+													 xml.childNodes[i].attributes["st"]));
+			}
+		}
+		
 		private function parseRender(pd:PerfData, xml:XMLNode)
 		{ 
 			if(xml.attributes["un"] != undefined && xml.attributes["un"] != "" && xml.attributes["un"] != "-1"){ 
