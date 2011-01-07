@@ -88,8 +88,6 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
         
 		public void ExecuteJs(string cmdId, string args)
 		{
-            if (log.IsInfoEnabled)
-                log.Info(cmdId + "(" + args + ")");
 
 			if (this.browser != null)
 				this.browser.RefreshView();

@@ -28,6 +28,7 @@ using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.Core.Http;
 using MySpace.MSFast.Engine.Events;
 using MySpace.MSFast.Core.Configuration.Common;
+using MySpace.MSFast.Core.Logger;
 
 namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 {
@@ -35,7 +36,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 	{
 		private static bool isTracking = false;
 
-        private static Dictionary<String, String> URLMasks = new Dictionary<string, string>();
+        private static Dictionary<Uri, Uri> URLMasks = new Dictionary<Uri, Uri>();
         private static LinkedList<HttpTransaction> httpTransactions = new LinkedList<HttpTransaction>();
 		private int MaxBufferSizeWhenIdle = 5;
 		private int MaxBufferSizeWhenTracking = 300;
@@ -56,7 +57,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 			{
                 HttpTransaction httpTranc = new HttpTransaction();
 
-				httpTranc.URL = (String)this.PipesChain.ChainState["REQUEST_URI"];
+				httpTranc.URL = new Uri((String)this.PipesChain.ChainState["REQUEST_URI"]);
                 httpTranc.Mode = HttpMode.SendingRequest;
 
 				httpTranc.ConnectionStartTime = DateTime.Now;
@@ -139,8 +140,8 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 				httpTransactions.AddLast(httpTranc);
 			}
 		}
-
-        public static void FlushTracker(DownloadDumpFilesInfo fileInfo, String fromUrl)
+        private static readonly MSFastLogger log = MSFastLogger.GetLogger("IETestHelp");
+        public static void FlushTracker(DownloadDumpFilesInfo fileInfo, Uri fromUrl)
 		{
 			lock (httpTransactions)
 			{
@@ -155,24 +156,30 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 
                 HttpTransaction t = null;
 
+                foreach (HttpTransaction tt in httpTransactions)
+                {
+                    if (tt.IsTrackable && URLMasks.ContainsKey(tt.URL))
+                    {
+                        tt.OriginalURL = tt.URL;
+                        tt.URL = URLMasks[tt.URL];
+                    }
+                }
+
 				while (httpTransactions.Count > 0)
 				{
 					t = httpTransactions.First.Value;
 
-					if (t.URL != null && t.URL.Equals(fromUrl))
-					{
+                    if (t.URL != null) log.Info(t.URL);
+                    if (t.OriginalURL != null) log.Info(t.OriginalURL);
+
+					if (t.IsTrackable && t.URL != null && t.URL.Equals(fromUrl))
+                    {
 						break;
 					}
 
 					httpTransactions.RemoveFirst();
-				}
-                foreach (HttpTransaction tt in httpTransactions)
-                {
-                    if (URLMasks.ContainsKey(tt.URL))
-                    {
-                        tt.URL = URLMasks[tt.URL];
-                    }
-                }
+				}                
+
 				if (httpTransactions.Count > 0)
 				{
                     HttpFlushPipe.AddFlushQue(fileInfo, new LinkedList<HttpTransaction>(httpTransactions));
@@ -193,16 +200,16 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 				isTracking = true;
 			}
 		}
-
-        public static void AddURLMask(string p, string p_2)
+        
+        public static void AddURLMask(Uri key, Uri maskTo)
         {
-            if (URLMasks.ContainsKey(p))
+            if (URLMasks.ContainsKey(key))
             {
-                URLMasks[p] = p_2;
+                URLMasks[key] = maskTo;
             }
             else
             {
-                URLMasks.Add(p, p_2);
+                URLMasks.Add(key, maskTo);
             }
         }
     }

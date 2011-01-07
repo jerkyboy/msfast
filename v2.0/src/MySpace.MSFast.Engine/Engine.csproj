@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CAD5800B-F048-44BE-91A0-37AB73C8A93E}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -55,6 +55,8 @@
     <Compile Include="SuProxy\Pipes\Collect\HttpInitCollectionPipe.cs" />
     <Compile Include="SuProxy\Pipes\Collect\HttpParseCollectPipe.cs" />
     <Compile Include="SuProxy\Pipes\Collect\SaveIncomingDataPipe.cs" />
+    <Compile Include="SuProxy\Pipes\Tracking\HttpCustomRequestTrackerPipe.cs" />
+    <Compile Include="SuProxy\Pipes\Tracking\HttpDontTrackPipe.cs" />
     <Compile Include="SuProxy\Pipes\Tracking\HttpFlushPipe.cs" />
     <Compile Include="SuProxy\Pipes\Tracking\HttpTracerPipe.cs" />
     <Compile Include="SuProxy\Pipes\Tracking\HttpTracerStatePipe.cs" />

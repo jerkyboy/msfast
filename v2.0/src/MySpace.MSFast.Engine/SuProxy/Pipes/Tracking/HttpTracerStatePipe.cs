@@ -36,7 +36,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 	public class HttpTracerStatePipe : HttpPipe
 	{
 		private static byte[] responseHeader = null;
-		private static Regex parseQueryString = new Regex("[\\?](START|STOP)_TRACKING=([0-9]*)~([A-Za-z0-9=/\\+]*)", RegexOptions.Compiled);
+        private static Regex parseQueryString = new Regex("[\\?](START|STOP)_TRACKING=[0-9]*~([A-Za-z0-9=/\\+]*)~([A-Za-z0-9=/\\+]*)", RegexOptions.Compiled);
 
 		
 		public override void Init(System.Collections.Generic.Dictionary<object, object> dictionary)
@@ -57,24 +57,20 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Tracking
 			{
 				String url = (String)this.PipesChain.ChainState["REQUEST_URI"];
 				
-				bool isStart = false;
-				String originalUrl = "";
-
 				Match m = parseQueryString.Match(url);
 
 				if (m.Success)
 				{
 					try
                     {
-                        originalUrl = base64Decode(m.Groups[3].Value);
-						isStart = m.Groups[1].Value == "START";
+                        Uri originalUrl = new Uri(base64Decode(m.Groups[2].Value));
+                        Uri startFrom = new Uri(base64Decode(m.Groups[3].Value));
+                        
+                        bool isStart = m.Groups[1].Value == "START";
 
 						if (isStart)
 						{
-                            if (m.Groups.Count >= 4 && this.Configuration is EngineSuProxyConfiguration)
-                            {
-                                HttpTracerPipe.AddURLMask(originalUrl, ((EngineSuProxyConfiguration)this.Configuration).URL);
-                            }
+                            HttpTracerPipe.AddURLMask(startFrom, originalUrl);
                             HttpTracerPipe.StartTracking();
 						}
 						else if(this.Configuration is EngineSuProxyConfiguration)

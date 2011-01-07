@@ -35,12 +35,6 @@ namespace MySpace.MSFast.SuProxy.Pipes.Utils
 		MemoryStream ms = new MemoryStream();
 		static Regex PostDataRegex = new Regex("(?:Content-Type: multipart/form-data; boundary=[-]*?)([0-9A-Za-z]*)\r\n(?:\\s|.)*?(?:[-]*?\\1)\r\nContent-Disposition: form-data; name=\"customRequestBody\"\r\n\r\n((\\s|.)*?)(?:\r\n[-]*?\\1)", RegexOptions.Multiline | RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-		public override void Init(System.Collections.Generic.Dictionary<object, object> dictionary)
-		{
-			base.Init(dictionary);
-		}
-
-
 		public override void SendData(byte[] buffer, int offset, int length)
 		{
 			ms.Write(buffer, offset, length);

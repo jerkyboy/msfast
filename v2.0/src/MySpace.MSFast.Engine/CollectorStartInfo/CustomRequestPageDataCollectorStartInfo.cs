@@ -52,7 +52,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 				return PageDataCollectorErrors.CantSaveTempFile;
 			}
 
-            base.FirstURL = String.Concat("file://" + generatedTempFilename);
+            base.FirstURL = String.Concat("file://" + generatedTempFilename + "?__DONT_TRACK=1");
 
 			return base.PrepareStartInfo();
 		}

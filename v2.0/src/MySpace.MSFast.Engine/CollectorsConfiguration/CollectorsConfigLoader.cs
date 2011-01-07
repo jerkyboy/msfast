@@ -185,6 +185,11 @@ namespace MySpace.MSFast.Engine.CollectorsConfiguration
 
         }
 
+        public uint GroupCount
+        {
+            get { return 2; }
+        }
+        
         public ICollection<CollectorScript> GetGroupScripts(int groupId)
         {
             if (groupId == 0)

@@ -39,7 +39,8 @@ namespace MySpace.MSFast.Core.Http
 	{
 		public bool IsTrackable = true;
         public HttpMode Mode;
-		public String URL = "";
+		public Uri URL;
+        public Uri OriginalURL;
 		public String TransactionCollectionGroup;
 
 		public char SourcePort = (char)0x0000;

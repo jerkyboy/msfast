@@ -135,11 +135,6 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 						Directory.Exists(TempFolder));
 		}
         
-        protected String AppendCollectionArgs(String url)
-        {
-            return String.Concat(url, ((url.IndexOf("?") == -1) ? "?" : "&"), "__MSFASTTEST=1");
-        }
-
 		public PageDataCollectorStartInfo(String[] commandLineArguments){
 			this.ParseCommandLineArgs(commandLineArguments);
 		}

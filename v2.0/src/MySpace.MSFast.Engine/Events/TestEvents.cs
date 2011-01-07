@@ -76,12 +76,12 @@ namespace MySpace.MSFast.Engine.Events
             FireProgressEvent(progressEventType, progress, total, null);
         }
 
-        public static void FireProgressEvent(TestEventType progressEventType, String url)
+        public static void FireProgressEvent(TestEventType progressEventType, Uri url)
         {
             FireProgressEvent(progressEventType, -1, -1, url);
         }
 
-        public static void FireProgressEvent(TestEventType progressEventType, int progress, int total, String url)
+        public static void FireProgressEvent(TestEventType progressEventType, int progress, int total, Uri url)
         {
             if (IsVerbose)
             {

@@ -27,6 +27,8 @@ using System.IO;
 using MySpace.MSFast.DataProcessors;
 using MySpace.MSFast.Engine;
 using MySpace.MSFast.Engine.CollectorStartInfo;
+using System.Text.RegularExpressions;
+using MySpace.MSFast.Engine.DataCollector;
 
 namespace MySpace.MSFast.GUI.Engine
 {
@@ -35,14 +37,13 @@ namespace MySpace.MSFast.GUI.Engine
 		[STAThread]
 		static void Main()
 		{
-            CustomRequestPageDataCollectorStartInfo chr = new CustomRequestPageDataCollectorStartInfo();
-            chr.URL = "http://www.google.com/";
-
-            int result = new PageDataCollector().StartTest(chr);
-
-
+            PageDataCollectorStartInfo csr = new PageDataCollectorStartInfo();
+            csr.URL = "http://www.google.com/";
+            PageDataCollector pdc = new PageDataCollector();
+            int a = pdc.StartTest(csr);
 
             string[] args = Environment.GetCommandLineArgs();
+
             String openFile = null;
 
             if (args != null && args.Length == 2)

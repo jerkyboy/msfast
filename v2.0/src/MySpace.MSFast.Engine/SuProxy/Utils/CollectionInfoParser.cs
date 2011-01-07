@@ -5,6 +5,7 @@ using MySpace.MSFast.SuProxy.Pipes;
 using System.Text.RegularExpressions;
 using MySpace.MSFast.Core.Configuration.Common;
 using MySpace.MSFast.SuProxy.Proxy;
+using MySpace.MSFast.Engine.CollectorsConfiguration;
 
 namespace MySpace.MSFast.Engine.SuProxy.Utils
 {
@@ -28,6 +29,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Utils
         public String URLEncoded = String.Empty;
         public String URL = String.Empty;
         public String NextURL = String.Empty;
+        public String NextURLEncoded = String.Empty;
         public String CollectHash = String.Empty;
 
         public int CurrentCollectionGroup = -1;
@@ -64,7 +66,9 @@ namespace MySpace.MSFast.Engine.SuProxy.Utils
 
             if (m.Success)
             {
-                this.NextURL = Convert.ToBase64String(Encoding.UTF8.GetBytes(m.Groups[1].Value));
+                this.NextURLEncoded = m.Groups[1].Value;
+                this.NextURL = Encoding.UTF8.GetString(Convert.FromBase64String(m.Groups[1].Value));
+
                 return;
             }
 
@@ -87,10 +91,15 @@ namespace MySpace.MSFast.Engine.SuProxy.Utils
                 try { this.CurrentCollectionGroup = int.Parse(m.Groups[1].Value); } catch { }
             }
 
+            if (this.CurrentCollectionGroup + 1 >= CollectorScriptsConfig.Instance.GroupCount)
+                return;
+
             this.NextURL = this.URL + ((this.URL.IndexOf("?") == -1) ? "?" : "&") + "__MSFAST_TESTING=1" + 
                 "&__MSFAST_TEST_URL=" + this.URLEncoded +
-                "&__MSFAST_PAGEHASH=" + this.CollectHash + 
-                ((this.CurrentCollectionGroup >=0 ) ? "&__MSFAST_COLLECT_GROUP=" + (this.CurrentCollectionGroup + 1) : String.Empty);
+                "&__MSFAST_PAGE_HASH=" + this.CollectHash + 
+                "&__MSFAST_COLLECT_GROUP=" + ((this.CurrentCollectionGroup >=0 ) ? (this.CurrentCollectionGroup + 1).ToString() : "0");
+
+            this.NextURLEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(this.NextURL));
         }
 
 

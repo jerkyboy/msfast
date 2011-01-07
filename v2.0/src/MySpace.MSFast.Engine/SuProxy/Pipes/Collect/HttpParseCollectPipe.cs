@@ -99,12 +99,12 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
                     page.SaveToDisc(sdfi, bsdfi);
             }
 
-            byte[] bodyData = null;
+            byte[] bodyData = null;            
 
             if (this.CollectionInfoParser.CurrentCollectionGroup == -1)
             {
                 bodyData = Encoding.UTF8.GetBytes(GetPreCollectionPage(page));
-                base.SendHeader(String.Format(PreCollectionResponseHeader,bodyData.Length));
+                base.SendHeader(String.Format(PreCollectionResponseHeader, bodyData.Length));
             }
             else
             {
@@ -127,7 +127,8 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
                                                                                   chunkedPage.Body.Length,
                                                                                   this.CollectionInfoParser.URL,
                                                                                   this.CollectionInfoParser.URLEncoded,
-                                                                                  this.CollectionInfoParser.NextURL);
+                                                                                  this.CollectionInfoParser.NextURL,
+                                                                                  this.CollectionInfoParser.NextURLEncoded);
 
                 foreach (CollectorScript cs in CollectorScriptsConfig.Instance.Values)
                 {
@@ -167,7 +168,8 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
                                                                                             chunkedPage.Body.Length,
                                                                                             this.CollectionInfoParser.URL,
                                                                                             this.CollectionInfoParser.URLEncoded,
-                                                                                            this.CollectionInfoParser.NextURL);
+                                                                                            this.CollectionInfoParser.NextURL,
+                                                                                            this.CollectionInfoParser.NextURLEncoded);
                 AppendScript(modifiedPage, scripts.ToString());
                 AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnInit);
                 AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnStartDocument);

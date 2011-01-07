@@ -33,7 +33,8 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
                                                                                   0,
                                                                                   collectionInfoParser.URL,
                                                                                   collectionInfoParser.URLEncoded,
-                                                                                  collectionInfoParser.NextURL);
+                                                                                  collectionInfoParser.NextURL,
+                                                                                  collectionInfoParser.NextURLEncoded);
 
                 foreach (CollectorScript cs in CollectorScriptsConfig.Instance.Values)
                 {
