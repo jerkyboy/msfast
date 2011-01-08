@@ -31,8 +31,12 @@
 		}
 		
 		private function _onNewData(e:PerfDataEvent):void{
-			if(this.perfData == null) perfData = e.perfData;
-			onNewPerfData(e.perfData);perfData = e.perfData;}
+			if(this.perfData == null) 
+				perfData = e.perfData;
+			
+			onNewPerfData(e.perfData);
+			perfData = e.perfData;
+		}
 		public function onNewPerfData(perfData:PerfData):void{}
 		
 		public function set zoom(z:Number):void{

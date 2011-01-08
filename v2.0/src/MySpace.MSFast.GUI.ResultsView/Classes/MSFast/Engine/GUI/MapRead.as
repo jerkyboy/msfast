@@ -93,11 +93,23 @@ package MSFast.Engine.GUI
 			this.smallmap.x = 4;
 			
 			this.graphics.clear();
-			this.graphics.lineStyle(0,0xc4e3f3);
+			
+			this.graphics.lineStyle(0,0xcccccc);
 			this.graphics.moveTo(0,this.logo.y - 4);
 			this.graphics.lineTo(this.width,this.logo.y-4);
 			this.graphics.moveTo(0,this.shadow_left.y - 4);
 			this.graphics.lineTo(this.width,this.shadow_left.y-4);
+
+			this.graphics.moveTo(0,this.logo.y - 3);
+			this.graphics.lineStyle(0,0x000000);
+			this.graphics.beginFill(0x000000,1);
+			this.graphics.lineTo(0,this.logo.y + this.logo.height);
+			this.graphics.lineTo(this.width,this.logo.y + this.logo.height);
+			this.graphics.lineTo(this.width,this.logo.y -3);
+			this.graphics.lineTo(0,this.logo.y -3);
+
+			this.graphics.endFill();
+			
 			this.smallmap.update();
 		}
 		

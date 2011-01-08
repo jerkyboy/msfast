@@ -28,6 +28,7 @@
 			xmlLoader.addEventListener(Event.COMPLETE, LoadXML); 
 			xmlLoader.load(new URLRequest(url)); 
 		}
+		
 		private function LoadXML(e:Event):void { 
 			var xDoc:XMLDocument = new XMLDocument();
 			xDoc.ignoreWhite = true;
@@ -59,28 +60,17 @@
 					parsePerformance(pd,res.firstChild.childNodes[i]);
 				}
 			}
+			
 			this.dispatchEvent(new PerfDataEvent(PerfDataEvent.ON_NEW_DATA_RECEIVED, pd));
 		}
 		
 		private function parseMarkers(pd:PerfData, xml:XMLNode)
 		{ 
-			if(xml.attributes["mx"] != undefined && xml.attributes["mx"] != "" && xml.attributes["mx"] != "-1"){ 
-				pd.timeReadyStateUninitialized = Math.max(0,parseInt(xml.attributes["mx"]));
-			}
-			if(xml.attributes["mn"] != undefined && xml.attributes["mn"] != "" && xml.attributes["mn"] != "-1"){ 
-				pd.timeReadyStateLoading = Math.max(0,parseInt(xml.attributes["mn"]));
-			}		
-			
 			pd.markersData = new Array();
 			
 			for(var i = 0 ; i < xml.childNodes.length ; i ++)
 			{
-				pd.renderData.push(new RenderedPeice(parseInt(xml.childNodes[i].attributes["s"]),
-													 parseInt(xml.childNodes[i].attributes["e"]),
-													 parseInt(xml.childNodes[i].attributes["i"]),
-													 parseInt(xml.childNodes[i].attributes["ss"]),
-													 parseInt(xml.childNodes[i].attributes["sl"]),
-													 xml.childNodes[i].attributes["st"]));
+				pd.markersData.push(new MarkerPeice(parseInt(xml.childNodes[i].attributes["t"]),xml.childNodes[i].attributes["n"]));
 			}
 		}
 		
@@ -117,6 +107,7 @@
 													 xml.childNodes[i].attributes["st"]));
 			}
 		}
+		
 		private function parseDownload(pd:PerfData, xml:XMLNode)
 		{
 			pd.downloadData = new Array();
@@ -135,6 +126,7 @@
 														parseInt(xml.childNodes[i].attributes["ttrc"])));
 			}
 		}
+		
 		private function parsePerformance(pd:PerfData, xml:XMLNode)
 		{
 			pd.performanceResults = new Array();
@@ -169,77 +161,4 @@
 	}
 }
 
-/*
-			
-			var pd:PerfData = new PerfData();
-
-			pd.startTime = 1000;
-			pd.endTime = 10000;
-			pd.performanceResults = new Array();
-			pd.testId = 81;
-			for(var i = 0 ; i < 1000; i ++)
-			{
-				pd.performanceResults.push(new PerformanceState(pd.startTime + (i * ((pd.endTime-pd.startTime)/1000)),
-																Math.random()*100,
-																Math.random()*100,
-																Math.random()*8000,
-																Math.random()*8000));
-				
-				pd.maxPrivateWorkingSet = Math.max(pd.maxPrivateWorkingSet,pd.performanceResults[pd.performanceResults.length-1].privateWorkingSet);
-				pd.minPrivateWorkingSet = Math.min(pd.minPrivateWorkingSet,pd.performanceResults[pd.performanceResults.length-1].privateWorkingSet);
-				
-				pd.maxWorkingSet = Math.max(pd.maxWorkingSet,pd.performanceResults[pd.performanceResults.length-1].workingSet);
-				pd.minWorkingSet = Math.min(pd.minWorkingSet,pd.performanceResults[pd.performanceResults.length-1].workingSet);
-				
-				pd.maxProcessorTime = Math.max(pd.maxProcessorTime,pd.performanceResults[pd.performanceResults.length-1].processorTime);
-				pd.minProcessorTime = Math.min(pd.minProcessorTime,pd.performanceResults[pd.performanceResults.length-1].processorTime);
-				
-				pd.maxUserTime = Math.max(pd.maxUserTime,pd.performanceResults[pd.performanceResults.length-1].userTime);
-				pd.minUserTime = Math.min(pd.minUserTime,pd.performanceResults[pd.performanceResults.length-1].userTime);
-
-			}
-			
-			var ar = [0,0,0,0];
-			pd.downloadData = new Array();
-			for(i = 0 ; i < 20; i ++)
-			{
-				ar[0] = Math.min(pd.endTime,pd.startTime + (i * ((pd.endTime-pd.startTime)/20)));
-				ar[1] = Math.min(pd.endTime,ar[0] + (Math.random()*1000));
-				ar[2] = Math.min(pd.endTime,ar[1] + (Math.random()*1000));
-				ar[3] = Math.min(pd.endTime,ar[2] + (Math.random()*1000));
-				
-				pd.downloadData.push(new DownloadState(ar[1],ar[1]+10,ar[2],ar[3],ar[0],ar[3],"http://www.google.com" + Math.random()));
-			}
-			
-			
-			pd.renderData = new Array();
-			var l = pd.startTime;
-			var n = 0;
-			for(i = 0 ; i < 40; i ++)
-			{
-				n = l + (Math.random()*500);
-				
-				if(n > pd.endTime)
-					break;
-					
-				pd.renderData.push(new RenderedPeice(l,n,i));
-				l = n;
-			}
-			
-			
-			
-			this.dispatchEvent(new PerfDataEvent(PerfDataEvent.ON_NEW_DATA_RECEIVED, pd));
-		}
-	}
-}
-
-_sendingRequestStartTime:Number,
-										 _sendingRequestEndTime:Number,
-										 _receivingResponseStartTime:Number,
-										 _receivingResponseEndTime:Number,
-										 _connectionStartTime:Number,
-										 _connectionEndTime:Number,
-										 uurl:String):void
-		{
-*/
 

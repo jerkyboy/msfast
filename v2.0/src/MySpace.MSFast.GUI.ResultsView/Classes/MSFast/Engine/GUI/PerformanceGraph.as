@@ -105,15 +105,12 @@
 			
 			var mx =  (e.stageX - p.x);
 			
-			//this.graphOverlay_mc.x = mx;
-			
 			var before = undefined;
 			var after = undefined;
 			var bx = 0;
 			var ax = 0;
 			var s = 0;
-			
-							//trace();
+							
 			for(var d:int = 0 ; d < results.length; d++)
 			{
 				s = (results[d].x*(this.graph_mc.width/BASE_WIDTH))+ this.graph_mc.x;
@@ -142,7 +139,6 @@
 					this.graphOverlay_mc.x = bx;
 					this.graphOverlay_mc.width = ax-bx;
 					
-					//trace(bx + " - " + ax + " - " + mx);
 					return;
 				}
 			}
@@ -156,10 +152,12 @@
 			this.tooltip.y = e.stageY + 15;
 			this.tooltip.visible = true;
 		}
+		
 		private function hideTooltip():void
 		{
 			this.tooltip.visible = false;
 		}
+		
 		//Resize
 		private function _paneResized(e:Event):void
 		{
@@ -174,7 +172,7 @@
 		public override function onNewPerfData(perfData:PerfData):void
 		{
 			clearDisplay();
-			if(perfData != null && perfData.renderData != null && perfData.renderData.length > 0)
+			if(perfData != null)
 			{
 				drawDisplay(perfData);
 			}

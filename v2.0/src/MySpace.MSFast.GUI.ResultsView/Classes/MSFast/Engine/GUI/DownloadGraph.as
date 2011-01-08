@@ -93,9 +93,6 @@
 		public override function init():void
 		{
 			stage.addEventListener(MouseEvent.MOUSE_MOVE,_mouseMove);
-			//stage.addEventListener(MouseEvent.CLICK,_mouseClick);
-			//stage.addEventListener(MouseEvent.MOUSE_OUT,_mouseOut);
-			//stage.addEventListener(Event.MOUSE_LEAVE,_mouseOut);
 			
 			this.tooltip = new Popup();
 			this.downloadSummery = new DownloadSummery();
@@ -104,7 +101,9 @@
 			stage.addChild(this.tooltip);
 			
 			this.scrollbar = new Scrollbar();
+			
 			addChild(this.scrollbar);	
+			
 			this.scrollbar.setScrollable(this);
 			
 			this.displayObjects = new Array();
@@ -128,6 +127,7 @@
 				graphics.lineTo(0,0);
 				graphics.endFill();
 			}
+			
 			this.rowOverlay_mc.visible = false;
 			drawBG();
 		}
@@ -142,7 +142,6 @@
 			
 			with(this.graph_mc)
 			{
-				//graphics.clear();
 				graphics.lineStyle(0,0xFFFFFF);
 				graphics.beginFill(0xFFFFFF);
 				graphics.moveTo(0,0);
@@ -221,7 +220,8 @@
 			}
 			return -20;
 		}
-				//Resize
+		
+		//Resize
 		private function _paneResized(e:Event):void
 		{
 			this.mask_mc.width = this.containerBounds.width;
@@ -252,6 +252,7 @@
 		{
 			return this.scrollbar.width;
 		}		
+		
 		// Scrollable
 		public function scroll(_xp:Number,_yp:Number):void{}
 		public function scrollTo(_x:Number,_y:Number):void{
@@ -265,7 +266,8 @@
 		public override function onNewPerfData(perfData:PerfData):void
 		{
 			clearDisplay();
-			if(perfData != null && perfData.renderData != null && perfData.renderData.length > 0){
+			
+			if(perfData != null){
 				drawDisplay(perfData);
 			}
 		}

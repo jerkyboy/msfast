@@ -201,6 +201,10 @@
 			var mouseRect = new Rectangle(e.stageX, e.stageY, 1, 1);
 			
 			var i = 0;
+			
+			if(this.thumbnails == null || this.thumbnails.length == 0 || this.segments == null || this.segments.length == 0)
+				return;
+			
 			for(i = this.thumbnails.length-1 ; i >= 0; i--)
 			{
 				this.thumbnails[i].setTint(0xFFFFFF,0.7);
@@ -208,6 +212,7 @@
 
 			var rx = (p.x-this.graph_mc.x);
 			var s = this.segments[0];
+			
 			for(i = 0 ; i < this.segments.length ; i++)
 			{
 				if(this.segments[i].x1 < rx && this.segments[i].x2 > rx)
@@ -317,9 +322,21 @@
 		public override function onNewPerfData(perfData:PerfData):void
 		{
 			clearDisplay(this.perfData != perfData);
+			
 			if(perfData != null && perfData.renderData != null && perfData.renderData.length > 0)
 			{
+				this.mask_mc.visible = true;
+				this.graph_mc.visible = true;
+				this.mouseHoverSegment.visible = true;
+				this.mouseHoverSegment_mask_mc.visible = true;
 				drawDisplay(perfData);
+			}
+			else
+			{
+				this.mask_mc.visible = false;
+				this.graph_mc.visible = false;
+				this.mouseHoverSegment.visible = false;
+				this.mouseHoverSegment_mask_mc.visible = false;
 			}
 		}
 
@@ -345,6 +362,11 @@
 		
 		private function drawDisplay(perfData:PerfData):void
 		{	
+			if(perfData == null || perfData.renderData == null || perfData.renderData.length == 0)
+			{
+				return;
+			}
+			
 			var rp:RenderedPeice = null;
 			var renderData = perfData.renderData;
 			
@@ -435,6 +457,7 @@
 
 			for(var i = 0 ; i < eventsDisplay.length ; i++)
 			{
+				trace(perfData[eventsDisplay[i].fi]);
 				if(perfData[eventsDisplay[i].fi] > 0)
 				{
 					eventsDisplay[i].mc.visible = true;
@@ -475,38 +498,11 @@
 		
 		private function fixThumbnailsScaleAndPosition():void
 		{
-						for(var i = 0 ; i < thumbnails.length; i++)
+			for(var i = 0 ; i < thumbnails.length; i++)
 			{
 				this.thumbnails[i].scaleX = 0.17;
 				this.thumbnails[i].scaleY = 0.17;
-			}/*
-			var r1:Rectangle;
-			var r2:Rectangle;
-			var max = 0;
-
-			for(var i = 0 ; i < thumbnails.length; i++)
-			{
-				r2 = this.thumbnails[i].getBounds(this);
-				r2.width = ThumbnailsPair.DEFAULT_WIDTH;
-				
-				if(i != 0 && r2.intersects(r1))
-				{
-					max = Math.max(max,(r1.right) - r2.x);
-				}
-				r1 = r2;
 			}
-			
-			if(max == 0) 
-				return;
-			
-			var nw = Math.max(ThumbnailsPair.DEFAULT_WIDTH - max,ThumbnailsPair.MINIMUM_WIDTH);
-			var r = nw/ThumbnailsPair.DEFAULT_WIDTH;
-
-			for(i = 0 ; i < thumbnails.length; i++)
-			{
-				this.thumbnails[i].scaleX = 0.5;
-				this.thumbnails[i].scaleY = 0.5;
-			}*/
 		}		
 		
 		private function clearDisplay(clearThumbnails:Boolean):void

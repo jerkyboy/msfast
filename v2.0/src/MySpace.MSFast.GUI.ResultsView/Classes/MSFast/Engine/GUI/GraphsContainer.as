@@ -30,6 +30,7 @@
 		private var downloadGraph:DownloadGraph = null;
 		private var performanceGraph:PerformanceGraph = null;
 		private var thumbnailsRenderer:ThumbnailsRenderer = null;
+		private var markersGraph:MarkersGraph = null;
 		private var wireframe:MovieClip = null;
 		private var mapRead:MapRead = null;
 		
@@ -76,6 +77,7 @@
 			this.downloadGraph = new DownloadGraph();
 			this.performanceGraph = new PerformanceGraph();
 			this.thumbnailsRenderer = new ThumbnailsRenderer();
+			this.markersGraph = new MarkersGraph();
 			
 			this.wireframe = new MovieClip();
 			this.seperator = new Seperator();
@@ -86,6 +88,7 @@
 			addChild(this.downloadGraph);
 			addChild(this.performanceGraph);
 			addChild(this.thumbnailsRenderer);
+			addChild(this.markersGraph);
 			addChild(this.wireframe);
 			addChild(this.seperator);
 			addChild(this.mapRead);
@@ -93,6 +96,7 @@
 			this.downloadGraph.visible = false;
 			this.performanceGraph.visible = false;
 			this.thumbnailsRenderer.visible = false;
+			this.markersGraph.visible = false;
 			this.wireframe.visible = false;
 			this.seperator.visible = false;
 			this.mapRead.visible = false;
@@ -100,6 +104,7 @@
 			this.downloadGraph.init();
 			this.performanceGraph.init();
 			this.thumbnailsRenderer.init();
+			this.markersGraph.init();
 			this.mapRead.init();
 			
 			PerfDataProvider.getInstance().addEventListener(PerfDataEvent.ON_NEW_DATA_RECEIVED, function(){
@@ -124,6 +129,7 @@
 			this.downloadGraph.visible = true;
 			this.performanceGraph.visible = true;
 			this.thumbnailsRenderer.visible = true;
+			this.markersGraph.visible = true;
 			this.wireframe.visible = true;			
 			this.mapRead.visible = true;
 			
@@ -148,6 +154,7 @@
 			this.downloadGraph.zoom = z;
 			this.performanceGraph.zoom = z;
 			this.thumbnailsRenderer.zoom = z;
+			this.markersGraph.zoom = z;
 			this.setGraph_X(-((this.downloadGraph.graphBounds.width*_a)-(m)  ));
 			this.mapRead.setZoom(z);
 		}
@@ -187,6 +194,11 @@
 			this.thumbnailsRenderer.x = this.downloadGraph.url_width;
 			this.thumbnailsRenderer.y = 0;
 			
+			this.markersGraph.width = w;
+			this.markersGraph.height = this.height;
+			this.markersGraph.x = this.downloadGraph.url_width;
+			this.markersGraph.y = 0;
+			
 			this.mapRead.y = this.height - (this.mapRead.height);
 			
 			this.mapRead.width = this.seperator.x;
@@ -198,9 +210,10 @@
 		{
 			this.wireframe.x = 0;
 			this.wireframe.y = 0;
+			
 			with(this.wireframe.graphics){
 				clear();
-				lineStyle(0,0xc4e3f3);
+				lineStyle(0,0xcccccc);
 				moveTo(0,0);
 				lineTo(this.width-1,0);
 				lineTo(this.width-1,this.height-1);
@@ -273,6 +286,8 @@
 			this.downloadGraph.graph_x = xx;
 			this.performanceGraph.graph_x = xx;
 			this.thumbnailsRenderer.graph_x = xx;
+			this.markersGraph.graph_x = xx;
+			
 			this.mapRead.update();
 		}
 		

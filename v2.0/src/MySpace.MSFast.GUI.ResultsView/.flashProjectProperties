@@ -13,8 +13,13 @@
   <externalLibraries editable="false"/>
   <compileList editable="false"/>
   <recentFiles editable="false">
+    <uri label="main.fla">file:///C|/Data/Development/MSFast/src/MySpace.MSFast.GUI.ResultsView/main.fla</uri>
     <uri label="RenderedPeice.as">file:///C|/Data/Development/MSFast/src/MySpace.MSFast.GUI.ResultsView/Classes/MSFast/Engine/Data/RenderedPeice.as</uri>
+    <uri label="PerformanceState.as">file:///C|/Data/Development/MSFast/src/MySpace.MSFast.GUI.ResultsView/Classes/MSFast/Engine/Data/PerformanceState.as</uri>
+    <uri label="PerfDataXMLReader.as">file:///C|/Data/Development/MSFast/src/MySpace.MSFast.GUI.ResultsView/Classes/MSFast/Engine/Data/PerfDataXMLReader.as</uri>
+    <uri label="PerfData.as">file:///C|/Data/Development/MSFast/src/MySpace.MSFast.GUI.ResultsView/Classes/MSFast/Engine/Data/PerfData.as</uri>
     <uri label="MarkerPeice.as">file:///C|/Data/Development/MSFast/src/MySpace.MSFast.GUI.ResultsView/Classes/MSFast/Engine/Data/MarkerPeice.as</uri>
+    <uri label="DownloadState.as">file:///C|/Data/Development/MSFast/src/MySpace.MSFast.GUI.ResultsView/Classes/MSFast/Engine/Data/DownloadState.as</uri>
     <uri label="PerfDataProvider.as">file:///C|/Data/Development/MSFast/src/MySpace.MSFast.GUI.ResultsView/Classes/MSFast/Engine/Data/PerfDataProvider.as</uri>
   </recentFiles>
   <locations editable="false"/>
