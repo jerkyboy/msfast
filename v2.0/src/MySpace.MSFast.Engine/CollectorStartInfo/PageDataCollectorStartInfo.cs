@@ -119,7 +119,12 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
         /// </summary>
         public String[] ConfigFiles = new String[] { Path.GetDirectoryName(Assembly.GetAssembly(typeof(PageDataCollector)).Location) + "\\conf\\SuProxy.default.config", 
                                                      Path.GetDirectoryName(Assembly.GetAssembly(typeof(PageDataCollector)).Location) + "\\conf\\SuProxy.msfast.config" };
-        
+
+        /// <summary>
+        /// Location of JSON file where we keep our javascript config
+        /// </summary>
+        public String CollectorScripts = null;
+
         /// <summary>
         /// Clear browser cache when instantiate
         /// </summary>

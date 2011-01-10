@@ -27,8 +27,6 @@ using System.Threading;
 using System.IO;
 using System.Diagnostics;
 using System.Reflection;
-
-using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.Engine.Events;
 using MySpace.MSFast.Engine.CollectorStartInfo;
 using MySpace.MSFast.Engine.DataCollector;

@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
-using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.Engine.Events;
 
 namespace MySpace.MSFast.GUI.Engine.Panels.Status

@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using MySpace.MSFast.SuProxy.Pipes;
 using MySpace.MSFast.Engine.SuProxy.Proxy;
 using MySpace.MSFast.Engine.CollectorsConfiguration;
+using MySpace.MSFast.Core.Configuration.CollectorsConfig;
 
 namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 {
@@ -28,21 +29,21 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 
             if (this.Configuration is EngineSuProxyConfiguration)
             {
-                scripts.Append(CollectorScriptsConfig.Instance.PageDataCollector);
-                scripts.AppendFormat(CollectorScriptsConfig.Instance.Constructor, ((EngineSuProxyConfiguration)this.Configuration).CollectionID,
+                scripts.Append(CollectorsConfig.Instance.PageDataCollector);
+                scripts.AppendFormat(CollectorsConfig.Instance.Constructor, ((EngineSuProxyConfiguration)this.Configuration).CollectionID,
                                                                                   0,
                                                                                   collectionInfoParser.URL,
                                                                                   collectionInfoParser.URLEncoded,
                                                                                   collectionInfoParser.NextURL,
                                                                                   collectionInfoParser.NextURLEncoded);
 
-                foreach (CollectorScript cs in CollectorScriptsConfig.Instance.Values)
+                foreach (CollectorsScript cs in CollectorsConfig.Instance.GetAllScripts())
                 {
-                    scripts.Append(cs.Script);
+                    scripts.Append(CollectorsConfig.Instance.FormatCollectorsScript(cs));
                 }
             }
 
-            String page = String.Format(CollectorScriptsConfig.Instance.EmptyHTML, scripts.ToString() , CollectorScriptsConfig.Instance.Event_OnStartingTest);
+            String page = String.Format(CollectorsConfig.Instance.EmptyHTML, scripts.ToString(), CollectorsConfig.Instance.Event_OnStartingTest);
 
             byte[] b = Encoding.UTF8.GetBytes(page);
             byte[] h = Encoding.UTF8.GetBytes(String.Format(responseHeader, b.Length));

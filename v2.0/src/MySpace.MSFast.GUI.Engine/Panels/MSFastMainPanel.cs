@@ -28,7 +28,6 @@ using System.IO;
 using MySpace.MSFast.Engine.DataCollector;
 using MySpace.MSFast.Engine.CollectorStartInfo;
 using MySpace.MSFast.Core.Configuration.ConfigProviders;
-using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.DataProcessors;
 using MySpace.MSFast.DataProcessors.Download;
 using MySpace.MSFast.DataProcessors.Performance;

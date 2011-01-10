@@ -34,7 +34,6 @@ using MySpace.MSFast.SysImpl.Win32.ComIterop;
 using MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser;
 using MySpace.MSFast.SysImpl.Win32.Utils;
 using MySpace.MSFast.Engine.CollectorStartInfo;
-using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.Engine.Events;
 using MySpace.MSFast.Engine.DataCollector;
 using MySpace.MSFast.Core.Configuration.Common;

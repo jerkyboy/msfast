@@ -31,6 +31,7 @@ using System.Reflection;
 using MySpace.MSFast.Core.Configuration.Common;
 using MySpace.MSFast.Engine.SuProxy.Utils;
 using MySpace.MSFast.Engine.SuProxy.Proxy;
+using MySpace.MSFast.Core.Configuration.CollectorsConfig;
 
 namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 {
@@ -122,23 +123,24 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 
             if (this.Configuration is EngineSuProxyConfiguration)
             {
-                scripts.Append(CollectorScriptsConfig.Instance.PageDataCollector);
-                scripts.AppendFormat(CollectorScriptsConfig.Instance.Constructor, ((EngineSuProxyConfiguration)this.Configuration).CollectionID,
+                scripts.Append(CollectorsConfig.Instance.PageDataCollector);
+                scripts.AppendFormat(CollectorsConfig.Instance.Constructor, ((EngineSuProxyConfiguration)this.Configuration).CollectionID,
                                                                                   chunkedPage.Body.Length,
                                                                                   this.CollectionInfoParser.URL,
                                                                                   this.CollectionInfoParser.URLEncoded,
                                                                                   this.CollectionInfoParser.NextURL,
                                                                                   this.CollectionInfoParser.NextURLEncoded);
 
-                foreach (CollectorScript cs in CollectorScriptsConfig.Instance.Values)
-                {
-                    scripts.Append(cs.Script);
-                }
 
-                scripts.Append(CollectorScriptsConfig.Instance.Event_OnInit);
+                foreach (CollectorsScript cs in CollectorsConfig.Instance.GetAllScripts())
+                {
+                    scripts.Append(CollectorsConfig.Instance.FormatCollectorsScript(cs));
+                } 
+
+                scripts.Append(CollectorsConfig.Instance.Event_OnInit);
             }
 
-            return String.Format(CollectorScriptsConfig.Instance.EmptyHTML, scripts.ToString(), CollectorScriptsConfig.Instance.Event_OnLoadingFirstCollectionPage);
+            return String.Format(CollectorsConfig.Instance.EmptyHTML, scripts.ToString(), CollectorsConfig.Instance.Event_OnLoadingFirstCollectionPage);
         }
 
         #region While Collecting
@@ -148,12 +150,16 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 			StringBuilder scripts = new StringBuilder();
             bool appendScripts = false;
 
-            ICollection<CollectorScript> collectorScripts = CollectorScriptsConfig.Instance.GetGroupScripts(this.CollectionInfoParser.CurrentCollectionGroup);
+            CollectorsScript[] collectorScripts = CollectorsConfig.Instance.GetScriptsGroup((uint)this.CollectionInfoParser.CurrentCollectionGroup);
 
             if (collectorScripts != null)
-                foreach (CollectorScript cs in collectorScripts)
-                    scripts.Append(cs.Script);
-
+            {
+                foreach (CollectorsScript cs in collectorScripts)
+                {
+                    scripts.Append(CollectorsConfig.Instance.FormatCollectorsScript(cs));
+                }
+            }
+            
             if (String.IsNullOrEmpty(this.CollectionInfoParser.NextURL))
                 CachedPages.Remove(this.CollectionInfoParser.CollectHash);
 
@@ -163,43 +169,43 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 
             if (appendScripts && this.Configuration is EngineSuProxyConfiguration)
 			{
-                AppendScript(modifiedPage, CollectorScriptsConfig.Instance.PageDataCollector);
-                AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Constructor,     ((EngineSuProxyConfiguration)this.Configuration).CollectionID, 
+                AppendScript(modifiedPage, CollectorsConfig.Instance.PageDataCollector);
+                AppendScript(modifiedPage, CollectorsConfig.Instance.Constructor, ((EngineSuProxyConfiguration)this.Configuration).CollectionID, 
                                                                                             chunkedPage.Body.Length,
                                                                                             this.CollectionInfoParser.URL,
                                                                                             this.CollectionInfoParser.URLEncoded,
                                                                                             this.CollectionInfoParser.NextURL,
                                                                                             this.CollectionInfoParser.NextURLEncoded);
                 AppendScript(modifiedPage, scripts.ToString());
-                AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnInit);
-                AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnStartDocument);
-                AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnStartHtml);
-                AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnStartHead);
+                AppendScript(modifiedPage, CollectorsConfig.Instance.Event_OnInit);
+                AppendScript(modifiedPage, CollectorsConfig.Instance.Event_OnStartDocument);
+                AppendScript(modifiedPage, CollectorsConfig.Instance.Event_OnStartHtml);
+                AppendScript(modifiedPage, CollectorsConfig.Instance.Event_OnStartHead);
 			}
 			
             modifiedPage.Append(chunkedPage.HeadContent);
-            if (appendScripts) AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnEndHead);
+            if (appendScripts) AppendScript(modifiedPage, CollectorsConfig.Instance.Event_OnEndHead);
 
 			modifiedPage.Append(chunkedPage.HeadToBody);
-            if (appendScripts) AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnStartBody);
+            if (appendScripts) AppendScript(modifiedPage, CollectorsConfig.Instance.Event_OnStartBody);
 
             int chuckid = 1;
 			foreach (BodyChunk bc in chunkedPage.Body)
 			{
 				modifiedPage.Append(bc.Content);
-                if (appendScripts) AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnSegment, chuckid++);
+                if (appendScripts) AppendScript(modifiedPage, CollectorsConfig.Instance.Event_OnSegment, chuckid++);
 			}
-            
-            if (appendScripts) AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnEndBody);
+
+            if (appendScripts) AppendScript(modifiedPage, CollectorsConfig.Instance.Event_OnEndBody);
 			
             modifiedPage.Append(chunkedPage.BodyToPostBody);
 			modifiedPage.Append(chunkedPage.PostBodyContent);
 
-            if (appendScripts) AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnEndHtml);
+            if (appendScripts) AppendScript(modifiedPage, CollectorsConfig.Instance.Event_OnEndHtml);
 
 			modifiedPage.Append(chunkedPage.PostBodyToEnd);
-            
-            if (appendScripts) AppendScript(modifiedPage, CollectorScriptsConfig.Instance.Event_OnEndDocument);
+
+            if (appendScripts) AppendScript(modifiedPage, CollectorsConfig.Instance.Event_OnEndDocument);
 
 			return modifiedPage.ToString();
 		}

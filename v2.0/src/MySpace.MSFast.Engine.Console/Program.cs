@@ -28,9 +28,7 @@ using System.Reflection;
 using MySpace.MSFast.SuProxy.Proxy;
 using System.IO;
 using System.Windows.Forms;
-
 using MySpace.MSFast.Engine.CollectorStartInfo;
-using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.Engine.Events;
 using MySpace.MSFast.Engine.BrowserWrapper;
 using MySpace.MSFast.Engine.DataCollector;
@@ -40,6 +38,7 @@ using MySpace.MSFast.Core.UserExperience;
 #if InternetExplorer
 using MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser;
 using MySpace.MSFast.Engine.SuProxy.Proxy;
+using MySpace.MSFast.Core.Configuration.CollectorsConfig;
 #endif
 
 namespace MySpace.MSFast.Engine.Console
@@ -62,33 +61,40 @@ namespace MySpace.MSFast.Engine.Console
 			{
 				PageDataCollectorStartInfo.PrintUsage(System.Console.Error);
 				System.Environment.ExitCode = (int)(PageDataCollectorErrors.InvalidOrMissingArguments);
+                return;
 			}
-			else
-			{
-                TestEvents.IsVerbose = pdcsi.IsVerbose;
 
-                TestEvents.FireProgressEvent(TestEventType.TestStarted);
-                
-                pdcsi.IsDebug = true;
+            CollectorsConfig.AppendConfig(new XMLCollectorsConfigLoader());
 
-                _Collector c = new _Collector(pdcsi);
+            if (String.IsNullOrEmpty(pdcsi.CollectorScripts))
+            {
+                CollectorsConfig.AppendConfig(new XMLCollectorsConfigLoader(Assembly.GetAssembly(typeof(Program)).GetManifestResourceStream("MySpace.MSFast.Engine.CollectorsConfig_DefaultScripts.config")));
+            }
+            else
+            {
+                CollectorsConfig.AppendConfig(new XMLCollectorsConfigLoader(pdcsi.CollectorScripts));
+            }
 
-				try
-				{
-					System.Environment.ExitCode = c.Run();
-				}
-				catch {
-					System.Environment.ExitCode = (int)PageDataCollectorErrors.Unknown;
-				}
-				finally
-				{
-					c.Release();
-				}
-
-                TestEvents.FireProgressEvent(TestEventType.TestEnded);
-                
-			}
+            TestEvents.IsVerbose = pdcsi.IsVerbose;
+            TestEvents.FireProgressEvent(TestEventType.TestStarted);
             
+            pdcsi.IsDebug = true;
+
+            _Collector c = new _Collector(pdcsi);
+
+			try
+			{
+				System.Environment.ExitCode = c.Run();
+			}
+			catch {
+				System.Environment.ExitCode = (int)PageDataCollectorErrors.Unknown;
+			}
+			finally
+			{
+				c.Release();
+			}
+
+            TestEvents.FireProgressEvent(TestEventType.TestEnded);
 		}
      
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

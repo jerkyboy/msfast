@@ -29,6 +29,7 @@ using System.Reflection;
 
 namespace MySpace.MSFast.Engine.CollectorsConfiguration
 {
+    /*
     public class CollectorScript
     {
         public String Script;
@@ -102,10 +103,8 @@ namespace MySpace.MSFast.Engine.CollectorsConfiguration
         public String Constructor = String.Empty;
         
         public String Event_OnInit = String.Empty;
-        
         public String Event_OnStartingTest = String.Empty;
         public String Event_OnLoadingFirstCollectionPage = String.Empty;
-
         public String Event_OnStartDocument = String.Empty;
         public String Event_OnStartHtml = String.Empty;
         public String Event_OnStartHead = String.Empty;
@@ -212,5 +211,5 @@ namespace MySpace.MSFast.Engine.CollectorsConfiguration
                 };
             }
         }
-	}
+	}*/
 }

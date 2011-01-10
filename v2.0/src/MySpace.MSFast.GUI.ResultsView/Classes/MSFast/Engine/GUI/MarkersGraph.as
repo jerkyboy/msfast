@@ -1,4 +1,4 @@
-package MSFast.Engine.GUI
+﻿package MSFast.Engine.GUI
 {
 	import flash.display.MovieClip;
 	import MSFast.Engine.Events.PerfDataEvent;
@@ -19,22 +19,24 @@ package MSFast.Engine.GUI
 	
 	public class MarkersGraph extends AbsDataGraphDisplay
 	{
-		private static var MARKER_TEXTFORMAT:TextFormat;
-		
 		private var graph_mc:MovieClip = null;
 		private var mask_mc:MovieClip = null;
 		
-		private var segments:Array;
+		private var markerText:Array = new Array();
+		private var styles:Array = new Array();
 		
 		public function MarkersGraph()
 		{
 			super();
 
-			MARKER_TEXTFORMAT = new TextFormat(); 
-			MARKER_TEXTFORMAT.size = 10;
-			MARKER_TEXTFORMAT.color = 0x0d8aa8;
-			MARKER_TEXTFORMAT.font = "Tahoma";
-			MARKER_TEXTFORMAT.align = "center";
+			var textFormat = new TextFormat(); 
+			
+			with(textFormat){ size = 10; color = 0x333333; font = "Tahoma"; align = "center"; }
+			styles.push({match : "Segment([0-9]*)", textFormat : textFormat, line : 0xFBEC99, background : 0xFAA403});
+			
+			textFormat = new TextFormat(); 
+			with(textFormat){ size = 10; color = 0x999999; font = "Tahoma"; align = "center"; }
+			styles.push({match : ".*", textFormat : textFormat, line : 0xDDDDDD, background : 0xF0F0F0});
 
 			this.mask_mc = new MovieClip();
 			this.graph_mc = new MovieClip();
@@ -54,7 +56,8 @@ package MSFast.Engine.GUI
 			this.addEventListener("GraphMoved",_graphMoved);
 		}
 		
-		private function createTextField(st:String,textFormat:TextFormat,backColor:Number,borderColor:Number):TextField{
+		private function createTextField(st:String,textFormat:TextFormat,backColor:Number,borderColor:Number):TextField
+		{
 			var t = new TextField();
 			t.text = st;
 			t.selectable = false;
@@ -85,17 +88,13 @@ package MSFast.Engine.GUI
 		
 		private function _graphMoved(e:Event):void{
 			this.graph_mc.x = this.graphBounds.x;
-		}				
-		
-		
-		
-		
+		}	
 		
 		public override function onNewPerfData(perfData:PerfData):void
 		{
 			clearDisplay(this.perfData != perfData);
 			
-			if(perfData != null && perfData.renderData != null && perfData.renderData.length > 0)
+			if(perfData != null && perfData.markersData != null && perfData.markersData.length > 0)
 			{
 				this.mask_mc.visible = true;
 				this.graph_mc.visible = true;
@@ -107,29 +106,10 @@ package MSFast.Engine.GUI
 				this.graph_mc.visible = false;
 			}
 		}
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		private function drawDisplay(perfData:PerfData):void
 		{	
+		
 			if(perfData == null || perfData.markersData == null || perfData.markersData.length == 0)
 			{
 				return;
@@ -140,51 +120,49 @@ package MSFast.Engine.GUI
 			
 			var x = 0;
 			var h = this.containerBounds.height - ThumbnailsPair.DEFAULT_HEIGHT - 5;
+			var d = 0;
+			var style = null;
 			
-			var min = getMinimumMarkerTime(renderData, this.thumbnails.length);
+			if(markerText.length == 0){
+				for(d = 0 ; d < markersData.length; d++){
+					rp = ((MarkerPeice)(markersData[d]));
+					style = getStyle(rp.name);
+					if(rp.timeStamp > 0 && rp.name.toLocaleLowerCase().indexOf("segment(") == -1){
+						var tf:TextField = createTextField(rp.name,style.textFormat,style.background,style.line);
+						markerText.push({textfield : tf, timeStamp : rp.timeStamp});
+						this.graph_mc.addChild(tf);
+					}
+				}
+			}
 			
-			for(var d = 0 ; d < markersData.length; d++)
+			for(d = 0 ; d < markerText.length; d++){	
+				if(markerText[d].timeStamp > 0)
+				{
+					x =  ((markerText[d].timeStamp - perfData.startTime) * ratio);
+					markerText[d].textfield.x = x;
+					markerText[d].textfield.y = markerText[d].textfield.height * d;
+				}					
+			}
+			
+			for(d = 0 ; d < markersData.length; d++)
 			{
 				rp = ((MarkerPeice)(markersData[d]));
 				
 				if(rp.timeStamp > 0)
 				{
-					x =  rp.timeStamp * ratio;
-					
-					this.graph_mc.graphics.lineStyle(0,0xffCC00,0.25);
+					x =  ((rp.timeStamp - perfData.startTime) * ratio);
+					style = getStyle(rp.name);
+					this.graph_mc.graphics.lineStyle(0,style.line,0.25);
 					this.graph_mc.graphics.moveTo(x,0);
 					this.graph_mc.graphics.lineTo(x,h);
-				
 					this.graph_mc.graphics.moveTo(x,h);
-					this.graph_mc.graphics.beginFill(0xFF7700);
-					this.graph_mc.graphics.drawCircle(x1, h, 2);
+					this.graph_mc.graphics.beginFill(style.background);
+					this.graph_mc.graphics.drawCircle(x, h, 2);
 					this.graph_mc.graphics.endFill();
-
-					if((rp.endTime-rp.startTime) > min && tcount < this.thumbnails.length)
-					{
-						this.graph_mc.graphics.lineStyle(0,0xffCC00);
-						this.graph_mc.graphics.moveTo(x1,h+2);
-						this.graph_mc.graphics.lineTo(x2,h+2);
-						this.graph_mc.graphics.moveTo(x1 + ((x2-x1)/2),h+2);
-						this.graph_mc.graphics.lineTo(x1 + ((x2-x1)/2),h+8);
-						
-						this.thumbnails[tcount].x = x1 + ((x2-x1)/2);
-						this.thumbnails[tcount].y = h+3;
-						this.thumbnails[tcount].setThumbnails(url, perfData.thumbnail_path + "TC_" + perfData.testId + "_" + id + ".jpg");
-						this.thumbnails[tcount].segment = rp;
-						this.thumbnails[tcount].setText( (Math.round((((rp.endTime-rp.startTime)/(perfData.endTime - perfData.startTime) )*10000))/100) + "%");
-						tcount ++;
-					}
-					
-					url = perfData.thumbnail_path + "TC_" + perfData.testId + "_" + id + ".jpg";
 				}
 			}
 			
-			this.graph_mc.graphics.moveTo(x2,0);
-			this.graph_mc.graphics.lineTo(x2,h);
-			
-
-			for(var i = 0 ; i < eventsDisplay.length ; i++)
+/*			for(var i = 0 ; i < eventsDisplay.length ; i++)
 			{
 				trace(perfData[eventsDisplay[i].fi]);
 				if(perfData[eventsDisplay[i].fi] > 0)
@@ -195,9 +173,16 @@ package MSFast.Engine.GUI
 				}else{
 					eventsDisplay[i].mc.visible = false;
 				}
-			}
+			}*/
 		}
-		
+		private function getStyle(n:String):Object{
+			for(var i = 0 ; i < styles.length; i++){
+				if(n.match(styles[i].match)){
+					return styles[i];
+				}
+			}
+			return styles[0];
+		}
 		private function drawEvent(h:Number,xx:Number):void
 		{
 				this.graph_mc.graphics.lineStyle(0, 0x2594af , 0.25);
@@ -210,32 +195,15 @@ package MSFast.Engine.GUI
 			return (this.graphBounds.width / (perfData.endTime - perfData.startTime));
 		}		
 		
-		private function clearDisplay(clearThumbnails:Boolean):void
+		private function clearDisplay(clearAll:Boolean):void
 		{
-			this.graph_mc.graphics.clear();
-		}
-		
-		private function getMinimumMarkerTime(markersData:Array, top:Number) : Number
-		{
-			var avgc:Number = 0;
-			var res = new Array();
-
-			for(var d:Number = 0 ; d < renderData.length; d++)
-			{
-				if (renderData[d].startTime != 0 && renderData[d].endTime != 0)
-				{
-					res.push(renderData[d].endTime-renderData[d].startTime);
+			if(clearAll && markerText != null && markerText.length > 0){
+				while(markerText.length > 0){
+					var _mc:MovieClip = MovieClip(markerText.pop().textfield);
+					_mc.parent.removeChild(_mc);
 				}
 			}
-
-			res = res.sort(Array.DESCENDING | Array.NUMERIC);
-			
-			if (top < res.length)
-			{
-				return res[top];
-			}
-			
-			return res[0];
+			this.graph_mc.graphics.clear();
 		}
 	}	
 }

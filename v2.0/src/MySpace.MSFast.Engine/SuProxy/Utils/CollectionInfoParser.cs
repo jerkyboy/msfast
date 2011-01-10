@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using MySpace.MSFast.Core.Configuration.Common;
 using MySpace.MSFast.SuProxy.Proxy;
 using MySpace.MSFast.Engine.CollectorsConfiguration;
+using MySpace.MSFast.Core.Configuration.CollectorsConfig;
 
 namespace MySpace.MSFast.Engine.SuProxy.Utils
 {
@@ -91,7 +92,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Utils
                 try { this.CurrentCollectionGroup = int.Parse(m.Groups[1].Value); } catch { }
             }
 
-            if (this.CurrentCollectionGroup + 1 >= CollectorScriptsConfig.Instance.GroupCount)
+            if (this.CurrentCollectionGroup + 1 >= CollectorsConfig.Instance.ScriptsGroupCount)
                 return;
 
             this.NextURL = this.URL + ((this.URL.IndexOf("?") == -1) ? "?" : "&") + "__MSFAST_TESTING=1" + 
