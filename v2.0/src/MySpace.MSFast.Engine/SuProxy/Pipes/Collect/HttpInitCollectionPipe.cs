@@ -29,8 +29,8 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
 
             if (this.Configuration is EngineSuProxyConfiguration)
             {
-                scripts.Append(CollectorsConfig.Instance.PageDataCollector);
-                scripts.AppendFormat(CollectorsConfig.Instance.Constructor, ((EngineSuProxyConfiguration)this.Configuration).CollectionID,
+                scripts.Append(CollectorsConfig.Instance.GetArgumentValue("PageDataCollector"));
+                scripts.AppendFormat(CollectorsConfig.Instance.GetArgumentValue("Constructor"), ((EngineSuProxyConfiguration)this.Configuration).CollectionID,
                                                                                   0,
                                                                                   collectionInfoParser.URL,
                                                                                   collectionInfoParser.URLEncoded,
@@ -43,7 +43,7 @@ namespace MySpace.MSFast.Engine.SuProxy.Pipes.Collect
                 }
             }
 
-            String page = String.Format(CollectorsConfig.Instance.EmptyHTML, scripts.ToString(), CollectorsConfig.Instance.Event_OnStartingTest);
+            String page = String.Format(CollectorsConfig.Instance.GetArgumentValue("EmptyHTML"), scripts.ToString(), CollectorsConfig.Instance.GetArgumentValue("Event_OnStartingTest"));
 
             byte[] b = Encoding.UTF8.GetBytes(page);
             byte[] h = Encoding.UTF8.GetBytes(String.Format(responseHeader, b.Length));

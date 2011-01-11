@@ -64,15 +64,15 @@ namespace MySpace.MSFast.Engine.Console
                 return;
 			}
 
-            CollectorsConfig.AppendConfig(new XMLCollectorsConfigLoader());
+            CollectorsConfig.Instance.AppendConfig(new XMLCollectorsConfigLoader());
 
             if (String.IsNullOrEmpty(pdcsi.CollectorScripts))
             {
-                CollectorsConfig.AppendConfig(new XMLCollectorsConfigLoader(Assembly.GetAssembly(typeof(Program)).GetManifestResourceStream("MySpace.MSFast.Engine.CollectorsConfig_DefaultScripts.config")));
+                CollectorsConfig.Instance.AppendConfig(new XMLCollectorsConfigLoader(Assembly.GetAssembly(typeof(Program)).GetManifestResourceStream("MySpace.MSFast.Engine.CollectorsConfig_DefaultScripts.config")));
             }
             else
             {
-                CollectorsConfig.AppendConfig(new XMLCollectorsConfigLoader(pdcsi.CollectorScripts));
+                CollectorsConfig.Instance.AppendConfig(new XMLCollectorsConfigLoader(pdcsi.CollectorScripts));
             }
 
             TestEvents.IsVerbose = pdcsi.IsVerbose;
