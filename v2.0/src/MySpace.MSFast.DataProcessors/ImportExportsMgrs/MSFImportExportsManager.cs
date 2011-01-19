@@ -239,6 +239,9 @@ namespace MySpace.MSFast.ImportExportsMgrs
 
             foreach (FileInfo compress in compressThis)
             {
+                if (String.IsNullOrEmpty(compress.Extension))
+                    continue;
+
                 instream = compress.Open(FileMode.Open, FileAccess.Read);
 
                 if (WriteString(outstream, compress.Name) == false) return false;

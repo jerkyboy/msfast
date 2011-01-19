@@ -10,32 +10,19 @@ using MySpace.MSFast.DataProcessors;
 using EYF.Core.Configuration;
 using MySpace.MSFast.Engine.CollectorStartInfo;
 using MySpace.MSFast.Engine;
+using BDika.Tasks.TestsExecuter.Utils;
+using System.Collections.Specialized;
+using BDika.Entities.Tests;
+using Microsoft.Build.Utilities;
 
 namespace BDika.Tasks.TestsExecuter.TestExecuters
 {
     public class DirectLinkTestRunner : ITestRunner
     {
         public static readonly ILog log = EYF.Core.Logger.EYFLogManager.GetLogger();
-        public String TempFolder;
-        public String[] ConfigFiles;
 
-        public DirectLinkTestRunner()
-        {
-            TempFolder = AppConfig.Instance["TestTempFolder"];
-            
-            if (String.IsNullOrEmpty(this.TempFolder))
-                TempFolder = Path.GetDirectoryName(Assembly.GetAssembly(typeof(DirectLinkTestRunner)).Location);
-
-            TempFolder = TempFolder.Replace('/','\\').Trim();
-            
-            if (TempFolder.EndsWith("\\") == false)
-                TempFolder += "\\";
-
-            this.ConfigFiles = AppConfig.Instance["MSFastConfigFiles"].Split(new char[]{'|'},StringSplitOptions.RemoveEmptyEntries);
-        }
 
         public bool RunTest(TestIteration testIteration)
-
         {
             if (testIteration == null || testIteration.CollectorsConfig == null || testIteration.ResultsID == 0)
             {
@@ -74,14 +61,14 @@ namespace BDika.Tasks.TestsExecuter.TestExecuters
 
             if (String.IsNullOrEmpty(isRequireLogin) || isRequireLogin.ToLower().Trim().Equals("false"))
             {
-                results = RunDirectTest(testUri, testIteration.ResultsID);
+                results = RunDirectTest(testIteration, testUri, testIteration.ResultsID);
             }
             else if(String.IsNullOrEmpty(isDevLogin) || isDevLogin.ToLower().Trim().Equals("false"))
             {
-                results = RunTestWithProductionLogin(testUri, testIteration.ResultsID, loginUsername, loginPassword);
+                results = RunTestWithProductionLogin(testIteration, testUri, testIteration.ResultsID, loginUsername, loginPassword);
             }else
             {
-                results = RunTestWithDevLogin(testUri, testIteration.ResultsID, loginUsername, loginPassword);
+                results = RunTestWithDevLogin(testIteration, testUri, testIteration.ResultsID, loginUsername, loginPassword);
             }
 
             testIteration.ProcessedDataPackage = results;
@@ -89,56 +76,93 @@ namespace BDika.Tasks.TestsExecuter.TestExecuters
             return results != null;
         }
 
-        private ProcessedDataPackage RunTestWithDevLogin(Uri testUri, uint resultsID, string loginUsername, string loginPassword)
+        private ProcessedDataPackage RunTestWithDevLogin(TestIteration testIteration, Uri testUri, uint resultsID, string loginUsername, string loginPassword)
         {
-            return RunWebTest(@"\WebTests\Generic\Development\DevelopmentLogin.webtest", testUri, resultsID, loginUsername, loginPassword);
+            return RunWebTest(testIteration, @"WebTests\Development\DevelopmentLogin.webtest", testUri, resultsID, loginUsername, loginPassword);
         }
 
-        private ProcessedDataPackage RunTestWithProductionLogin(Uri testUri, uint resultsID, string loginUsername, string loginPassword)
+        private ProcessedDataPackage RunTestWithProductionLogin(TestIteration testIteration, Uri testUri, uint resultsID, string loginUsername, string loginPassword)
         {
-            return RunWebTest(@"\WebTests\Generic\Production\ProductionLogin.webtest", testUri, resultsID, loginUsername, loginPassword);
+            return RunWebTest(testIteration, @"WebTests\Production\ProductionLogin.webtest", testUri, resultsID, loginUsername, loginPassword);
         }
 
-        private ProcessedDataPackage RunWebTest(String webtest, Uri testUri, uint resultsID, string loginUsername, string loginPassword)
+        private ProcessedDataPackage RunWebTest(TestIteration testIteration, String webtest, Uri testUri, uint resultsID, string loginUsername, string loginPassword)
         {
             String webTestBase = Path.GetDirectoryName(Assembly.GetAssembly(typeof(DirectLinkTestRunner)).Location).Replace('/','\\').Trim();
             
             if(webTestBase.EndsWith("\\") == false)
                 webTestBase += "\\";
 
-            webTestBase += webTestBase;
+            webtest = webTestBase + webtest;
+
+            //Start the webtest
+            ProcessHelper helper = new ProcessHelper();
+            helper.FileName = @"C:\Program Files\Microsoft Visual Studio 9.0\Common7\IDE\MSTest.exe";
+            helper.WorkingDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            helper.EnvironmentVariables.Add("collectorsConfig", new JSONCollectorsConfigWriter().SerializeConfig(testIteration.CollectorsConfig));
+            helper.EnvironmentVariables.Add("resultsId", resultsID.ToString());
+            helper.EnvironmentVariables.Add("TestTempFolder", MSFastDefaultStartInfo.TempFolder);
+            helper.EnvironmentVariables.Add("MSFastConfigFiles", AppConfig.Instance["MSFastConfigFiles"]);
+            
+            if (String.IsNullOrEmpty(webtest) || File.Exists(webtest) == false)
+            {
+                if (log.IsFatalEnabled)
+                    log.FatalFormat("Can't locate web-test! {0}", webtest);
+
+                return null;
+            }
+
+            CommandLineBuilder builder = new CommandLineBuilder();
+            builder.AppendSwitch("/noisolation");
+            builder.AppendSwitch("/nologo");
+            builder.AppendSwitchIfNotNull("/resultsfile:", String.Format(AppConfig.Instance["ResultsFilePattern"], resultsID));
+            builder.AppendSwitchIfNotNull("/runconfig:", @"TrackerWebTest.testrunConfig");
+            builder.AppendSwitchIfNotNull("/TestContainer:", webtest);
+
+            helper.Arguments = builder.ToString();
+            helper.Timeout = int.Parse(AppConfig.Instance["MSTestTimeout"]);
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Arguments passed to MsTest {0}", helper.Arguments);
+
+            int ExitCode = helper.Execute();
+
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Process exit code = {0}\r\nStandard Out: {1}\r\nStandard Error: {2}", ExitCode, helper.StandardOutput, helper.StandardError);
+
+            if (0 != ExitCode)
+            {
+                if (log.IsFatalEnabled)
+                    log.FatalFormat("MsTest.exe exited with an error code of {0} rather than 0.\r\nStandard Out: {1}\r\nStandard Error:{2}", helper.Timeout, helper.StandardOutput, helper.StandardError);
+
+                //TODO: Send email message - helper.StandardOutput;
+
+                return null;
+            }
 
             return ProcessData(resultsID);
-        }        
+        }
 
-        private ProcessedDataPackage RunDirectTest(Uri testUri, uint resultsID)
+        private ProcessedDataPackage RunDirectTest(TestIteration testIteration, Uri testUri, uint resultsID)
         {
             PageDataCollectorStartInfo chr = new PageDataCollectorStartInfo();
 
-            chr.DumpFolder = this.TempFolder;
-            chr.TempFolder = this.TempFolder;
-            chr.ClearCache = true;
-            chr.CollectionID = (int)resultsID;
-            chr.ProxyPort = 8081;
+            if (MSFastDefaultStartInfo.SetDefaultStartupInfo(chr, testUri, (int)resultsID))
+            {
+                int results = new PageDataCollector().StartTest(chr);
 
-            chr.IsDebug = true;
+                if (results == 0)
+                    return ProcessData(resultsID);
+            }
 
-            chr.URL = testUri.ToString();
-
-            chr.ConfigFiles = ConfigFiles;
-
-            int results = new PageDataCollector().StartTest(chr);
-
-            if(results == 0)
-                return ProcessData(resultsID);
-            
             return null;
 
         }
 
         private ProcessedDataPackage ProcessData(uint resultsID)
         {
-            return ProcessedDataCollector.CollectAll(this.TempFolder, (int)resultsID);
+            return ProcessedDataCollector.CollectAll(MSFastDefaultStartInfo.TempFolder, (int)resultsID);
         }
 
         private bool ValidateCollectorConfig(CollectorsConfig cc)
@@ -216,3 +240,4 @@ namespace BDika.Tasks.TestsExecuter.TestExecuters
         }
     }
 }
+    

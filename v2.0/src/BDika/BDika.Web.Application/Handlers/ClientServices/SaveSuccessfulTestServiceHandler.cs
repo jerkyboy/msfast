@@ -20,6 +20,7 @@ using MySpace.MSFast.ImportExportsMgrs;
 using MySpace.MSFast.DataProcessors;
 using MySpace.MSFast.DataProcessors.Download;
 using MySpace.MSFast.DataProcessors.Performance;
+using log4net;
 
 
 namespace BDika.Web.Application.Handlers.ClientServices
@@ -28,6 +29,8 @@ namespace BDika.Web.Application.Handlers.ClientServices
     [BDikaPageAttributes]
     public class SaveSuccessfulTestServiceHandler : BaseClientServiceHandler<SaveSuccessfulTestServiceHandler>
     {
+        public static readonly ILog log = EYF.Core.Logger.EYFLogManager.GetLogger();
+
         [RequestFieldAttributes("r", false)]
         public ResultsID ResultsID;
 
@@ -36,6 +39,9 @@ namespace BDika.Web.Application.Handlers.ClientServices
 
         public override ServerResponse ProcessClientRequest(HttpContext context, TesterType testerType)
         {
+            if (log.IsDebugEnabled)
+                log.Debug("ProcessClientRequest " + ResultsID + " DATA : " + Based64Data);
+
             ServerResponse serv = new ServerResponse();
             serv.IsSucceeded = false;
 
@@ -57,8 +63,11 @@ namespace BDika.Web.Application.Handlers.ClientServices
                     serv.IsSucceeded = ResultsProvider.SaveSuccessfulTest(this.ResultsID, pdp);
                 }
             }
-            catch
+            catch(Exception e)
             {
+                if (log.IsErrorEnabled)
+                    log.Error("Error During ProcessClientRequest ", e);
+
             }
             finally
             {
