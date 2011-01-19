@@ -1,0 +1,12 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="BrowseResults.master.cs" Inherits="EYF.Web.Masters.BrowseResults" %><?xml version="1.0" encoding="utf-8" ?>
+<browse>
+<index><asp:Literal runat="server" id="phIndex"/></index>
+<ResultsPerPage><asp:Literal runat="server" id="phResultsPerPage"/></ResultsPerPage>
+<total><asp:Literal runat="server" id="phTotal"/></total>
+<type><asp:Literal runat="server" id="phType"/></type>
+<args><asp:Literal runat="server" id="phArgs"/></args>
+<length><asp:Literal runat="server" id="phLength"/></length>
+<page><%="<![CDATA["%><asp:ContentPlaceHolder ID="results" runat="server"></asp:ContentPlaceHolder><%="]]>"%></page>
+<scripts><eyf:ScriptWriter ID="ScriptWriter" runat="server" XMLOutput="true"/></scripts>
+<styles><eyf:StyleWriter ID="StyleWriter" runat="server" XMLOutput="true" /></styles>
+</browse>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="build">
+
+  <PropertyGroup Condition="$(Base_Loaded)==''">
+    <Base_Loaded>LOADED</Base_Loaded>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Dir_ExternalReferences)==''">
+    <Dir_ExternalReferences>$(MSBuildProjectDirectory)\..\_ExternalReferences</Dir_ExternalReferences>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Dir_Projects)==''">
+    <Dir_Projects>$(MSBuildProjectDirectory)\..\..</Dir_Projects>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(MSBuildHelpers)==''">
+    <MSBuildHelpers>$(MSBuildProjectDirectory)\..\_ExternalReferences</MSBuildHelpers>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration)==''">
+    <Configuration>Debug</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Dir_Temp)==''">
+    <Dir_Temp>$(MSBuildProjectDirectory)\Tmp</Dir_Temp>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Dir_Deploy)==''">
+    <Dir_Deploy>$(MSBuildProjectDirectory)\Out</Dir_Deploy>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/><!-- download http://msbuildtasks.tigris.org/ -->
+  
+  <UsingTask AssemblyFile="$(Dir_ExternalReferences)\EYF.Deployment.Tasks.dll" TaskName="GetDate"/>
+  <UsingTask AssemblyFile="$(Dir_ExternalReferences)\EYF.Deployment.Tasks.dll" TaskName="GenerateWebVersionFile"/>
+  <UsingTask AssemblyFile="$(Dir_ExternalReferences)\EYF.Deployment.Tasks.dll" TaskName="GenerateStaticVersion"/>
+  <UsingTask AssemblyFile="$(Dir_ExternalReferences)\EYF.Deployment.Tasks.dll" TaskName="PrepConfigFiles"/>
+  <UsingTask AssemblyFile="$(Dir_ExternalReferences)\EYF.Deployment.Tasks.dll" TaskName="GenerateBuildVersion"/>
+  
+  <ItemGroup>
+    <Dependencies Include="	$(Dependencies);
+								            $(Dir_ExternalReferences)\log4net.dll;
+								            $(Dir_ExternalReferences)\EYF.Cache.dll;
+								            $(Dir_ExternalReferences)\EYF.Core.dll;
+								            $(Dir_ExternalReferences)\EYF.Dao.dll;
+								            $(Dir_ExternalReferences)\EYF.Entities.dll;
+								            $(Dir_ExternalReferences)\EYF.Providers.dll;
+								            $(Dir_ExternalReferences)\EYF.Tasks.Context.dll;
+								            $(Dir_ExternalReferences)\EYF.Tasks.Web.dll;
+								            $(Dir_ExternalReferences)\EYF.Tasks.NagiosReport.dll;
+								            $(Dir_ExternalReferences)\Enyim.Caching.dll;
+								            $(Dir_ExternalReferences)\Spring.Data.dll;
+								            $(Dir_ExternalReferences)\Spring.Core.dll" />
+  </ItemGroup>
+
+  <Import Project="$(Dir_Projects)\EYF\Build\EYF.proj"/>
+
+  <PropertyGroup>
+    <Dir_Projects_BDika>$(Dir_Projects)\BDika</Dir_Projects_BDika>
+    <Dir_Projects_BDika_Configuration>$(Dir_Projects_BDika)\Configuration\$(Configuration)</Dir_Projects_BDika_Configuration>
+    <Dir_Projects_BDika_Global_Configuration>$(Dir_Projects_BDika)\Configuration\Global</Dir_Projects_BDika_Global_Configuration>
+    <Dir_Deploy_BDika>$(Dir_Deploy)\BDika</Dir_Deploy_BDika>
+    <Dir_Deploy_BDika_Assemblies>$(Dir_Deploy_BDika)\Assemblies</Dir_Deploy_BDika_Assemblies>
+    <Dir_Temp_BDika>$(Dir_Temp)\BDika</Dir_Temp_BDika>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Solutions_BDika Include="$(Dir_Projects_BDika)\BDika.sln"/>
+  </ItemGroup>
+
+  <Target Name="clean_BDika">
+    <RemoveDir Directories="$(Dir_Deploy_BDika);$(Dir_Temp_BDika)"/>
+    <MakeDir Directories="$(Dir_Deploy_BDika);$(Dir_Temp_BDika)"/>
+  </Target>
+
+  <Target Name="synceyf" DependsOnTargets="deploy_all_eyf">
+    <Copy SourceFiles="@(EYFAssembliesOutput)" SkipUnchangedFiles="true" DestinationFiles="@(EYFAssembliesOutput->'$(Dir_ExternalReferences)\%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(EYFWebAssembliesOutput)" SkipUnchangedFiles="true" DestinationFiles="@(EYFWebAssembliesOutput->'$(Dir_ExternalReferences)\%(Filename)%(Extension)')"/>
+  </Target>
+
+  <Target Name="create_conf">
+
+    <!-- Configuration -->
+    <CreateItem Include="$(Dir_Projects_BDika_Configuration)\**\*;"
+                Exclude="$(Dir_Projects_BDika_Configuration)\**\.svn\**;
+                         $(Dir_Projects_BDika_Configuration)\**\Tasks\**\*;
+                         $(Dir_Projects_BDika_Configuration)\**\Web\**\*;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_bdika_base"/>
+    </CreateItem>
+
+    <CreateItem Include="$(Dir_Projects_BDika_Configuration)\**\Web\**\*;"
+                Exclude="$(Dir_Projects_BDika_Configuration)\**\Web\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_bdika_web"/>
+    </CreateItem>
+
+    <CreateItem Include="$(Dir_Projects_BDika_Configuration)\**\Tasks\*;"
+                Exclude="$(Dir_Projects_BDika_Configuration)\**\Tasks\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_bdika_tasks"/>
+    </CreateItem>
+
+    <!-- Global -->
+    <CreateItem Include="$(Dir_Projects_BDika_Global_Configuration)\**\*;"
+                Exclude="$(Dir_Projects_BDika_Global_Configuration)\**\.svn\**;
+                         $(Dir_Projects_BDika_Global_Configuration)\**\Tasks\**\*;
+                         $(Dir_Projects_BDika_Global_Configuration)\**\Web\**\*;
+                         $(Dir_Projects_BDika_Global_Configuration)\**\Deployment\**\*;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_bdika_base_global"/>
+    </CreateItem>
+
+    <CreateItem Include="$(Dir_Projects_BDika_Global_Configuration)\**\Web\*;"
+                Exclude="$(Dir_Projects_BDika_Global_Configuration)\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_bdika_web_global"/>
+    </CreateItem>
+
+    <CreateItem Include="$(Dir_Projects_BDika_Global_Configuration)\**\Tasks\*;"
+                Exclude="$(Dir_Projects_BDika_Global_Configuration)\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_bdika_tasks_global"/>
+    </CreateItem>
+
+
+    <!-- EYF -->
+    <CreateItem Include="$(Dir_Projects_EYF_Configuration)\**\*;"
+                Exclude="$(Dir_Projects_EYF_Configuration)\**\.svn\**;
+                         $(Dir_Projects_EYF_Configuration)\**\Tasks\**\*;
+                         $(Dir_Projects_EYF_Configuration)\**\Web\**\*;
+                         $(Dir_Projects_EYF_Configuration)\**\Deployment\**\*;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_eyf_base_global"/>
+    </CreateItem>
+
+    <CreateItem Include="$(Dir_Projects_EYF_Configuration)\**\Web\**\*;"
+                Exclude="$(Dir_Projects_EYF_Configuration)\**\Web\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_eyf_web_global"/>
+    </CreateItem>
+
+    <CreateItem Include="$(Dir_Projects_EYF_Configuration)\**\Tasks\**\*;"
+                Exclude="$(Dir_Projects_EYF_Configuration)\**\Tasks\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_eyf_tasks_global"/>
+    </CreateItem>
+
+  </Target>
+
+  <Target Name="syncconf" DependsOnTargets="_sync_conf_application;
+                                            _sync_conf_emailsender;
+                                            _sync_conf_testsexecuter"></Target>
+
+  <Target Name="build_BDika" DependsOnTargets="clean_BDika;synceyf;syncconf">
+    <MSBuild Projects="@(Solutions_BDika)" Targets="Rebuild" Properties="Configuration=$(Configuration)"/>
+  </Target>
+
+</Project>

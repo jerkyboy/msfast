@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="build">
+	
+	<PropertyGroup Condition="$(Dir_Projects)==''">
+		<Dir_Projects>$(MSBuildProjectDirectory)\..\..</Dir_Projects>
+	</PropertyGroup>
+
+  <Import Condition="$(Base_Loaded)==''" Project="$(Dir_Projects)\BDika\Build\BDika.Base.proj"/>
+	
+	<PropertyGroup>
+		<Dir_Projects_BDika_Tasks_EmailsSender>$(Dir_Projects_BDika)\BDika.Tasks.EmailsSender</Dir_Projects_BDika_Tasks_EmailsSender>
+		<Dir_Deploy_BDika_Tasks_EmailsSender>$(Dir_Deploy_BDika)\Tasks\EmailSender</Dir_Deploy_BDika_Tasks_EmailsSender>
+	</PropertyGroup>
+
+  <Target Name="_sync_conf_emailsender" DependsOnTargets="create_conf">
+    
+    <CreateItem Include="$(Dir_Projects_BDika_Global_Configuration)\**\Tasks\EmailsSender\**\*;"
+                Exclude="$(Dir_Projects_BDika_Global_Configuration)\**\Tasks\EmailsSender\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_bdika_tasks_emailsender_global"/>
+    </CreateItem>
+
+    <CreateItem Include="$(Dir_Projects_BDika_Configuration)\**\Tasks\EmailsSender\**\*;"
+                Exclude="$(Dir_Projects_BDika_Configuration)\**\Tasks\EmailsSender\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_bdika_tasks_emailsender"/>
+    </CreateItem>
+    
+    <Copy SourceFiles="@(_sync_conf_eyf_base_global)"            SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_eyf_base_global->'$(Dir_Projects_BDika_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_eyf_tasks_global)"           SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_eyf_tasks_global->'$(Dir_Projects_BDika_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_bdika_base_global)"       SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_bdika_base_global->'$(Dir_Projects_BDika_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_bdika_tasks_global)"      SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_bdika_tasks_global->'$(Dir_Projects_BDika_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_bdika_tasks_emailsender_global)" SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_bdika_tasks_emailsender_global->'$(Dir_Projects_BDika_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_bdika_base)"              SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_bdika_base->'$(Dir_Projects_BDika_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_bdika_tasks)"             SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_bdika_tasks->'$(Dir_Projects_BDika_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_bdika_tasks_emailsender)" SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_bdika_tasks_emailsender->'$(Dir_Projects_BDika_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+  </Target>
+<!--  DependsOnTargets="build_BDika" -->
+  <Target Name="deploy_emailssender_BDika">
+		<CreateItem Include="$(Dir_Projects_BDika_Tasks_EmailsSender)\bin\$(Configuration)\**\*" 
+					      Exclude="$(Dir_Projects_BDika_Tasks_EmailsSender)\bin\$(Configuration)\**\*.pdb;
+                         $(Dir_Projects_BDika_Tasks_EmailsSender)\bin\$(Configuration)\**\.svn\**">
+			<Output TaskParameter="Include" ItemName="_BDikaTasksEmailOutput"/>
+		</CreateItem>
+		<Copy SourceFiles="@(_BDikaTasksEmailOutput)" SkipUnchangedFiles="true" DestinationFiles="@(_BDikaTasksEmailOutput->'$(Dir_Deploy_BDika_Tasks_EmailsSender)\%(RecursiveDir)%(Filename)%(Extension)')"/>
+	</Target>
+  
+</Project>

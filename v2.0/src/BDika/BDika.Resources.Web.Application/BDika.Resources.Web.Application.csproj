@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{48119CA3-B43F-464D-81EF-F3C035D2E5E4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BDika.Resources.Web.Application</RootNamespace>
+    <AssemblyName>BDika.Resources.Web.Application</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\Results\Browse\ResultsList.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResultsList.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Results\ResultsDisplayAndFilter.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResultsDisplayAndFilter.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\Browse\TesterTypesList.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TesterTypesList.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\Browse\TestsList.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestsList.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\ShortTesterTypeDescription.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShortTesterTypeDescription.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\UpdateOrCreateTest.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UpdateOrCreateTest.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\UpdateOrCreateTesterType.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UpdateOrCreateTesterType.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\UpdateSelectedTesterTypes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UpdateSelectedTesterTypes.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\UpdateTestPages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UpdateTestPages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Triggers\Browse\TriggersList.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TriggersList.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Triggers\TriggersDisplayAndFilter.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TriggersDisplayAndFilter.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Collectors\RemoveCollectorsArgumentHandler.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RemoveCollectorsArgumentHandler.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Collectors\UpdateCollectorsArgumentHandler.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UpdateCollectorsArgumentHandler.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Tests\UpdateOrCreateTesterTypeHandler.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UpdateOrCreateTesterTypeHandler.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Tests\UpdateOrCreateTestHandler.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UpdateOrCreateTestHandler.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Tests\UpdateSelectedTesterTypesHandler.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UpdateSelectedTesterTypesHandler.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Triggers\UpdateOrCreateTriggerHandler.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UpdateOrCreateTriggerHandler.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Results\Browse\BrowseResults.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BrowseResults.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Results\ShowResultsDetails.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShowResultsDetails.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Tests\Browse\BrowseTesterTypes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BrowseTesterTypes.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Tests\Browse\BrowseTests.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BrowseTests.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Tests\ShowTestDetails.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShowTestDetails.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Triggers\Browse\BrowseTriggers.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BrowseTriggers.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Triggers\UpdateOrCreateTrigger.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UpdateOrCreateTrigger.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Triggers\UpdateTriggerPages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UpdateTriggerPages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_Default.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_Default.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\Results\Browse\ResultsList.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResultsList.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Results\ResultsDisplayAndFilter.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResultsDisplayAndFilter.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Tests\Browse\TesterTypesList.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TesterTypesList.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Tests\Browse\TestsList.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestsList.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Tests\ShortTesterTypeDescription.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ShortTesterTypeDescription.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Tests\UpdateOrCreateTest.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateOrCreateTest.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Tests\UpdateOrCreateTesterType.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateOrCreateTesterType.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Tests\UpdateSelectedTesterTypes.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateSelectedTesterTypes.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Tests\UpdateTestPages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateTestPages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Triggers\Browse\TriggersList.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TriggersList.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Triggers\TriggersDisplayAndFilter.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TriggersDisplayAndFilter.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Handlers\Collectors\RemoveCollectorsArgumentHandler.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RemoveCollectorsArgumentHandler.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Handlers\Collectors\UpdateCollectorsArgumentHandler.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateCollectorsArgumentHandler.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Handlers\Tests\UpdateOrCreateTesterTypeHandler.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateOrCreateTesterTypeHandler.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Handlers\Tests\UpdateOrCreateTestHandler.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateOrCreateTestHandler.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Handlers\Tests\UpdateSelectedTesterTypesHandler.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateSelectedTesterTypesHandler.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Handlers\Triggers\UpdateOrCreateTriggerHandler.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateOrCreateTriggerHandler.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Results\Browse\BrowseResults.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BrowseResults.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Results\ShowResultsDetails.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ShowResultsDetails.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Tests\Browse\BrowseTesterTypes.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BrowseTesterTypes.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Tests\Browse\BrowseTests.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BrowseTests.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Tests\ShowTestDetails.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ShowTestDetails.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pages\Triggers\Browse\BrowseTriggers.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BrowseTriggers.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Triggers\UpdateOrCreateTrigger.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateOrCreateTrigger.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Triggers\UpdateTriggerPages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UpdateTriggerPages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="_Default.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>_Default.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

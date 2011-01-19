@@ -1,0 +1,7 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ControlLoaderMaster.master.cs" Inherits="EYF.Web.Masters.ControlLoaderMaster" %><?xml version="1.0" encoding="utf-8" ?>
+<control>
+<scripts><eyf:ScriptWriter ID="ScriptWriter" runat="server" XMLOutput="true"/></scripts>
+<styles><eyf:StyleWriter ID="StyleWriter" runat="server" XMLOutput="true" /></styles>
+<page><%="<![CDATA["%><asp:ContentPlaceHolder ID="body" runat="server"></asp:ContentPlaceHolder><%="]]>"%></page>
+</control>
+    

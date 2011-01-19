@@ -1,0 +1,552 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B48A1A13-C427-4F28-ABED-ACA6F28C66BE}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BDika.Web.Application</RootNamespace>
+    <AssemblyName>BDika.Web.Application</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging, Version=1.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Log4Net, Version=1.2.0.2, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\Common.Logging.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Enyim.Caching, Version=1.2.0.0, Culture=neutral, PublicKeyToken=cec98615db04012e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\Enyim.Caching.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Cache, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Cache.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Core.S3, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Core.S3.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Dao, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Dao.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Deployment.Tasks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Deployment.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Nagios.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Nagios.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Providers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Providers.PayPal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Providers.PayPal.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Resource.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Resource.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Resources.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Resources.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Tasks.Context, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Tasks.Context.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Tasks.SendNotifications, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Tasks.SendNotifications.dll</HintPath>
+    </Reference>
+    <Reference Include="EYF.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\EYF.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MySpace.MSFast.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\MySpace.MSFast.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MySpace.MSFast.DataProcessors, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\MySpace.MSFast.DataProcessors.dll</HintPath>
+    </Reference>
+    <Reference Include="MySpace.MSFast.Engine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\MySpace.MSFast.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=5.0.8.1, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Aop, Version=1.3.0.20214, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\Spring.Aop.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Core, Version=1.3.0.20214, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\Spring.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Data, Version=1.3.0.20214, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_ExternalReferences\Spring.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Default.aspx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\Modules\BDikaApplicationRequestManagerModule.cs" />
+    <Compile Include="Common\RequestHelpers\BDikaApplicationPageAttributesParser.cs" />
+    <Compile Include="Context\BDikaApplicationContext.cs" />
+    <Compile Include="ControlLoaders\Tests\UpdateOrCreateTestControlLoader.aspx.cs">
+      <DependentUpon>UpdateOrCreateTestControlLoader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ControlLoaders\Tests\UpdateOrCreateTestControlLoader.aspx.designer.cs">
+      <DependentUpon>UpdateOrCreateTestControlLoader.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ControlLoaders\Tests\UpdateOrCreateTesterTypeControlLoader.aspx.cs">
+      <DependentUpon>UpdateOrCreateTesterTypeControlLoader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ControlLoaders\Tests\UpdateOrCreateTesterTypeControlLoader.aspx.designer.cs">
+      <DependentUpon>UpdateOrCreateTesterTypeControlLoader.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ControlLoaders\Tests\UpdateSelectedTesterTypesControlLoader.aspx.cs">
+      <DependentUpon>UpdateSelectedTesterTypesControlLoader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ControlLoaders\Tests\UpdateSelectedTesterTypesControlLoader.aspx.designer.cs">
+      <DependentUpon>UpdateSelectedTesterTypesControlLoader.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ControlLoaders\Tests\UpdateTestPagesControlLoader.aspx.cs">
+      <DependentUpon>UpdateTestPagesControlLoader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ControlLoaders\Tests\UpdateTestPagesControlLoader.aspx.designer.cs">
+      <DependentUpon>UpdateTestPagesControlLoader.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ControlLoaders\Triggers\UpdateOrCreateTriggerControlLoader.aspx.cs">
+      <DependentUpon>UpdateOrCreateTriggerControlLoader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ControlLoaders\Triggers\UpdateOrCreateTriggerControlLoader.aspx.designer.cs">
+      <DependentUpon>UpdateOrCreateTriggerControlLoader.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ControlLoaders\Triggers\UpdateTriggerPagesControlLoader.aspx.cs">
+      <DependentUpon>UpdateTriggerPagesControlLoader.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ControlLoaders\Triggers\UpdateTriggerPagesControlLoader.aspx.designer.cs">
+      <DependentUpon>UpdateTriggerPagesControlLoader.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Collectors\UpdateCollectorsConfiguration.ascx.cs">
+      <DependentUpon>UpdateCollectorsConfiguration.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Collectors\UpdateCollectorsConfiguration.ascx.designer.cs">
+      <DependentUpon>UpdateCollectorsConfiguration.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Results\Browse\ResultsList.ascx.cs">
+      <DependentUpon>ResultsList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Results\Browse\ResultsList.ascx.designer.cs">
+      <DependentUpon>ResultsList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Results\Browse\ResultsPaging.ascx.cs">
+      <DependentUpon>ResultsPaging.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Results\Browse\ResultsPaging.ascx.designer.cs">
+      <DependentUpon>ResultsPaging.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Results\ResultsDisplayAndFilter.ascx.cs">
+      <DependentUpon>ResultsDisplayAndFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Results\ResultsDisplayAndFilter.ascx.designer.cs">
+      <DependentUpon>ResultsDisplayAndFilter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\Browse\TesterTypesList.ascx.cs">
+      <DependentUpon>TesterTypesList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Tests\Browse\TesterTypesList.ascx.designer.cs">
+      <DependentUpon>TesterTypesList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\Browse\TesterTypesPaging.ascx.cs">
+      <DependentUpon>TesterTypesPaging.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Tests\Browse\TesterTypesPaging.ascx.designer.cs">
+      <DependentUpon>TesterTypesPaging.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\Browse\TestsList.ascx.cs">
+      <DependentUpon>TestsList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Tests\Browse\TestsList.ascx.designer.cs">
+      <DependentUpon>TestsList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\Browse\TestsPaging.ascx.cs">
+      <DependentUpon>TestsPaging.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Tests\Browse\TestsPaging.ascx.designer.cs">
+      <DependentUpon>TestsPaging.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\ShortTesterTypeDescription.ascx.cs">
+      <DependentUpon>ShortTesterTypeDescription.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Tests\ShortTesterTypeDescription.ascx.designer.cs">
+      <DependentUpon>ShortTesterTypeDescription.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\UpdateOrCreateTest.ascx.cs">
+      <DependentUpon>UpdateOrCreateTest.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Tests\UpdateOrCreateTest.ascx.designer.cs">
+      <DependentUpon>UpdateOrCreateTest.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\UpdateOrCreateTesterType.ascx.cs">
+      <DependentUpon>UpdateOrCreateTesterType.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Tests\UpdateOrCreateTesterType.ascx.designer.cs">
+      <DependentUpon>UpdateOrCreateTesterType.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\UpdateSelectedTesterTypes.ascx.cs">
+      <DependentUpon>UpdateSelectedTesterTypes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Tests\UpdateSelectedTesterTypes.ascx.designer.cs">
+      <DependentUpon>UpdateSelectedTesterTypes.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tests\UpdateTestPages.ascx.cs">
+      <DependentUpon>UpdateTestPages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Tests\UpdateTestPages.ascx.designer.cs">
+      <DependentUpon>UpdateTestPages.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Triggers\Browse\TriggersList.ascx.cs">
+      <DependentUpon>TriggersList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Triggers\Browse\TriggersList.ascx.designer.cs">
+      <DependentUpon>TriggersList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Triggers\Browse\TriggersPaging.ascx.cs">
+      <DependentUpon>TriggersPaging.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Triggers\Browse\TriggersPaging.ascx.designer.cs">
+      <DependentUpon>TriggersPaging.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Triggers\TriggersDisplayAndFilter.ascx.cs">
+      <DependentUpon>TriggersDisplayAndFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Triggers\TriggersDisplayAndFilter.ascx.designer.cs">
+      <DependentUpon>TriggersDisplayAndFilter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Triggers\UpdateOrCreateTrigger.ascx.cs">
+      <DependentUpon>UpdateOrCreateTrigger.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Triggers\UpdateOrCreateTrigger.ascx.designer.cs">
+      <DependentUpon>UpdateOrCreateTrigger.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Triggers\UpdateTriggerPages.ascx.cs">
+      <DependentUpon>UpdateTriggerPages.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Triggers\UpdateTriggerPages.ascx.designer.cs">
+      <DependentUpon>UpdateTriggerPages.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Triggers\UpdateTriggerToTestAndTesterType.ascx.cs">
+      <DependentUpon>UpdateTriggerToTestAndTesterType.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Triggers\UpdateTriggerToTestAndTesterType.ascx.designer.cs">
+      <DependentUpon>UpdateTriggerToTestAndTesterType.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\ClientServices\BaseClientServiceHandler.cs" />
+    <Compile Include="Handlers\ClientServices\MarkFailedTestServiceHandler.cs" />
+    <Compile Include="Handlers\ClientServices\SaveSuccessfulTestServiceHandler.cs" />
+    <Compile Include="Handlers\Collectors\RemoveCollectorsArgumentHandler.cs" />
+    <Compile Include="Handlers\Collectors\UpdateCollectorsArgumentHandler.cs" />
+    <Compile Include="Handlers\Results\Browse\BrowseResults.aspx.cs">
+      <DependentUpon>BrowseResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Handlers\Results\Browse\BrowseResults.aspx.designer.cs">
+      <DependentUpon>BrowseResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\ClientServices\GetNextTestInQueServiceHandler.cs" />
+    <Compile Include="Handlers\Tests\Browse\BrowseTesterTypes.aspx.cs">
+      <DependentUpon>BrowseTesterTypes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Handlers\Tests\Browse\BrowseTesterTypes.aspx.designer.cs">
+      <DependentUpon>BrowseTesterTypes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Tests\Browse\BrowseTests.aspx.cs">
+      <DependentUpon>BrowseTests.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Handlers\Tests\Browse\BrowseTests.aspx.designer.cs">
+      <DependentUpon>BrowseTests.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Tests\UpdateOrCreateTesterTypeHandler.cs" />
+    <Compile Include="Handlers\Tests\UpdateOrCreateTestHandler.cs" />
+    <Compile Include="Handlers\Tests\UpdateSelectedTesterTypesHandler.cs" />
+    <Compile Include="Handlers\Triggers\Browse\BrowseTriggers.aspx.cs">
+      <DependentUpon>BrowseTriggers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Handlers\Triggers\Browse\BrowseTriggers.aspx.designer.cs">
+      <DependentUpon>BrowseTriggers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Handlers\Triggers\UpdateOrCreateTriggerHandler.cs" />
+    <Compile Include="Masters\Base.Master.cs">
+      <DependentUpon>Base.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Masters\Base.Master.designer.cs">
+      <DependentUpon>Base.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Masters\Main.Master.cs">
+      <DependentUpon>Main.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Masters\Main.Master.designer.cs">
+      <DependentUpon>Main.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Results\Browse\BrowseResults.aspx.cs">
+      <DependentUpon>BrowseResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Results\Browse\BrowseResults.aspx.designer.cs">
+      <DependentUpon>BrowseResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Results\ShowResultsDetails.aspx.cs">
+      <DependentUpon>ShowResultsDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Results\ShowResultsDetails.aspx.designer.cs">
+      <DependentUpon>ShowResultsDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TestContainer.aspx.cs">
+      <DependentUpon>TestContainer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\TestContainer.aspx.designer.cs">
+      <DependentUpon>TestContainer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Tests\Browse\BrowseTesterTypes.aspx.cs">
+      <DependentUpon>BrowseTesterTypes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Tests\Browse\BrowseTesterTypes.aspx.designer.cs">
+      <DependentUpon>BrowseTesterTypes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Tests\Browse\BrowseTests.aspx.cs">
+      <DependentUpon>BrowseTests.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Tests\Browse\BrowseTests.aspx.designer.cs">
+      <DependentUpon>BrowseTests.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Tests\ShowTestDetails.aspx.cs">
+      <DependentUpon>ShowTestDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Tests\ShowTestDetails.aspx.designer.cs">
+      <DependentUpon>ShowTestDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Triggers\Browse\BrowseTriggers.aspx.cs">
+      <DependentUpon>BrowseTriggers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Triggers\Browse\BrowseTriggers.aspx.designer.cs">
+      <DependentUpon>BrowseTriggers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BDika.Client.API\BDika.Client.API.csproj">
+      <Project>{33DB4F3B-F5C1-4305-A364-7FC7B9792092}</Project>
+      <Name>BDika.Client.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BDika.Dao\BDika.Dao.csproj">
+      <Project>{A6AA4858-7BF3-4B59-A205-6D1AB39554A3}</Project>
+      <Name>BDika.Dao</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BDika.Entities\BDika.Entities.csproj">
+      <Project>{C3DDB25E-F259-49C6-BA9B-26C328788E66}</Project>
+      <Name>BDika.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BDika.Providers\BDika.Providers.csproj">
+      <Project>{10EDAF6F-14A5-48AB-A394-65346F40D349}</Project>
+      <Name>BDika.Providers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BDika.Resources.Web.Application\BDika.Resources.Web.Application.csproj">
+      <Project>{48119CA3-B43F-464D-81EF-F3C035D2E5E4}</Project>
+      <Name>BDika.Resources.Web.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BDika.Resources.Web.Core\BDika.Resources.Web.Core.csproj">
+      <Project>{09D03BA5-DC68-4C42-BD3E-6E29DB7ADC42}</Project>
+      <Name>BDika.Resources.Web.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BDika.Web.Core\BDika.Web.Core.csproj">
+      <Project>{23D7C7BD-131C-4267-B4FA-05EB099007BD}</Project>
+      <Name>BDika.Web.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Masters\Base.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ControlLoaders\Tests\UpdateOrCreateTestControlLoader.aspx" />
+    <Content Include="ControlLoaders\Tests\UpdateOrCreateTesterTypeControlLoader.aspx" />
+    <Content Include="ControlLoaders\Tests\UpdateSelectedTesterTypesControlLoader.aspx" />
+    <Content Include="ControlLoaders\Tests\UpdateTestPagesControlLoader.aspx" />
+    <Content Include="ControlLoaders\Triggers\UpdateOrCreateTriggerControlLoader.aspx" />
+    <Content Include="ControlLoaders\Triggers\UpdateTriggerPagesControlLoader.aspx" />
+    <Content Include="Controls\Collectors\UpdateCollectorsConfiguration.ascx" />
+    <Content Include="Controls\Results\Browse\ResultsList.ascx" />
+    <Content Include="Controls\Results\Browse\ResultsPaging.ascx" />
+    <Content Include="Controls\Results\ResultsDisplayAndFilter.ascx" />
+    <Content Include="Controls\Tests\Browse\TesterTypesList.ascx" />
+    <Content Include="Controls\Tests\Browse\TesterTypesPaging.ascx" />
+    <Content Include="Controls\Tests\Browse\TestsList.ascx" />
+    <Content Include="Controls\Tests\Browse\TestsPaging.ascx" />
+    <Content Include="Controls\Tests\ShortTesterTypeDescription.ascx" />
+    <Content Include="Controls\Tests\UpdateOrCreateTest.ascx" />
+    <Content Include="Controls\Tests\UpdateOrCreateTesterType.ascx" />
+    <Content Include="Controls\Tests\UpdateSelectedTesterTypes.ascx" />
+    <Content Include="Controls\Tests\UpdateTestPages.ascx" />
+    <Content Include="Controls\Triggers\Browse\TriggersList.ascx" />
+    <Content Include="Controls\Triggers\Browse\TriggersPaging.ascx" />
+    <Content Include="Controls\Triggers\TriggersDisplayAndFilter.ascx" />
+    <Content Include="Controls\Triggers\UpdateOrCreateTrigger.ascx" />
+    <Content Include="Controls\Triggers\UpdateTriggerPages.ascx" />
+    <Content Include="Controls\Triggers\UpdateTriggerToTestAndTesterType.ascx" />
+    <Content Include="Global.asax" />
+    <Content Include="Handlers\Results\Browse\BrowseResults.aspx" />
+    <Content Include="Handlers\Tests\Browse\BrowseTesterTypes.aspx" />
+    <Content Include="Handlers\Tests\Browse\BrowseTests.aspx" />
+    <Content Include="Handlers\Triggers\Browse\BrowseTriggers.aspx" />
+    <Content Include="Masters\Main.Master" />
+    <Content Include="Pages\Results\Browse\BrowseResults.aspx" />
+    <Content Include="Pages\Results\ShowResultsDetails.aspx" />
+    <Content Include="Pages\TestContainer.aspx" />
+    <Content Include="Pages\Tests\Browse\BrowseTesterTypes.aspx" />
+    <Content Include="Pages\Tests\Browse\BrowseTests.aspx" />
+    <Content Include="Pages\Tests\ShowTestDetails.aspx" />
+    <Content Include="Pages\Triggers\Browse\BrowseTriggers.aspx" />
+    <Content Include="Static\Skin\Skin001\Global\css\global.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>14453</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://bdika</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
