@@ -274,10 +274,6 @@ namespace MySpace.MSFast.DataProcessors
 
 		#endregion
 
-
-
-
-
         #region CollectionMetaInfo Members
 
         public int CollectionID

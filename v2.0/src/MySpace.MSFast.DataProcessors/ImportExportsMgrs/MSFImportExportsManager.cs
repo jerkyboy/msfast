@@ -234,7 +234,7 @@ namespace MySpace.MSFast.ImportExportsMgrs
 
             Stream instream = null;
 
-            if (WriteString(outstream, "MSFAST0001" + package.CollectionID + String.Format(DumpFileInfo.DUMP_FOLDER_PATTERN,package.CollectionID)) == false)
+            if (WriteString(outstream, "MSFAST0001" + package.CollectionID + String.Format(DumpFileInfo.DUMP_FOLDER_PATTERN, package.CollectionID)) == false)
                 return false;
 
             foreach (FileInfo compress in compressThis)
