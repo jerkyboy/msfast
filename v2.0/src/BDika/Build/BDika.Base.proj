@@ -29,6 +29,10 @@
     <Dir_Deploy>$(MSBuildProjectDirectory)\Out</Dir_Deploy>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Dir_Projects_EYF>$(Dir_Projects)\..\..\EYF</Dir_Projects_EYF>
+  </PropertyGroup>
+  
   <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/><!-- download http://msbuildtasks.tigris.org/ -->
   
   <UsingTask AssemblyFile="$(Dir_ExternalReferences)\EYF.Deployment.Tasks.dll" TaskName="GetDate"/>
@@ -53,7 +57,7 @@
 								            $(Dir_ExternalReferences)\Spring.Core.dll" />
   </ItemGroup>
 
-  <Import Project="$(Dir_Projects)\EYF\Build\EYF.proj"/>
+  <Import Project="$(Dir_Projects_EYF)\Build\EYF.proj"/>
 
   <PropertyGroup>
     <Dir_Projects_BDika>$(Dir_Projects)\BDika</Dir_Projects_BDika>
