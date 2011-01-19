@@ -23,8 +23,8 @@ namespace BDika.Tasks.TestsExecuter.Webtests.Plugins
          {
              MessageBox.Show("X");
 
-             String collectorsConfig = "{\"Arguments\":[{\"Key\":\"login_username\",\"Value\":\"e_yadid@hotmail.com\"},{\"Key\":\"login_password\",\"Value\":\"QSZxaw1!\"},{\"Key\":\"test_type\",\"Value\":\"msfast\"},{\"Key\":\"test_name\",\"Value\":\"eyadid\"},{\"Key\":\"test_protocol\",\"Value\":\"http\"},{\"Key\":\"test_domain\",\"Value\":\"www.myspace.com\"},{\"Key\":\"test_path\",\"Value\":\"/eyadid\"},{\"Key\":\"test_query_string\",\"Value\":\"\"},{\"Key\":\"require_login\",\"Value\":\"true\"}],\"ScriptGroups\":null}";//System.Environment.GetEnvironmentVariable("collectorsConfig");
-             String resultsID = "1";// System.Environment.GetEnvironmentVariable("resultsId"); 
+             String collectorsConfig = System.Environment.GetEnvironmentVariable("collectorsConfig");
+             String resultsID = System.Environment.GetEnvironmentVariable("resultsId"); 
              
              if(String.IsNullOrEmpty(collectorsConfig) || String.IsNullOrEmpty(resultsID)){
                  Log(e.WebTest, "INVALID CONFIG!");

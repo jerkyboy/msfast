@@ -33,7 +33,7 @@ namespace BDika.Tasks.TestsExecuter
             base.Interval = long.Parse(AppConfig.Instance["CheckInterval"]);
         }
 
-        public override TaskResults ExecuteTask()
+        public override TaskResults ExecuteTask()        
         {
             BDikaTestingClient client = new BDikaTestingClient("clientid", "clientkey");
 
@@ -204,7 +204,7 @@ namespace BDika.Tasks.TestsExecuter
                 {
                     try
                     {
-                        client.SaveSuccessfulTest(testIteration);
+                       client.SaveSuccessfulTest(testIteration);
                     }
                     catch (Exception e)
                     {

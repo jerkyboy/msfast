@@ -129,7 +129,23 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
         /// Clear browser cache when instantiate
         /// </summary>
 		public bool ClearCache = false;
-		
+
+        private String _EngineExecutable;
+
+        public string EngineExecutable
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(_EngineExecutable))
+                    _EngineExecutable = Path.GetDirectoryName(Assembly.GetAssembly(typeof(PageDataCollector)).Location).Replace("\\", "/") + "/engine.exe";
+
+                return _EngineExecutable;
+            }
+            set
+            {
+                _EngineExecutable = value;
+            }
+        }
         public bool IsStartProxy { get { return (this.ProxyAddress == null); } }
 		
 		public virtual bool IsValid() { 

@@ -54,9 +54,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scri
 	ProjectSection(SolutionItems) = preProject
 		Build\BDika.Base.proj = Build\BDika.Base.proj
 		Build\BDika.proj = Build\BDika.proj
-		Build\BDika.Tasks.EmailsSender.proj = Build\BDika.Tasks.EmailsSender.proj
-		Build\BDika.Tasks.TestsExecuter.proj = Build\BDika.Tasks.TestsExecuter.proj
-		Build\BDika.Web.proj = Build\BDika.Web.proj
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{53A5004F-F4C0-4814-859B-147D898D9EB1}"

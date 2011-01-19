@@ -66,15 +66,7 @@ namespace MySpace.MSFast.Engine
 				return (int)prepareResults;
 			}
 
-            String executable = null;
-
-            try
-            {
-                executable = Path.GetDirectoryName(Assembly.GetAssembly(typeof(PageDataCollector)).Location).Replace("\\", "/") + "/engine.exe";
-            }
-            catch
-            {
-            }
+            String executable = settings.EngineExecutable;
 
 			if (String.IsNullOrEmpty(executable) || File.Exists(executable) == false)
 			{

@@ -104,6 +104,7 @@ namespace BDika.Tasks.TestsExecuter.TestExecuters
             helper.EnvironmentVariables.Add("resultsId", resultsID.ToString());
             helper.EnvironmentVariables.Add("TestTempFolder", MSFastDefaultStartInfo.TempFolder);
             helper.EnvironmentVariables.Add("MSFastConfigFiles", AppConfig.Instance["MSFastConfigFiles"]);
+            helper.EnvironmentVariables.Add("EngineExecutable", MSFastDefaultStartInfo.EngineExecutable);
             
             if (String.IsNullOrEmpty(webtest) || File.Exists(webtest) == false)
             {
