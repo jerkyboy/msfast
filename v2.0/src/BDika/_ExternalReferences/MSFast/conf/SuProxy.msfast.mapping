@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<config>
+	<!-- =======================================================================
+Project: MSFast (MySpace.MSFast)
+Author: Yadid Ramot (e.yadid@gmail.com)
+Copyright (C) 2009 MySpace.com 
+
+This file is part of MSFast.
+MSFast is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+MSFast is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with MSFast.  If not, see <http://www.gnu.org/licenses/>.
+
+
+======================================================================= -->
+	<urlmapping>
+
+		<map category="request">
+			<match><![CDATA[[\?&]__MSFAST_START_TEST=([^\?&]*?)]]></match>
+			<chain>InitCollectionChain</chain>
+		</map>
+		
+		<map category="request">
+			<match><![CDATA[[\?&]__SUPROXY_CUSTOM_REQUEST=[0-9]*]]></match>
+			<chain>CustomRequestChain</chain>
+		</map>
+		
+		<map category="request">
+			<match><![CDATA[[\?&]__SUPROXY_LOCAL_RESPONSE=([^\?&]*?)]]></match>
+			<chain>LocalResponseChain</chain>
+		</map>
+
+		<map category="request">
+			<match><![CDATA[([\?&]__MSFAST_PAGE_HASH=[abcdef0123456789]*|__DONT_TRACK=)]]></match>
+			<chain>DontTrackChain</chain>
+		</map>
+
+		<map category="request">
+			<match><![CDATA[[\?&]__MSFAST_TESTING]]></match>
+			<chain>GetContentFromServerChain_MSFastTest</chain>
+		</map>
+
+		<map category="request">
+			<match><![CDATA[[\?&](START|STOP)_TRACKING]]></match>
+			<chain>TrackingChain</chain>
+		</map>
+
+		<map category="request">
+			<match><![CDATA[.*]]></match>
+			<chain>GetContentFromServerChain</chain>
+		</map>
+
+		<!-- Response -->
+		<map category="response">
+			<match><![CDATA[[\?&]__MSFAST_TESTING]]></match>
+			<chain>ParseCollectChain</chain>
+		</map>
+
+	</urlmapping>
+</config>

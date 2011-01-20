@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<config>
+	<!-- =======================================================================
+Project: MSFast (MySpace.MSFast)
+Author: Yadid Ramot (e.yadid@gmail.com)
+Copyright (C) 2009 MySpace.com 
+
+This file is part of MSFast.
+MSFast is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+MSFast is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with MSFast.  If not, see <http://www.gnu.org/licenses/>.
+
+
+======================================================================= -->
+
+	<validators>
+
+		<validator>
+			<groupname>MySpace</groupname>
+			<name>Deprecated Domains</name>
+			<description>This validator searchs for deprecated domain name references.</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.JavascriptValidators.JavascriptDataValidatorWrapper</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+			<data>
+				<urls_regex>(x\\.myspace\\.com|i\\.myspace\\.com|creative\\.myspace\\.com|x\\.myspacecdn\\.com)</urls_regex>
+				<script><![CDATA[
+function Validate(_page,_data)
+{
+	var pageSource = _page.log.pages[0].pageSource;
+
+	var results = new ValidationResults();
+	results.score = -1;
+
+	if(pageSource){
+		
+		var mtch = pageSource.matchs(new RegExp(_data["urls_regex"],"gi"));
+		
+		if (mtch != undefined)
+		{
+			for (var i = 0; i < mtch.length; i++)
+			{
+				results.occurrences.push(new SourceValidationOccurance("","", mtch[i].index, mtch[i].length , pageSource));
+			}
+		}
+		if(results.occurrences.length <= 0)
+		{
+			results.score = 100;
+		}
+		else if(results.occurrences.length <= 3)
+		{
+			results.score = 50;
+		}
+		else
+		{
+			results.score = 0;
+		}
+	}
+
+	return results;
+}
+			]]></script>
+			</data>
+		</validator>
+
+
+		<validator>
+			<groupname>MySpace</groupname>
+			<name>Make JS and CSS external</name>
+			<description>Make JS and CSS external</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.PageSourceValidators.JSAndCSS.MakeJSandCSSExternalValidator</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+		</validator>
+
+		<validator>
+			<groupname>MySpace</groupname>
+			<name>Keep Asp.Net ViewState small</name>
+			<description>Keep Asp.Net ViewState small Keep Asp.Net ViewState small</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.PageSourceValidators.AspNet.ViewStateSizeValidator</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+			<data>
+				<error>75</error>
+				<warning>50</warning>
+				<barelypassed>10</barelypassed>
+			</data>
+		</validator>
+
+		<validator>
+			<groupname>MySpace</groupname>
+			<name>JS Libraries</name>
+			<description>Check if a page uses either jQuery, Prototype/Scriptaculous, or Ext JS libraries. We are standardized on the Microsoft Ajax Library (Atlas) as a company. Using other Javascript libraries is bad for maintainability and adds to the page download size.</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.PageSourceValidators.WebFrameworksMatrix.JSLibrariesValidation</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+			<data>
+				<libraries>(nifty|jquery|codepress|listexpander|jsdocs)</libraries>
+			</data>
+		</validator>
+
+		<validator>
+			<groupname>MySpace</groupname>
+			<name>ScriptManager Validation</name>
+			<description>ScriptManager Validation</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.PageSourceValidators.ExternalReferences.WebResourceBufferValidator</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+			<helpurl>http://mywiki.corp.myspace.com/index.php/Pages_using_ScriptManager</helpurl>
+		</validator>
+
+		<validator>
+			<groupname>MySpace</groupname>
+			<name>Old Word Breakers Validation</name>
+			<description>Check if a page is using a deprecated version of our word breakers</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.PageSourceValidators.WebFrameworksMatrix.OldWordBreakersValidation</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+			<helpurl>http://mywiki.corp.myspace.com/index.php/Pages_using_old_word_breakers</helpurl>
+			<data>
+				<scripts>(InjectSoftBreaks|WrapTextOnlyBreakBigWords|TextFilterWBR)</scripts>
+			</data>
+		</validator>
+
+		<validator>
+			<groupname>YSlow</groupname>
+			<name>Make fewer HTTP requests</name>
+			<description>Decreasing the number of components on a page reduces the number of HTTP requests required to render the page, resulting in faster page loads. Some ways to reduce the number of components include: combine files, combine multiple scripts into one script, combine multiple CSS files into one style sheet, and use CSS Sprites and image maps.</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidators.TooManyFilesValidator</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+			<data>
+				<js_message>This page has {0} external Javascript scripts. Try combining them into one.</js_message>
+				<js_grades>5|8|10|13|15</js_grades>
+				<css_message>This page has {0} external stylesheets. Try combining them into one.</css_message>
+				<css_grades>4|7|9|12|14</css_grades>
+			</data>
+		</validator>
+
+		<validator>
+			<groupname>YSlow</groupname>
+			<name>Use a Content Delivery Network (CDN)</name>
+			<description>User proximity to web servers impacts response times. Deploying content across multiple geographically dispersed servers helps users perceive that pages are loading faster.</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidators.UseCDNValidator</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+			<data>
+				<domains>x.myspacecdn.com,cms.myspacecdn.com</domains>
+				<msgs>There are {0} static components that are not on CDN. </msgs>
+				<msg>There is 1 static component that is not on CDN. </msg>
+			</data>
+		</validator>
+
+		<validator>
+			<groupname>YSlow</groupname>
+			<name>Add Expires headers</name>
+			<description>Web pages are becoming increasingly complex with more scripts, style sheets, images, and Flash on them. A first-time visit to a page may require several HTTP requests to load all the components. By using Expires headers these components become cacheable, which avoids unnecessary HTTP requests on subsequent page views. Expires headers are most often associated with images, but they can and should be used on all page components including scripts, style sheets, and Flash.</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidators.AddExpiresHeadersValidator</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+			<data>
+				<msgs>There are {0} static components without a far-future expiration date.</msgs>
+				<msg>There is 1 static component without a far-future expiration date.</msg>
+			</data>
+		</validator>
+
+		<validator>
+			<groupname>YSlow</groupname>
+			<name>Compress components with gzip</name>
+			<description>Compression reduces response times by reducing the size of the HTTP response. Gzip is the most popular and effective compression method currently available and generally reduces the response size by about 70%. Approximately 90% of today's Internet traffic travels through browsers that claim to support gzip.</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidators.CompressComponentsWithGzipValidator</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+			<data>
+				<msgs>There are {0} plain text components that should be sent compressed</msgs>
+				<msg>There is 1 plain text component that should be sent compressed</msg>
+			</data>
+		</validator>
+
+		<validator>
+			<groupname>YSlow</groupname>
+			<name>Put CSS at the top</name>
+			<description>Moving style sheets to the document HEAD element helps pages appear to load quicker since this allows pages to render progressively.</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.PageSourceValidators.JSAndCSS.LinkCSSAtTopValidator</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+			<data>
+				<message>There are {0} Javacript scriptss found in the head of the document</message>
+				<grades>2|4|6|8|11</grades>
+			</data>
+		</validator>
+
+		<validator>
+			<groupname>YSlow</groupname>
+			<name>Put JavaScript at bottom</name>
+			<description>JavaScript scripts block parallel downloads; that is, when a script is downloading, the browser will not start any other downloads. To help the page load faster, move scripts to the bottom of the page if they are deferrable.</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.PageSourceValidators.JSAndCSS.LinkJSAtBottomValidator</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+			<data>
+				<message>There are {0} Javacript scriptss found in the head of the document</message>
+				<grades>2|4|6|8|11</grades>
+			</data>
+		</validator>
+
+		<validator>
+			<groupname>YSlow</groupname>
+			<name>Reduce DNS lookups</name>
+			<description>The Domain Name System (DNS) maps hostnames to IP addresses, just like phonebooks map people's names to their phone numbers. When you type URL www.yahoo.com into the browser, the browser contacts a DNS resolver that returns the server's IP address. DNS has a cost; typically it takes 20 to 120 milliseconds for it to look up the IP address for a hostname. The browser cannot download anything from the host until the lookup completes.</description>
+			<classname>MySpace.MSFast.DataProcessors.CustomDataValidators.DownloadDataValidators.ReduceDNSLookupsValidator</classname>
+			<assembly>MySpace.MSFast.DataProcessors.CustomDataValidators.dll</assembly>
+			<data>
+				<message>The components are split over more than 4 domains</message>
+				<grades>6|8|10|12|14</grades>
+			</data>
+		</validator>
+
+	</validators>
+</config>
