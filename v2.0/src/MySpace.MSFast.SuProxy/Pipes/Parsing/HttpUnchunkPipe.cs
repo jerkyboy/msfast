@@ -106,6 +106,7 @@ namespace MySpace.MSFast.SuProxy.Pipes.Parsing
 				}
 				if (buffer[i] == '\r' && buffer[i + 1] == '\n')
 				{
+                    shouldRead = Math.Min(buffer.Length - (i + 2), shouldRead);
 					memStrm.Write(buffer, i + 2, shouldRead);
 					i += 3 + shouldRead;
 					shouldRead = -1;

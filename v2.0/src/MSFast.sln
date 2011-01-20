@@ -45,6 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{F7DE65CC-2733-43B3-A332-8A34AC1B22FD}"
 	ProjectSection(SolutionItems) = preProject
+		Configuration\DefaultPageValidation.xml = Configuration\DefaultPageValidation.xml
 		..\msfast.proj = ..\msfast.proj
 		Configuration\MSFastLogging.config = Configuration\MSFastLogging.config
 		Configuration\SuProxy.default.config = Configuration\SuProxy.default.config
@@ -52,6 +53,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 		Configuration\SuProxy.msfast.config = Configuration\SuProxy.msfast.config
 		Configuration\SuProxy.msfast.mapping = Configuration\SuProxy.msfast.mapping
 		Configuration\SuProxy.Standalone.config = Configuration\SuProxy.Standalone.config
+		Configuration\SuProxy.Standalone.mapping = Configuration\SuProxy.Standalone.mapping
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4EEADB13-7E22-4EF5-8A42-128604B7474C}"

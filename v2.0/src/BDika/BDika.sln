@@ -10,18 +10,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{A6587A72-BE5F-4CDC-9553-04770351F068}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{654B44A7-5E5F-4AA2-80FA-CE135049A1D0}"
-	ProjectSection(SolutionItems) = preProject
-		Configuration\Global\Core\BDika.Application.config = Configuration\Global\Core\BDika.Application.config
-		Configuration\Global\Core\BDika.Entities.config = Configuration\Global\Core\BDika.Entities.config
-		Configuration\Global\Core\BDika.Entities.Pop.config = Configuration\Global\Core\BDika.Entities.Pop.config
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{A7513898-DA6B-4F1D-907A-3F884229EDED}"
-	ProjectSection(SolutionItems) = preProject
-		Configuration\Global\Web\BDika.Linkables.config = Configuration\Global\Web\BDika.Linkables.config
-		Configuration\Global\Web\BDika.StaticFiles.config = Configuration\Global\Web\BDika.StaticFiles.config
-		Configuration\Global\Web\BDika.Web.Core.config = Configuration\Global\Web\BDika.Web.Core.config
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{EABEF104-7CFE-4DCF-8BD2-B8C0CE10E755}"
 EndProject
@@ -32,17 +22,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Debug", "Debug", "{D2CE6F1E-72BC-4072-BA97-794FE1D61A3D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{AA0C0F6A-8B27-4A32-BB08-006143027008}"
-	ProjectSection(SolutionItems) = preProject
-		Configuration\Debug\Core\BDika.Dao.config = Configuration\Debug\Core\BDika.Dao.config
-		Configuration\Debug\Core\BDika.Memcached.config = Configuration\Debug\Core\BDika.Memcached.config
-		Configuration\Debug\Core\BDika.SecurityCredentials.config = Configuration\Debug\Core\BDika.SecurityCredentials.config
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{EEFDA719-E0F8-4B97-BE92-047C19DBBFB4}"
-	ProjectSection(SolutionItems) = preProject
-		Configuration\Debug\Web\BDika.Logging.config = Configuration\Debug\Web\BDika.Logging.config
-		Configuration\Debug\Web\BDika.Web.Application.config = Configuration\Debug\Web\BDika.Web.Application.config
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{27755B68-FC69-4A8B-A7F4-0DEB41F221AB}"
 EndProject
@@ -70,22 +51,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDika.Tasks.EmailsSender", "BDika.Tasks.EmailsSender\BDika.Tasks.EmailsSender.csproj", "{C4E93673-4B7C-4930-B4FC-E52E9C2851A4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{D674FB36-1EB2-442F-AC84-0F5137E2E4FA}"
-	ProjectSection(SolutionItems) = preProject
-		Configuration\Global\Tasks\Tasks.Logging.config = Configuration\Global\Tasks\Tasks.Logging.config
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmailsSender", "EmailsSender", "{995B0B24-F883-4F34-9499-4447D7CBA681}"
-	ProjectSection(SolutionItems) = preProject
-		Configuration\Global\Tasks\EmailsSender\Application.Task.EmailsSender.config = Configuration\Global\Tasks\EmailsSender\Application.Task.EmailsSender.config
-		Configuration\Global\Tasks\EmailsSender\Entities.Task.EmailsSender.config = Configuration\Global\Tasks\EmailsSender\Entities.Task.EmailsSender.config
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDika.Tasks.TestsExecuter", "BDika.Tasks.TestsExecuter\BDika.Tasks.TestsExecuter.csproj", "{3086C39A-2CE4-4DCC-8955-14E13090749A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestsExecuter", "TestsExecuter", "{70CCFB45-0679-420E-BB43-BF97047D8269}"
-	ProjectSection(SolutionItems) = preProject
-		Configuration\Global\Tasks\TestsExecuter\Application.Task.TestsExecuter.config = Configuration\Global\Tasks\TestsExecuter\Application.Task.TestsExecuter.config
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDika.Client.API", "BDika.Client.API\BDika.Client.API.csproj", "{33DB4F3B-F5C1-4305-A364-7FC7B9792092}"
 EndProject
