@@ -23,7 +23,7 @@ namespace BDika.Providers.Tests.Browse
 
         public BrowseTestsEntities()
         {
-            base.ResultsPerPage = 2;
+            base.ResultsPerPage = 20;
         }
         public override List<TestID> GetEntitiesIDs()
         {

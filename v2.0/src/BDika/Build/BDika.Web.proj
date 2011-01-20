@@ -77,12 +77,6 @@
 
 		<Copy SourceFiles="@(BDika_Static_Output)" SkipUnchangedFiles="true" DestinationFiles="@(BDika_Static_Output->'$(Dir_Deploy_BDika_Web_Static)\%(RecursiveDir)%(Filename)%(Extension)')"/>
 
-    <GenerateStaticVersion Condition="$(StaticFilesVersion)==''">
-      <Output PropertyName="StaticFilesVersion" TaskParameter="StaticFilesVersion"/>
-    </GenerateStaticVersion>
-    
-    <GenerateWebVersionFile FileName="$(Dir_Deploy_BDika_Web)\inv_version.txt" Version="$(BuildVersion)" StaticFilesVersion="$(StaticFilesVersion)" />
-
     <CreateItem Include="$(Dir_Deploy_BDika_Web)\**\*.config;$(Dir_Deploy_BDika_Web)\**\*.xml;">
       <Output TaskParameter="Include" ItemName="_prepWebConfig"/>
     </CreateItem>

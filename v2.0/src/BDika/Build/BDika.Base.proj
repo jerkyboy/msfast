@@ -36,8 +36,6 @@
   <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/><!-- download http://msbuildtasks.tigris.org/ -->
   
   <UsingTask AssemblyFile="$(Dir_ExternalReferences)\EYF.Deployment.Tasks.dll" TaskName="GetDate"/>
-  <UsingTask AssemblyFile="$(Dir_ExternalReferences)\EYF.Deployment.Tasks.dll" TaskName="GenerateWebVersionFile"/>
-  <UsingTask AssemblyFile="$(Dir_ExternalReferences)\EYF.Deployment.Tasks.dll" TaskName="GenerateStaticVersion"/>
   <UsingTask AssemblyFile="$(Dir_ExternalReferences)\EYF.Deployment.Tasks.dll" TaskName="PrepConfigFiles"/>
   <UsingTask AssemblyFile="$(Dir_ExternalReferences)\EYF.Deployment.Tasks.dll" TaskName="GenerateBuildVersion"/>
   

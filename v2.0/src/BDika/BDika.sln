@@ -54,6 +54,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scri
 	ProjectSection(SolutionItems) = preProject
 		Build\BDika.Base.proj = Build\BDika.Base.proj
 		Build\BDika.proj = Build\BDika.proj
+		Build\BDika.Tasks.EmailsSender.proj = Build\BDika.Tasks.EmailsSender.proj
+		Build\BDika.Tasks.TestsExecuter.proj = Build\BDika.Tasks.TestsExecuter.proj
+		Build\BDika.Web.proj = Build\BDika.Web.proj
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{53A5004F-F4C0-4814-859B-147D898D9EB1}"
@@ -85,6 +88,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestsExecuter", "TestsExecu
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDika.Client.API", "BDika.Client.API\BDika.Client.API.csproj", "{33DB4F3B-F5C1-4305-A364-7FC7B9792092}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{92D9E80B-6910-4FD8-A62B-B9804369E5BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A20A3591-2F4B-480D-91B1-D11CC907BC61}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration\Release\Core\BDika.Dao.config = Configuration\Release\Core\BDika.Dao.config
+		Configuration\Release\Core\BDika.Memcached.config = Configuration\Release\Core\BDika.Memcached.config
+		Configuration\Release\Core\BDika.SecurityCredentials.config = Configuration\Release\Core\BDika.SecurityCredentials.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{D0B43005-C830-424A-BAC5-9BD4143B6244}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration\Release\Web\BDika.Logging.config = Configuration\Release\Web\BDika.Logging.config
+		Configuration\Release\Web\BDika.Web.Application.config = Configuration\Release\Web\BDika.Web.Application.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,6 +159,7 @@ Global
 		{B48A1A13-C427-4F28-ABED-ACA6F28C66BE} = {38A21401-1DC1-46AB-8392-ED12E436707C}
 		{A6587A72-BE5F-4CDC-9553-04770351F068} = {5EB2FA58-2B9F-46AA-9A36-A22221636FC0}
 		{D2CE6F1E-72BC-4072-BA97-794FE1D61A3D} = {5EB2FA58-2B9F-46AA-9A36-A22221636FC0}
+		{92D9E80B-6910-4FD8-A62B-B9804369E5BA} = {5EB2FA58-2B9F-46AA-9A36-A22221636FC0}
 		{654B44A7-5E5F-4AA2-80FA-CE135049A1D0} = {A6587A72-BE5F-4CDC-9553-04770351F068}
 		{A7513898-DA6B-4F1D-907A-3F884229EDED} = {A6587A72-BE5F-4CDC-9553-04770351F068}
 		{D674FB36-1EB2-442F-AC84-0F5137E2E4FA} = {A6587A72-BE5F-4CDC-9553-04770351F068}
@@ -156,5 +175,7 @@ Global
 		{3086C39A-2CE4-4DCC-8955-14E13090749A} = {181CCF29-5B36-46A8-8E8C-A100F96C38FB}
 		{995B0B24-F883-4F34-9499-4447D7CBA681} = {D674FB36-1EB2-442F-AC84-0F5137E2E4FA}
 		{70CCFB45-0679-420E-BB43-BF97047D8269} = {D674FB36-1EB2-442F-AC84-0F5137E2E4FA}
+		{A20A3591-2F4B-480D-91B1-D11CC907BC61} = {92D9E80B-6910-4FD8-A62B-B9804369E5BA}
+		{D0B43005-C830-424A-BAC5-9BD4143B6244} = {92D9E80B-6910-4FD8-A62B-B9804369E5BA}
 	EndGlobalSection
 EndGlobal

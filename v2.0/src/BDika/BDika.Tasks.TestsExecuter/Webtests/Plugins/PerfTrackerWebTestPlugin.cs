@@ -21,8 +21,9 @@ namespace BDika.Tasks.TestsExecuter.Webtests.Plugins
 
          public override void PreWebTest(object sender, PreWebTestEventArgs e)
          {
+#if DEBUG
              MessageBox.Show("X");
-
+#endif
              String collectorsConfig = System.Environment.GetEnvironmentVariable("collectorsConfig");
              String resultsID = System.Environment.GetEnvironmentVariable("resultsId"); 
              
