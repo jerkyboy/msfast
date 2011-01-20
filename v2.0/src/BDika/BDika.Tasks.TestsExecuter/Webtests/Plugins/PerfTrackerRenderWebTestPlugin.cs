@@ -66,14 +66,14 @@ namespace BDika.Tasks.TestsExecuter.Webtests.Plugins
                     }
                 }
             }
-
+            
             if (MSFastDefaultStartInfo.SetDefaultStartupInfo(chr, new Uri(e.Request.UrlWithQueryString), (int)this.ResultsID) == false)
             {
                 e.WebTest.AddCommentToResult("Failed on setting default start info for render test");
                 e.WebTest.Stop();
                 return;
             }
-
+            
             int result = new PageDataCollector().StartTest(chr);
 
             if (result != 0)

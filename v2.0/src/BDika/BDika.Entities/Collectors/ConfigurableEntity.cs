@@ -7,6 +7,7 @@ using MySpace.MSFast.Core.Configuration.CollectorsConfig;
 
 namespace BDika.Entities.Collectors
 {
+    [Serializable]
     public class ConfigurableEntity : Entity
     {
         [EntityField("configuration")]

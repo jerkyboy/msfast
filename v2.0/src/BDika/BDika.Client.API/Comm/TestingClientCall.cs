@@ -74,8 +74,6 @@ namespace BDika.Client.API.Comm
                 if (responseStream != null)
                     responseStream.Close();                                
             }
-            
-            return responseDic;
         }
 
         public virtual void PrepareArguments(){}

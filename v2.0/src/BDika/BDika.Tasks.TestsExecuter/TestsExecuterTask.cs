@@ -35,7 +35,7 @@ namespace BDika.Tasks.TestsExecuter
 
         public override TaskResults ExecuteTask()        
         {
-            BDikaTestingClient client = new BDikaTestingClient("clientid", "clientkey");
+            BDikaTestingClient client = new BDikaTestingClient(AppConfig.Instance["ClientID"], AppConfig.Instance["ClientKey"]);
 
             TestIteration testIteration = null;
             TaskResults results = new TaskResults();
@@ -232,8 +232,6 @@ namespace BDika.Tasks.TestsExecuter
                     results.Failed--;
                 }
             }
-
-            return results;
         }
     }
 }

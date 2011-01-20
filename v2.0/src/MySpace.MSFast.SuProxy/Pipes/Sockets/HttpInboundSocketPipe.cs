@@ -58,7 +58,8 @@ namespace MySpace.MSFast.SuProxy.Pipes.Sockets
 			}
 
 			HttpReaderState httpReaderState = new HttpReaderState(this, readSocket, parser);
-			BeginReceive(httpReaderState);
+            
+            BeginReceive(httpReaderState);
 		}
 
 		private static void BeginReceive(HttpReaderState httpReaderState)
@@ -86,11 +87,11 @@ namespace MySpace.MSFast.SuProxy.Pipes.Sockets
         private static void OnDataReceivedCallback(IAsyncResult asyn)
 		{
 			HttpReaderState httpReaderState = asyn.AsyncState as HttpReaderState;
-			try
-			{
+			
+            try
+			{   
                 if (httpReaderState.Socket != null && httpReaderState.Socket.Connected &&
                     OnData(httpReaderState, httpReaderState.ReceiveBuffer, 0, httpReaderState.Socket.EndReceive(asyn), (httpReaderState.Socket!=null) ? httpReaderState.Socket.Available : 0))
-
 				{
 					BeginReceive(httpReaderState);
 				}
@@ -107,8 +108,7 @@ namespace MySpace.MSFast.SuProxy.Pipes.Sockets
 		}
 
 		private static bool OnData(HttpReaderState httpReaderState, byte[] b_buffer, int index, int length,int available)
-		{
-
+		{            
 			lock (httpReaderState)
 			{
 				if (httpReaderState.HttpObjectParser == null)
@@ -117,7 +117,7 @@ namespace MySpace.MSFast.SuProxy.Pipes.Sockets
 				}
 
 				httpReaderState.TotalReceived += length;
-
+                
 				if (!httpReaderState.HttpObjectParser.IsInitiated())
 				{
 					if (httpReaderState.TotalReceived > httpReaderState.ReceiveHeaderBuffer.Length)

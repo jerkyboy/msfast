@@ -41,7 +41,7 @@ namespace MySpace.MSFast.Core.Http
 		public int ResponseCode = 0;
         public String Connection = null;
 
-        //Hack to determine if http 1.0 closed (Socket won't close??) 
+        //Hack to determine if socket closed (sometime it won't)
         private int countZeroAvailable = 0;
         private int available = 0;
 
@@ -92,7 +92,7 @@ namespace MySpace.MSFast.Core.Http
             }
             else if ((Connection == "close" || Connection == null) && this.ContentLength == -1)
             {
-                if (available == 0 && countZeroAvailable > 10)
+                if (available == 0 && countZeroAvailable > 50)
                 {
                     return 0;
                 }else{
@@ -105,6 +105,7 @@ namespace MySpace.MSFast.Core.Http
 		public override void OnData(byte[] b_buffer, int index, int length,int available)
 		{
             this.available = available;
+
             if (this.available > 0)
             {
                 this.countZeroAvailable = 0;

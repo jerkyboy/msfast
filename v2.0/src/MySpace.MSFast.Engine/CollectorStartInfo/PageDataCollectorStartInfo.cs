@@ -128,7 +128,7 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
         /// <summary>
         /// Clear browser cache when instantiate
         /// </summary>
-		public bool ClearCache = false;
+		public bool ClearCache = true;
 
         private String _EngineExecutable;
 

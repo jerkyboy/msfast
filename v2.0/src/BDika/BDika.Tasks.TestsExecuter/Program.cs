@@ -42,7 +42,7 @@ namespace BDika.Tasks.TestsExecuter
 #if DEBUG
             new TestsExecuterTask().Start();
 #else
-            ServiceBase.Run(new ServiceBase[] { new Program() });
+            new TestsExecuterTask().Start(); //ServiceBase.Run(new ServiceBase[] { new Program() });
 #endif
 
         }

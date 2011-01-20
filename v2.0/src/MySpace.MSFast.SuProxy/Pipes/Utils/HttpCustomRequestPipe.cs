@@ -46,6 +46,7 @@ namespace MySpace.MSFast.SuProxy.Pipes.Utils
 			ms.Close();
 
 			base.SendData(buffer, 0, buffer.Length);
+
 			buffer = null;
 
 			base.Flush();
