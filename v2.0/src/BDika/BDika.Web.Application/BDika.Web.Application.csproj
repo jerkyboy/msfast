@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B48A1A13-C427-4F28-ABED-ACA6F28C66BE}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -225,6 +225,20 @@
     </Compile>
     <Compile Include="Controls\Results\ResultsDisplayAndFilter.ascx.designer.cs">
       <DependentUpon>ResultsDisplayAndFilter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Results\ResultsGraph.ascx.cs">
+      <DependentUpon>ResultsGraph.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Results\ResultsGraph.ascx.designer.cs">
+      <DependentUpon>ResultsGraph.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Results\ResultsThumbnails.ascx.cs">
+      <DependentUpon>ResultsThumbnails.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controls\Results\ResultsThumbnails.ascx.designer.cs">
+      <DependentUpon>ResultsThumbnails.ascx</DependentUpon>
     </Compile>
     <Compile Include="Controls\Tests\Browse\TesterTypesList.ascx.cs">
       <DependentUpon>TesterTypesList.ascx</DependentUpon>
@@ -488,6 +502,8 @@
     <Content Include="Controls\Results\Browse\ResultsList.ascx" />
     <Content Include="Controls\Results\Browse\ResultsPaging.ascx" />
     <Content Include="Controls\Results\ResultsDisplayAndFilter.ascx" />
+    <Content Include="Controls\Results\ResultsGraph.ascx" />
+    <Content Include="Controls\Results\ResultsThumbnails.ascx" />
     <Content Include="Controls\Tests\Browse\TesterTypesList.ascx" />
     <Content Include="Controls\Tests\Browse\TesterTypesPaging.ascx" />
     <Content Include="Controls\Tests\Browse\TestsList.ascx" />
@@ -519,6 +535,9 @@
     <Content Include="Static\Skin\Skin001\Global\css\global.css" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Controls\Results\MySpace.MSFast.GUI.Engine.RenderGraph.bin" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -540,9 +559,6 @@
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://bdika</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

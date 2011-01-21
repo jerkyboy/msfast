@@ -129,6 +129,12 @@
   <data name="processortimeavg" xml:space="preserve">
     <value>Av. PT</value>
   </data>
+  <data name="rendertime" xml:space="preserve">
+    <value>Load Time</value>
+  </data>
+  <data name="servertime" xml:space="preserve">
+    <value>Server Time</value>
+  </data>
   <data name="testbox" xml:space="preserve">
     <value>Test Box</value>
   </data>
@@ -136,7 +142,7 @@
     <value>Test Name</value>
   </data>
   <data name="totalcssdownloadscount" xml:space="preserve">
-    <value>CSS Count</value>
+    <value>CSSs</value>
   </data>
   <data name="totalcssdownloadsize" xml:space="preserve">
     <value>CSS Size</value>
@@ -148,13 +154,13 @@
     <value>Size</value>
   </data>
   <data name="totalimagesdownloadscount" xml:space="preserve">
-    <value>Image Count</value>
+    <value>Images</value>
   </data>
   <data name="totalimagesdownloadsize" xml:space="preserve">
     <value>Image Size</value>
   </data>
   <data name="totaljsdownloadscount" xml:space="preserve">
-    <value>JS Count</value>
+    <value>JSs</value>
   </data>
   <data name="totaljsdownloadsize" xml:space="preserve">
     <value>JS Size</value>

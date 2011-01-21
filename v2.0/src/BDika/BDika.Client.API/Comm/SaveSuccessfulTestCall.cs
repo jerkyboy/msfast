@@ -12,12 +12,12 @@ namespace BDika.Client.API.Comm
     {
         public TestIteration TestIteration;
 
-        public override ServerResponse ExecuteCall(string clientID, string clientKey, int timeout)
+        public override ServerResponse ExecuteCall(String baseDomain, string clientID, string clientKey, int timeout)
         {
             if (this.TestIteration == null || this.TestIteration.ResultsID == 0 || this.TestIteration.ProcessedDataPackage == null)
                 throw new Exception("Invalid Test Iteration");
 
-            return base.ExecuteCall(clientID, clientKey, timeout);
+            return base.ExecuteCall(baseDomain,clientID, clientKey, timeout);
         }
 
         public override void PrepareArguments()
@@ -47,8 +47,8 @@ namespace BDika.Client.API.Comm
             AppendParam("r", this.TestIteration.ResultsID);
         }
 
-        public override Uri GetURL() {
-            return new Uri("http://bdika/Handlers/ClientServices/SaveSuccessfulTestServiceHandler.axd"); 
+        public override Uri GetURL(String baseDomain) {
+            return new Uri("http://" + baseDomain + "/Handlers/ClientServices/SaveSuccessfulTestServiceHandler.axd"); 
         }
     }
 }

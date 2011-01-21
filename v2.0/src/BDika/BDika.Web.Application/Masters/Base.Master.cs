@@ -24,7 +24,7 @@ namespace BDika.Web.Application.Masters
 
         public String ContentMetaTags_Title = "BDika";
         public String ContentMetaTags_Description = "BDika Description";
-        public String ContentMetaTags_Image = "http://bdika/logo.gif";
+        public String ContentMetaTags_Image = "http://modules.corp.myspace.com/logo.gif";
 
         private static String Title = "{0}";
         private static String DefaultTitle = "";

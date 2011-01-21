@@ -13,6 +13,7 @@ $(function(){
     });
 });
 </eyf:ScriptLiteral>
+<eyf:Box runat="server">
 <eyf:AsyncForm ID="afResultsDisplayAndFilter" runat="server" styleClass="afResultsDisplayAndFilter">
     <table class="frmtbl resultsfilter">
         <thead>
@@ -44,6 +45,9 @@ $(function(){
     </table>
     <eyf:InputHidden ID="ihTestID" runat="server" name="tid" />
 </eyf:AsyncForm>
+</eyf:Box>
+<eyf:Box runat="server">
 <div class="respaging">
     <Results:ResultsPaging ID="Results_ResultsPaging" runat="server" />
 </div>
+</eyf:Box>

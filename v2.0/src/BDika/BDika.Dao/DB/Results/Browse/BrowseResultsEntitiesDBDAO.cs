@@ -42,7 +42,7 @@ namespace BDika.Dao.DB.Results.Browse
                 builder.Create().Name("len").Type(DbType.UInt32).Value(bpe.ResultsPerPage);
                 builder.Create().Name("ind").Type(DbType.UInt32).Value(bpe.Index);
 
-                String sql = String.Concat(GetSelect(builder, bpe), GetFrom(builder, bpe), GetWhere(builder, bpe), GetOrder(builder, bpe), GetLimit(builder, bpe));
+                String sql = String.Concat(GetSelect(builder, bpe), GetFrom(builder, bpe), GetWhere(builder, bpe), GetGroupBy(builder,bpe), GetOrder(builder, bpe), GetLimit(builder, bpe));
                 t.Entities = AdoTemplate.QueryWithResultSetExtractor(CommandType.Text, sql, entityMapper, builder.GetParameters());
                 t.Succeeded = (t.Entities != null);
 
@@ -60,12 +60,14 @@ namespace BDika.Dao.DB.Results.Browse
             return null;
         }
 
+
         public virtual void PrepareBuilder(IDbParametersBuilder builder, T bpe){}
         public virtual String GetCount(IDbParametersBuilder builder, T bpe){return COUNT;}
         public virtual String GetLimit(IDbParametersBuilder builder, T bpe) { return LIMIT; }
         public virtual String GetOrder(IDbParametersBuilder builder, T bpe) { return ORDERBY; }
         public virtual String GetWhere(IDbParametersBuilder builder, T bpe) { return WHERE; }
         public virtual String GetFrom(IDbParametersBuilder builder, T bpe) { return FROM; }
+        public virtual String GetGroupBy(IDbParametersBuilder builder,T bpe){return String.Empty;}
         public virtual String GetSelect(IDbParametersBuilder builder, T bpe) { return SELECT; }
     }
 
@@ -78,7 +80,49 @@ namespace BDika.Dao.DB.Results.Browse
             Entity.GetFieldName(typeof(TriggerToTestAndTesterType), "triggerid") + " = ?trid AND " +
             Entity.GetFieldName(typeof(Entities.Results.Results), "testid") + " = " + Entity.GetFieldName(typeof(TriggerToTestAndTesterType), "testid") + " AND " +
             Entity.GetFieldName(typeof(Entities.Results.Results), "testertypeid") + " = " + Entity.GetFieldName(typeof(TriggerToTestAndTesterType), "testertypeid") + " ) ";
-        
+
+        private static String SELECT_DISTINCT_TESTTYPE = "SELECT MAX(" + Entity.GetFieldName(typeof(Entities.Results.Results), "resultsid") + ") as results_resultsid, 'BPI' as results_bpi ";
+        private static String COUNT_DISTINCT_TESTTYPE = "SELECT COUNT(DISTINCT " + Entity.GetFieldName(typeof(Entities.Results.Results), "testid") + ", " + Entity.GetFieldName(typeof(Entities.Results.Results), "testertypeid") + ") ";
+        private static String GROUPBY_DISTINCT_TESTTYPE = " GROUP BY " + Entity.GetFieldName(typeof(Entities.Results.Results), "testid") + ", " + Entity.GetFieldName(typeof(Entities.Results.Results), "testertypeid") + " ";
+
+        public override string GetCount(IDbParametersBuilder builder, BrowseResultsEntities_FreeBrowse bpe)
+        {
+            if (bpe.ResultsState == ResultsState.Unknown &&
+                TriggerID.IsValidTriggerID(bpe.TriggerID) == false &&
+                TestID.IsValidTestID(bpe.TestID) == false &&
+                TesterTypeID.IsValidTesterTypeID(bpe.TesterTypeID) == false)
+            {
+                return COUNT_DISTINCT_TESTTYPE;
+            }
+
+
+            return base.GetCount(builder, bpe);
+        }
+        public override string GetSelect(IDbParametersBuilder builder, BrowseResultsEntities_FreeBrowse bpe)
+        {
+            if (bpe.ResultsState == ResultsState.Unknown &&
+                TriggerID.IsValidTriggerID(bpe.TriggerID) == false &&
+                TestID.IsValidTestID(bpe.TestID) == false &&
+                TesterTypeID.IsValidTesterTypeID(bpe.TesterTypeID) == false)
+            {
+                return SELECT_DISTINCT_TESTTYPE;
+            }
+
+            return base.GetSelect(builder,bpe);
+        }
+
+        public override string GetGroupBy(IDbParametersBuilder builder, BrowseResultsEntities_FreeBrowse bpe)
+        {
+            if (bpe.ResultsState == ResultsState.Unknown &&
+                TriggerID.IsValidTriggerID(bpe.TriggerID) == false &&
+                TestID.IsValidTestID(bpe.TestID) == false &&
+                TesterTypeID.IsValidTesterTypeID(bpe.TesterTypeID) == false)
+            {
+                return GROUPBY_DISTINCT_TESTTYPE;
+            }
+ 	        return base.GetGroupBy(builder, bpe);
+        }
+
         public override void PrepareBuilder(IDbParametersBuilder builder, BrowseResultsEntities_FreeBrowse bpe)
         {
             base.PrepareBuilder(builder, bpe);

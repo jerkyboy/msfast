@@ -97,6 +97,24 @@ namespace BDika.Resources.Web.Application.Controls.Results.Browse {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load Time.
+        /// </summary>
+        internal static string rendertime {
+            get {
+                return ResourceManager.GetString("rendertime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Time.
+        /// </summary>
+        internal static string servertime {
+            get {
+                return ResourceManager.GetString("servertime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test Box.
         /// </summary>
         internal static string testbox {
@@ -115,7 +133,7 @@ namespace BDika.Resources.Web.Application.Controls.Results.Browse {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CSS Count.
+        ///   Looks up a localized string similar to CSSs.
         /// </summary>
         internal static string totalcssdownloadscount {
             get {
@@ -151,7 +169,7 @@ namespace BDika.Resources.Web.Application.Controls.Results.Browse {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Image Count.
+        ///   Looks up a localized string similar to Images.
         /// </summary>
         internal static string totalimagesdownloadscount {
             get {
@@ -169,7 +187,7 @@ namespace BDika.Resources.Web.Application.Controls.Results.Browse {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to JS Count.
+        ///   Looks up a localized string similar to JSs.
         /// </summary>
         internal static string totaljsdownloadscount {
             get {

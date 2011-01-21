@@ -19,7 +19,7 @@
             <tbody>
     </HeaderTemplate>
     <ItemTemplate>
-                <tr class="r<%#(Container.ItemIndex % 2 == 0) ? "1" : "2" %>">                    
+                <tr class="r<%#(Container.ItemIndex % 2 == 0) ? "1" : "2" %>" onmouseover="$(this).parents('table:first').find('tr.over').removeClass('over');$(this).addClass('over');" onmouseout="$(this).removeClass('over');">                    
                     <td class="testslst_name testslst_name_link"><eyf:Href runat="server" ID="hrefTestName" /></td>                    
                     <td class="testslst_url testslst_url_link"><eyf:Href runat="server" ID="hrefTestURL" /></td>
                     <td class="testslst_edit testslst_edit_link"><eyf:Href runat="server" ID="hrefEditTest" /></td>

@@ -24,7 +24,7 @@ namespace BDika.Dao.DB.Tests.Browse
         public static String COUNT = " SELECT COUNT(" + Entity.GetFieldName(typeof(Test), "testid") + ") ";
         public static String FROM = " FROM " + Entity.GetTableNameAndNick(typeof(Test));
         public static String WHERE = "";
-        public static String ORDERBY = " ORDER BY " + Entity.GetFieldName(typeof(Test), "testid") + " DESC ";
+        public static String ORDERBY = " ORDER BY " + Entity.GetFieldName(typeof(Test), "testid") + " ASC ";
         public static String LIMIT = " LIMIT ?ind, ?len ";
 
         public override IDAOTransaction ExecuteCall(EntitiesDAOTransaction<T> t)
@@ -84,7 +84,7 @@ namespace BDika.Dao.DB.Tests.Browse
                                       " FROM " + Entity.GetTableNameAndNick(typeof(TriggerToTestAndTesterType));
 
         public static String WHERE = " WHERE " + Entity.GetFieldName(typeof(TriggerToTestAndTesterType), "triggerid") + " IN ({0}) " +
-                                     " ORDER BY " + Entity.GetFieldName(typeof(TriggerToTestAndTesterType), "testid") + " DESC LIMIT 0, 512";
+                                     " ORDER BY " + Entity.GetFieldName(typeof(TriggerToTestAndTesterType), "testid") + " ASC LIMIT 0, 512";
 
         public override String GetSelect<T>(EntitiesDAOTransaction<T> t, String where)
         {

@@ -58,12 +58,14 @@ namespace BDika.Web.Application.Pages.Results
             if (ResultsID.IsValidResultsID(this.ResultsID) &&
                 (results = ResultsProvider.GetResults(BDikaContext.Current.User.UserID, this.ResultsID)) != null)
             {
-                this.phValidResults.Visible = true;
+                this.Results_ResultsThumbnails.ResultsID = this.ResultsID;
+                this.Results_ResultsGraph.ResultsID = this.ResultsID;
                 this.sbTestURL.Text = results.Test.TestURL != null ? results.Test.TestURL.ToString() : "n/a";
+                this.phValidResults.Visible = true;
                 return;
             }
 
-            this.phValidResults.Visible = true;
+            this.phInvalidResults.Visible = true;
         }
     }
 }

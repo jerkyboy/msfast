@@ -14,6 +14,7 @@ $(function(){
 });
 
 </eyf:ScriptLiteral>
+<eyf:Box runat="server">
 <eyf:AsyncForm ID="afTriggersDisplayAndFilter" runat="server" styleClass="afTriggersDisplayAndFilter">
     <table class="frmtbl resultsfilter">
         <thead>
@@ -42,6 +43,9 @@ $(function(){
         </tbody>
     </table>
 </eyf:AsyncForm>
+</eyf:Box>
+<eyf:Box runat="server">
 <div class="tripaging">
     <Triggers:TriggersPaging ID="Triggers_TriggersPaging" runat="server" />
 </div>
+</eyf:Box>

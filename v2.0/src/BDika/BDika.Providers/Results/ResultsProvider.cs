@@ -17,6 +17,7 @@ using EYF.Core.Configuration;
 using MySpace.MSFast.DataProcessors.Screenshots;
 using System.IO;
 using System.Xml;
+using MySpace.MSFast.DataProcessors.Markers;
 
 namespace BDika.Providers.Results
 {
@@ -37,17 +38,21 @@ namespace BDika.Providers.Results
 
         public static Entities.Results.Results GetPendingResults(TesterType TesterType)
         {
-           if (TesterType == null) throw new NullReferenceException();
-           if (TesterTypeID.IsValidTesterTypeID(TesterType.TesterTypeID) == false) throw new InvalidTesterTypeIDException();
+            if (TesterType == null) throw new NullReferenceException();
+            if (TesterTypeID.IsValidTesterTypeID(TesterType.TesterTypeID) == false) throw new InvalidTesterTypeIDException();
 
-           TriggersProvider.TriggerAllTimedBased();
+            PendingResultsEntityIndex indx = EntitiesGateway.GetEntity<PendingResultsEntityIndex>(TesterType.TesterTypeID);
 
-           PendingResultsEntityIndex indx = EntitiesGateway.GetEntity<PendingResultsEntityIndex>(TesterType.TesterTypeID);
+            if (indx == null || indx.Results == null)
+            {
+                TriggersProvider.TriggerAllTimedBased();
+                indx = EntitiesGateway.GetEntity<PendingResultsEntityIndex>(TesterType.TesterTypeID);
+            }
 
-           if (indx == null)
-               return null;
+            if (indx == null)
+                return null;
 
-            if(indx.Results == null)
+            if (indx.Results == null)
                 throw new NullReferenceException();
 
             Entities.Results.Results res = indx.Results;
@@ -62,7 +67,7 @@ namespace BDika.Providers.Results
                 return res;
             }
 
-           return null;
+            return null;
         }
 
         public static bool MarkFailedResults(ResultsID resultsID)
@@ -84,6 +89,7 @@ namespace BDika.Providers.Results
             DownloadData downloadData = null;
             PerformanceData performanceData = null;
             ScreenshotsData screenshotsData = null;
+            MarkersData markersData = null;
 
             if (pdp.ContainsKey(typeof(DownloadData)))
                 downloadData = pdp[typeof(DownloadData)] as DownloadData;
@@ -94,6 +100,9 @@ namespace BDika.Providers.Results
             if (pdp.ContainsKey(typeof(ScreenshotsData)))
                 screenshotsData = pdp[typeof(ScreenshotsData)] as ScreenshotsData;
 
+            if (pdp.ContainsKey(typeof(MarkersData)))
+                markersData = pdp[typeof(MarkersData)] as MarkersData;
+            
             #region Save Results Object
 
             UpdateResultsStateEntityCommand res = new UpdateResultsStateEntityCommand();
@@ -125,6 +134,17 @@ namespace BDika.Providers.Results
                 res.WorkingSetDelta = (uint)(performanceData.MaxWorkingSet - performanceData.MinWorkingSet);
             }
 
+            if (markersData != null)
+            {
+                res.RenderTime = 0;
+                
+                foreach (Marker m in markersData)
+                {
+                    if (res.StartTime < (ulong)m.Timestamp)
+                        res.RenderTime = Math.Max(res.RenderTime,(uint)(res.StartTime-(ulong)m.Timestamp));
+                }
+            }
+
             if (EntitiesGateway.UpdateEntity(res) == false)
                 return false;
 
@@ -154,6 +174,34 @@ namespace BDika.Providers.Results
             xml.Save(String.Format(DefaultCachedDataRootServer, resultsID));
 
             return true;
+        }
+
+        public static string GetResultsXMLContextLocation(ResultsID resultsID)
+        {
+            return String.Format(DefaultCachedDataRootContext, (uint)resultsID);
+        }
+
+        public static String[] GetResultsThumbnails(ResultsID resultsID)
+        {
+            LinkedList<String> ls = new LinkedList<string>();
+            
+            for(int i = 1; i < 100;i++){
+                try
+                {
+                    String filename = String.Format("TC_{0}_{1}.jpg", resultsID, i);
+
+                    if (File.Exists(String.Format(DefaultThumbnailsServerRoot, resultsID) + filename) == false)
+                        break;
+
+                    ls.AddLast(String.Format(DefaultThumbnailsContextRoot, resultsID) + filename);
+                }
+                catch
+                {
+                    break;
+                }
+            }
+            
+            return ls.ToArray();
         }
     }
 }

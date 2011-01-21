@@ -113,8 +113,14 @@ namespace BDika.Web.Application.Pages.Results.Browse
                 PageTitle = EYFResourcesManager.GetString("title");
                 btt = new BrowseTesterTypes_All();
             }
-            if (btt != null) btt.Load(BDikaContext.Current.User);
+            
+            brfb.PopTotal = true;
+
+            if (btt != null) 
+                btt.Load(BDikaContext.Current.User);
+            
             brfb.Load(BDikaContext.Current.User);
+            
             this.Results_ResultsDisplayAndFilter.BrowseResultsEntities = brfb;
             this.Results_ResultsDisplayAndFilter.BrowseTesterTypesEntities = btt;
 

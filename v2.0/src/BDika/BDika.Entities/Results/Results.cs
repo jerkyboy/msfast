@@ -110,6 +110,9 @@ namespace BDika.Entities.Results
         [EntityField("endtime")]
         public ulong EndTime = 0;
 
+        [EntityField("totalrendertime")]
+        public uint RenderTime = 0;        
+
         [EntityField("firstrequesttime")]
         public uint FirstRequestTime = 0;
 
@@ -192,6 +195,9 @@ namespace BDika.Entities.Results
         [EntityField("endtime")]
         public ulong EndTime = 0;
 
+        [EntityField("totalrendertime")]
+        public uint RenderTime = 0;
+        
         [EntityField("firstrequesttime")]
         public uint FirstRequestTime = 0;
         

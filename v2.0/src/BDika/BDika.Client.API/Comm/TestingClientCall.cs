@@ -12,7 +12,7 @@ namespace BDika.Client.API.Comm
     {
         private String requestBody = String.Empty;
 
-        public virtual T ExecuteCall(String clientID, String clientKey, int timeout)
+        public virtual T ExecuteCall(String baseDomain,String clientID, String clientKey, int timeout)
         {
             requestBody = String.Empty;
 
@@ -21,7 +21,7 @@ namespace BDika.Client.API.Comm
 
             PrepareArguments();
 
-            Uri uri = GetURL();
+            Uri uri = GetURL(baseDomain);
 
             WebRequest request = null;
             HttpWebResponse response = null;
@@ -77,8 +77,8 @@ namespace BDika.Client.API.Comm
         }
 
         public virtual void PrepareArguments(){}
-        
-        public abstract Uri GetURL();
+
+        public abstract Uri GetURL(String baseDomain);
 
         protected void AppendParam(string paramName, object val)
         {

@@ -32,6 +32,24 @@ namespace BDika.Web.Application.Pages.Results {
         protected global::EYF.Web.Controls.Common.Style.SubTitle sbTestURL;
         
         /// <summary>
+        /// Results_ResultsGraph control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::BDika.Web.Application.Controls.Results.ResultsGraph Results_ResultsGraph;
+        
+        /// <summary>
+        /// Results_ResultsThumbnails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::BDika.Web.Application.Controls.Results.ResultsThumbnails Results_ResultsThumbnails;
+        
+        /// <summary>
         /// phInvalidResults control.
         /// </summary>
         /// <remarks>

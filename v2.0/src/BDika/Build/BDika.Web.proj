@@ -41,7 +41,8 @@
 					      Exclude="$(Dir_Deploy_EYF_Web)\**\.svn\**;
 						  	         $(Dir_Projects_BDika_Web)\**\.svn\**; 
 						  	         $(Dir_Projects_BDika_Web)\Static\EYF\**\*;
-							           $(Dir_Projects_BDika_Web)\**\cdn\**\*;
+							           $(Dir_Projects_BDika_Web)\**\thumbnails\**\*;
+                         $(Dir_Projects_BDika_Web)\**\results\**\*.xml;
 							           $(Dir_Projects_BDika_Web)\**\log\**\*;">
 			
 			<Output TaskParameter="Include" ItemName="_BDikawebeyfoutput"/>

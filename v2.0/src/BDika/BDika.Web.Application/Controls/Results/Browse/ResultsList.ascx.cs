@@ -58,19 +58,48 @@ namespace BDika.Web.Application.Controls.Results.Browse
 
             hrefTesterTypeName.Ref = hrefResultsDate.Ref = hrefTestName.Ref = Pages.Results.ShowResultsDetails.GetURL(r);
 
-            ((Href)e.Item.FindControl("hrefTotalTime")).Text = (r.EndTime-r.StartTime).ToString();
+            ((Href)e.Item.FindControl("hrefTotalTime")).Text = String.Format("{0}<span>secs.</span>", ((r.EndTime - r.StartTime) / 1000.00));
+            ((Href)e.Item.FindControl("hrefTotalTime")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
+
+            ((Href)e.Item.FindControl("hrefServerTime")).Text = (r.FirstRequestTime == 0) ? "<span>n/a</span>" : String.Format("{0}<span>secs.</span>", (r.FirstRequestTime / 1000.00));
+            ((Href)e.Item.FindControl("hrefServerTime")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
+
+            ((Href)e.Item.FindControl("hrefRenderTime")).Text = (r.RenderTime == 0) ? "<span>n/a</span>" : String.Format("{0}<span>secs.</span>", (r.RenderTime / 1000.00));
+            ((Href)e.Item.FindControl("hrefRenderTime")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
+            
+
             ((Href)e.Item.FindControl("hrefTotalDownloadsCount")).Text = r.TotalDownloadsCount.ToString();
+            ((Href)e.Item.FindControl("hrefTotalDownloadsCount")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
             ((Href)e.Item.FindControl("hrefTotalJSDownloadsCount")).Text = r.TotalJSDownloadsCount.ToString();
+            ((Href)e.Item.FindControl("hrefTotalJSDownloadsCount")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
             ((Href)e.Item.FindControl("hrefTotalCSSDownloadsCount")).Text = r.TotalCSSDownloadsCount.ToString();
+            ((Href)e.Item.FindControl("hrefTotalCSSDownloadsCount")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
             ((Href)e.Item.FindControl("hrefTotalImagesDownloadsCount")).Text = r.TotalImagesDownloadsCount.ToString();
-            ((Href)e.Item.FindControl("hrefTotalDownloadSize")).Text = r.TotalDownloadSize.ToString();
-            ((Href)e.Item.FindControl("hrefTotalJSDownloadSize")).Text = r.TotalJSDownloadSize.ToString();
-            ((Href)e.Item.FindControl("hrefTotalCSSDownloadSize")).Text = r.TotalCSSDownloadSize.ToString();
-            ((Href)e.Item.FindControl("hrefTotalImagesDownloadSize")).Text = r.TotalImagesDownloadSize.ToString();
+            ((Href)e.Item.FindControl("hrefTotalImagesDownloadsCount")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
+
+            ((Href)e.Item.FindControl("hrefTotalDownloadSize")).Text = String.Format("{0:0,0}<span>kb.</span>", (r.TotalDownloadSize / 1024));
+            ((Href)e.Item.FindControl("hrefTotalDownloadSize")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
+
+            ((Href)e.Item.FindControl("hrefTotalJSDownloadSize")).Text = String.Format("{0:0,0}<span>kb.</span>", (r.TotalJSDownloadSize / 1024));
+            ((Href)e.Item.FindControl("hrefTotalJSDownloadSize")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
+
+            ((Href)e.Item.FindControl("hrefTotalCSSDownloadSize")).Text = String.Format("{0:0,0}<span>kb.</span>", (r.TotalCSSDownloadSize / 1024));
+            ((Href)e.Item.FindControl("hrefTotalCSSDownloadSize")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
+
+            ((Href)e.Item.FindControl("hrefTotalImagesDownloadSize")).Text = String.Format("{0:0,0}<span>kb.</span>", (r.TotalImagesDownloadSize / 1024));
+            ((Href)e.Item.FindControl("hrefTotalImagesDownloadSize")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
+
             ((Href)e.Item.FindControl("hrefProcessorTimeAvg")).Text = r.ProcessorTimeAvg.ToString();
-            ((Href)e.Item.FindControl("hrefUserTimeAvg")).Text = r.UserTimeAvg.ToString();
-            ((Href)e.Item.FindControl("hrefPrivateWorkingSetDelta")).Text = r.PrivateWorkingSetDelta.ToString();
-            ((Href)e.Item.FindControl("hrefWorkingSetDelta")).Text = r.WorkingSetDelta.ToString();
+            ((Href)e.Item.FindControl("hrefProcessorTimeAvg")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
+
+            ((Href)e.Item.FindControl("hrefUserTimeAvg")).Text = String.Format("{0}%", Math.Min(100, r.UserTimeAvg));
+            ((Href)e.Item.FindControl("hrefUserTimeAvg")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
+
+            ((Href)e.Item.FindControl("hrefPrivateWorkingSetDelta")).Text = String.Format("{0:0,0}<span>kb.</span>", (r.PrivateWorkingSetDelta / 1024));
+            ((Href)e.Item.FindControl("hrefPrivateWorkingSetDelta")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
+
+            ((Href)e.Item.FindControl("hrefWorkingSetDelta")).Text = String.Format("{0:0,0}<span>kb.</span>", (r.WorkingSetDelta / 1024));
+            ((Href)e.Item.FindControl("hrefWorkingSetDelta")).Ref = Pages.Results.ShowResultsDetails.GetURL(r);
         }
     }
 }

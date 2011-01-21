@@ -3,7 +3,7 @@
 <head><%= "<!-- //" + MachineName + "// -->" %>
     <title><asp:Literal ID="ltTitle" runat="server" /></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="keywords" content="bdika" /> 
+    <meta name="keywords" content="speed!" /> 
     <meta name="title" content="<%=ContentMetaTags_Title %>" /> 
     <meta name="description" content="<%=ContentMetaTags_Description %>" /> 
     <link rel="image_src" href="<%=ContentMetaTags_Image %>" /> 

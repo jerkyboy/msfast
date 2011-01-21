@@ -23,7 +23,12 @@ namespace BDika.Providers.Results.Browse
 
         public BrowseResultsEntities()
         {
-            base.ResultsPerPage = 20;
+#if DEBUG
+            base.ResultsPerPage = 5;
+#else 
+            base.ResultsPerPage = 100;
+#endif
+
         }
         public override List<ResultsID> GetEntitiesIDs()
         {

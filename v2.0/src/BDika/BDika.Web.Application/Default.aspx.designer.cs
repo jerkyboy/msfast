@@ -14,6 +14,15 @@ namespace BDika.Web.Application {
     public partial class _Default {
         
         /// <summary>
+        /// slMain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::EYF.Web.Controls.Common.StyleLiteral slMain;
+        
+        /// <summary>
         /// hrefLatestResults control.
         /// </summary>
         /// <remarks>
