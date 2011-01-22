@@ -141,7 +141,7 @@ namespace BDika.Providers.Results
                 foreach (Marker m in markersData)
                 {
                     if (res.StartTime < (ulong)m.Timestamp)
-                        res.RenderTime = Math.Max(res.RenderTime,(uint)(res.StartTime-(ulong)m.Timestamp));
+                        res.RenderTime = Math.Max(res.RenderTime, (uint)((ulong)m.Timestamp - res.StartTime));
                 }
             }
 
@@ -183,6 +183,7 @@ namespace BDika.Providers.Results
 
         public static String[] GetResultsThumbnails(ResultsID resultsID)
         {
+            ProcessedDataPackage.Deserialize(null);
             LinkedList<String> ls = new LinkedList<string>();
             
             for(int i = 1; i < 100;i++){

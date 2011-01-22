@@ -28,10 +28,11 @@ namespace BDika.Web.Application.Controls.Tests
                 return;
             }
 
-            this.hrefEditTesterType.Ref = "#";
-            this.hrefEditTesterType.Text = EYFResourcesManager.GetString("edit");
-            this.hrefEditTesterType.AdditionalAttribute = "onclick=\"edittestertype(" + this.TesterType.TesterTypeID + ");\"";
 
+            this.ltClientID.Text = TesterType.ClientID;
+            this.ltClientKey.Text = TesterType.ClientKey;
+            this.ltEnabled.Text = TesterType.Enabled ? "Yes" : "No";
+            this.ltLastPing.Text = "n/a";
             this.ttTesterTypeName.Text = this.TesterType.Name;
         }
     }

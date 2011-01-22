@@ -72,6 +72,9 @@ namespace BDika.Entities.Tests
 
         [EntityField("clientkey", Size = 45)]
         public ClientKey ClientKey;
+
+        public bool Enabled = true;
+
     }
 
     [Serializable]

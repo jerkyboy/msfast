@@ -8,6 +8,7 @@ table.updateExecConf tr.newval td.td1 span{display:block;}
 table.updateExecConf tr.override td.td2 input,
 table.updateExecConf tr.inherit input{color:#ccc;} 
 table.updateExecConf tr.override input{color:#333;}
+.addvar{position:relative;padding:10px 40px;display:block}
 </eyf:StyleLiteral>
 <eyf:ScriptLiteral ID="scUpdateCollectorsConfiguration" runat="server">
 function saveAttr(tr){
@@ -81,28 +82,28 @@ $(function(){
         <table class="frmtbl updateExecConf">
         <thead>
             <tr>
-                <th colspan="4"><asp:Literal runat="server" text="<%$BDikaResources: Controls.Results.ResultsDisplayAndFilter, title %>" /></th>
+                <th colspan="4"><span class="ico ico-variable"></span>Variables</th>
             </tr>
         </thead>
         <tbody>
     </HeaderTemplate>
     <ItemTemplate>
         <asp:Literal ID="ltTR" runat="server" />
-            <td class="td1"><span><a href="#" onclick="var t=$(this).parents('tr:first');removeAttr(t);t.remove();">REMOVE</a></span></td>
+            <td class="td1"><a href="#" onclick="var t=$(this).parents('tr:first');removeAttr(t);t.remove();"><span class="ico ico-delete-variable"></span></a></td>
             <td class="td2"><eyf:InputText ID="itKey" runat="server" name="k" /></td>
             <td class="td3"><eyf:InputText ID="itVal" runat="server" name="v" /></td>
-            <td class="td4"><span><eyf:InputCheckbox ID="icInherit" runat="server"/> OVERRIDE</span></td>
+            <td class="td4"><span><eyf:InputCheckbox ID="icInherit" runat="server"/> Override</span></td>
         </tr>
     </ItemTemplate>
     <FooterTemplate>
         <tr class="template newval">
-            <td class="td1"><span><a href="#" onclick="var t=$(this).parents('tr:first');removeAttr(t);t.remove();">REMOVE</a></span></td>
+            <td class="td1"><span><a href="#" onclick="var t=$(this).parents('tr:first');removeAttr(t);t.remove();"><span class="ico ico-delete-variable"></span></a></span></td>
             <td class="td2"><eyf:InputText ID="itKey" runat="server" name="k" /></td>
             <td class="td3"><eyf:InputText ID="itVal" runat="server" name="v" /></td>
             <td class="td4"></td>
         </tr>
         </tbody>
     </table>
-    <a href="#" onclick="addnewarg();">ADD NEW</a>
+    <a href="#" onclick="addnewarg();" class="addvar"><span class="ico ico-add-variable"></span> Add Variable</a>
     </FooterTemplate>
 </asp:Repeater>

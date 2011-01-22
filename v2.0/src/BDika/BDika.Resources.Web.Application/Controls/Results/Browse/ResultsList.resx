@@ -124,7 +124,7 @@
     <value>No Results Found...</value>
   </data>
   <data name="privateworkingsetdelta" xml:space="preserve">
-    <value>PWS Delta</value>
+    <value>PWS δ</value>
   </data>
   <data name="processortimeavg" xml:space="preserve">
     <value>Av. PT</value>
@@ -175,6 +175,6 @@
     <value>View</value>
   </data>
   <data name="workingsetdelta" xml:space="preserve">
-    <value>WS Delta</value>
+    <value>WS δ</value>
   </data>
 </root>

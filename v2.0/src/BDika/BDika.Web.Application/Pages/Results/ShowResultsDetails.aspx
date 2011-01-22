@@ -4,10 +4,11 @@
 
 <asp:Content id="cntBody" ContentPlaceHolderID="body" runat="Server">
     <asp:PlaceHolder id="phValidResults" runat="server">
-        <eyf:SubTitle runat="server" ID="sbTestURL" runat="server" />
-        <Results:ResultsGraph runat="server" id="Results_ResultsGraph" />
+        <eyf:Box runat="server">
+            <eyf:SubTitle runat="server" ID="sbTestURL" runat="server" />
+            <Results:ResultsGraph runat="server" id="Results_ResultsGraph" />
+        </eyf:Box>
         <Results:ResultsThumbnails runat="server" id="Results_ResultsThumbnails" />
-        
     </asp:PlaceHolder>
     <asp:PlaceHolder id="phInvalidResults" runat="server">
         <asp:Literal runat="server" Text="<%$BDikaResources: Pages.Results.ShowResultsDetails, invalidresults %>" />

@@ -79,7 +79,7 @@ namespace BDika.Resources.Web.Application.Controls.Results.Browse {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PWS Delta.
+        ///   Looks up a localized string similar to PWS δ.
         /// </summary>
         internal static string privateworkingsetdelta {
             get {
@@ -232,7 +232,7 @@ namespace BDika.Resources.Web.Application.Controls.Results.Browse {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WS Delta.
+        ///   Looks up a localized string similar to WS δ.
         /// </summary>
         internal static string workingsetdelta {
             get {
