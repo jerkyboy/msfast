@@ -104,11 +104,11 @@
     </Reference>
     <Reference Include="MySpace.MSFast.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_ExternalReferences\MySpace.MSFast.Core.dll</HintPath>
+      <HintPath>..\..\bin\Release\MySpace.MSFast.Core.dll</HintPath>
     </Reference>
     <Reference Include="MySpace.MSFast.DataProcessors, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_ExternalReferences\MySpace.MSFast.DataProcessors.dll</HintPath>
+      <HintPath>..\..\bin\Release\MySpace.MSFast.DataProcessors.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=5.0.8.1, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -557,7 +557,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>14453</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://bdika</IISUrl>
+          <IISUrl>http://modules.corp.myspace.com</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>

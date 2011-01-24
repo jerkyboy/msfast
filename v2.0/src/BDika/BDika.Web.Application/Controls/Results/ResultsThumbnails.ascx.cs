@@ -22,7 +22,7 @@ namespace BDika.Web.Application.Controls.Results
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            String[] thumbnails = ResultsProvider.GetResultsThumbnails(this.ResultsID);
+            ThumbnailAndTimestamp[] thumbnails = ResultsProvider.GetResultsThumbnails(this.ResultsID);
 
             if (thumbnails == null || thumbnails.Length == 0)
             {
@@ -40,12 +40,14 @@ namespace BDika.Web.Application.Controls.Results
         void rptThumbnails_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             Literal ltImage = e.Item.FindControl("ltImage") as Literal;
-            String src = e.Item.DataItem as String;
+            Literal ltTimeStamp = e.Item.FindControl("ltTimeStamp") as Literal;
+            
+            ThumbnailAndTimestamp src = e.Item.DataItem as ThumbnailAndTimestamp;
 
-            if (ltImage == null || String.IsNullOrEmpty(src))
+            if (ltImage == null || src == null || String.IsNullOrEmpty(src.ThumbnailSrc))
                 return;
-
-            ltImage.Text = String.Format("<img src=\"{0}\" onerror=\"thumbnailError($(this));\"/>",src);
+            ltTimeStamp.Text = (src.Timestamp == 0) ? "<span>n/a</span>" : String.Format("{0}<span>secs.</span>", (src.Timestamp / 1000.00));
+            ltImage.Text = String.Format("<img src=\"{0}\" onerror=\"thumbnailError($(this));\"/>", src.ThumbnailSrc);
        }
     }
 }

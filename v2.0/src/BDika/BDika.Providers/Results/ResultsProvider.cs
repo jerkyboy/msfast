@@ -181,28 +181,76 @@ namespace BDika.Providers.Results
             return String.Format(DefaultCachedDataRootContext, (uint)resultsID);
         }
 
-        public static String[] GetResultsThumbnails(ResultsID resultsID)
+        public static ThumbnailAndTimestamp[] GetResultsThumbnails(ResultsID resultsID)
         {
-            ProcessedDataPackage.Deserialize(null);
-            LinkedList<String> ls = new LinkedList<string>();
+            String resxml = String.Format(DefaultCachedDataRootServer, (uint)resultsID);
             
+            if (File.Exists(resxml) == false)
+                return null;
+
+            XmlDocument x = new XmlDocument();
+            x.Load(resxml);
+            ProcessedDataPackage pdp = ProcessedDataPackage.Deserialize(x);
+            
+            if (pdp == null || pdp.CollectionStartTime <=0 || pdp.CollectionEndTime <= 0 || pdp.ContainsKey(typeof(MarkersData)) == false)
+                return null;
+
+            LinkedList<ThumbnailAndTimestamp> ls = new LinkedList<ThumbnailAndTimestamp>();
+            
+            int missed = 0;
+
             for(int i = 1; i < 100;i++){
                 try
                 {
                     String filename = String.Format("TC_{0}_{1}.jpg", resultsID, i);
 
                     if (File.Exists(String.Format(DefaultThumbnailsServerRoot, resultsID) + filename) == false)
-                        break;
-
-                    ls.AddLast(String.Format(DefaultThumbnailsContextRoot, resultsID) + filename);
+                    {
+                        if ((missed++) > 15)
+                            break;
+                    }
+                    else
+                    {
+                        ls.AddLast(new ThumbnailAndTimestamp()
+                        {
+                            MarkerName = "onSegment(" + i + ")",
+                            ThumbnailSrc = String.Format(DefaultThumbnailsContextRoot, resultsID) + filename
+                        });
+                    }
                 }
                 catch
                 {
                     break;
                 }
             }
-            
+
+            LinkedList<Marker> lst = new LinkedList<Marker>(pdp[typeof(MarkersData)] as MarkersData);
+
+            foreach (ThumbnailAndTimestamp t in ls)
+            {
+                Marker rem = null;
+                foreach (Marker m in lst)
+                {
+                    if (m.Name.Trim().ToLower().Equals(t.MarkerName.Trim().ToLower()))
+                    {
+                        rem = m;
+                        t.Timestamp = (uint)(m.Timestamp - pdp.CollectionStartTime);
+                        break;
+                    }
+                }
+                if (rem != null)
+                {
+                    lst.Remove(rem);
+                }
+            }
+
             return ls.ToArray();
         }
+    }
+    public class ThumbnailAndTimestamp
+    {
+        public String MarkerName = String.Empty;
+        public String ThumbnailSrc = "";
+        public uint Timestamp = 0;
     }
 }

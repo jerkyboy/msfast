@@ -60,6 +60,60 @@ namespace MySpace.MSFast.DataProcessors
 
 		#region XML Serialization
 
+        public static ProcessedDataPackage Deserialize(XmlDocument xml)
+        {
+            XmlNode config = xml.ChildNodes[1];
+            
+            ProcessedDataPackage pd = new ProcessedDataPackage(0,"");
+
+            if (config != null && config.Name.ToLower().Equals("results"))
+            {
+                foreach (XmlNode node in config.ChildNodes)
+                {
+                    if (node.Name.ToLower().Equals("performance"))
+                    {
+                        ParsePerformanceData(node, pd);
+                    }
+                    else if (node.Name.ToLower().Equals("starttime"))
+                    {
+                        try { pd.CollectionStartTime = long.Parse(node.InnerText.Trim()); } catch { }
+                    }
+                    else if (node.Name.ToLower().Equals("endtime"))
+                    {
+                        try { pd.CollectionEndTime = long.Parse(node.InnerText.Trim()); } catch { }
+                    }
+                    else if (node.Name.ToLower().Equals("markers"))
+                    {
+                        ParseMarkersData(node, pd);
+                    }
+                }
+            }
+
+            return pd;
+        }
+
+        private static void ParsePerformanceData(XmlNode node, ProcessedDataPackage pd){}
+
+        private static void ParseMarkersData(XmlNode node, ProcessedDataPackage pd)
+        {
+            MarkersData md = new MarkersData();
+            try { md.MaxMarkerTime = long.Parse(node.Attributes["mx"].Value.Trim()); } catch { }
+            try { md.MinMarkerTime = long.Parse(node.Attributes["mn"].Value.Trim()); } catch { }
+            
+            foreach (XmlNode xmlNd in node.ChildNodes)
+            {
+                if (xmlNd.Name.Equals("m")) { 
+                    Marker m = new Marker("",0);
+                    try{m.Name = xmlNd.Attributes["n"].Value.Trim();}catch{}
+                    try{m.Timestamp = long.Parse(xmlNd.Attributes["t"].Value.Trim());}catch{}
+                    if(String.IsNullOrEmpty(m.Name) == false && m.Timestamp > 0)
+                        md.AddLast(m);
+                }
+            }
+            if(md.Count > 0)
+                pd.Add(typeof(MarkersData),md);            
+        }
+
 		public XmlDocument Serialize() 
 		{
 			XmlDocument xml = new XmlDocument();
