@@ -159,7 +159,7 @@ namespace MySpace.MSFast.Core.Configuration.CollectorsConfig
             if (String.IsNullOrEmpty(cs.OnEndBody) == false) sb.AppendFormat(GetArgumentValue("Script_OnEndBody"), cs.OnEndBody);
             if (String.IsNullOrEmpty(cs.OnEndHtml) == false) sb.AppendFormat(GetArgumentValue("Script_OnEndHtml"), cs.OnEndHtml);
             if (String.IsNullOrEmpty(cs.OnEndDocument) == false) sb.AppendFormat(GetArgumentValue("Script_OnEndDocument"), cs.OnEndDocument);
-
+            if (String.IsNullOrEmpty(cs.OnReadyState) == false) sb.AppendFormat(GetArgumentValue("Script_OnReadyState"), cs.OnReadyState);            
             return sb.ToString();
         }
     }
@@ -188,5 +188,7 @@ namespace MySpace.MSFast.Core.Configuration.CollectorsConfig
         public String OnEndBody;
         public String OnEndHtml;
         public String OnEndDocument;
+
+        public String OnReadyState;        
     }
 }

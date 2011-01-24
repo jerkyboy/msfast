@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Reflection;
-using MySpace.MSFast.Engine.CollectorsConfiguration;
 using System.Windows.Forms;
 using MySpace.MSFast.Engine.DataCollector;
 using MySpace.MSFast.Core.Configuration.Common;

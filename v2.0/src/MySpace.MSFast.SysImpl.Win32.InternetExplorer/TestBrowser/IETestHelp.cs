@@ -49,9 +49,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 	[ProgId("MSFast.Engine")]
 	public class IETestHelp : JavascriptExecutioner, IDocHostUIHandler
 	{
-
         private static readonly MSFastLogger log = MSFastLogger.GetLogger("IETestHelp");
-
         
         private IDocHostUIHandler m_defaultUIHandler;
 		private BrowserIEImpl browser = null;
@@ -214,7 +212,6 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 			if (this.browser != null)
 				this.browser.URL = args;
 		}
-
 		private void ClearCache(string cmdId, string args)
 		{
             try
@@ -224,8 +221,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
             catch
             {
             }
-		}
-        
+		}        
         private void TakeScreenshot(string cmdId, string args)
         {
 
@@ -302,7 +298,6 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 
 			return result;
 		}
-
 		private void StartPerformanceTracking(string cmdId, string args)
 		{
             lock (performanceTrackerLock)
@@ -404,8 +399,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
             if (this.StartInfo == null || args == null)
 				return;
 
-
-            Stream outs = new MarkersDumpFilesInfo(this.StartInfo).Open(FileAccess.Write);
+            Stream outs = new MarkersDumpFilesInfo(this.StartInfo).Open(FileAccess.Write, FileMode.Append);
 
             if (outs != null)
             {                
@@ -429,5 +423,9 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 
 		#endregion
 
-	}
+        public void OnReadyStateChange(SHDocVw.tagREADYSTATE tagREADYSTATE)
+        {
+            browser.InvokeScript("msfOnReadyState", new object[]{(uint)tagREADYSTATE});
+        }
+    }
 }

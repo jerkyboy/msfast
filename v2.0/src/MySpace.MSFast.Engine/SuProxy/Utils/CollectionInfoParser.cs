@@ -5,7 +5,6 @@ using MySpace.MSFast.SuProxy.Pipes;
 using System.Text.RegularExpressions;
 using MySpace.MSFast.Core.Configuration.Common;
 using MySpace.MSFast.SuProxy.Proxy;
-using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.Core.Configuration.CollectorsConfig;
 
 namespace MySpace.MSFast.Engine.SuProxy.Utils

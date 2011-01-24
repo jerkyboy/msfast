@@ -47,17 +47,17 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.Common
 		const int E_FAIL = unchecked((int)0x80004005);
 		const int E_NOINTERFACE = unchecked((int)0x80004002);
 
-		protected Guid IID_IWebBrowserApp = new Guid("0002DF05-0000-0000-C000-000000000046");
-		protected Guid IID_IUnknown = new Guid("00000000-0000-0000-C000-000000000046");
-		protected Guid IID_IServiceProvider = new Guid("6d5140c1-7436-11ce-8034-00aa006009fa");
-		protected Guid IID_IWebBrowser2 = new Guid("D30C1661-CDAF-11d0-8A3E-00C04FC9E26E");
-		protected Guid IID_IOleCommandTarget = new Guid("b722bccb-4e68-101b-a2bc-00aa00404770");
+        public static Guid IID_IWebBrowserApp = new Guid("0002DF05-0000-0000-C000-000000000046");
+        public static Guid IID_IUnknown = new Guid("00000000-0000-0000-C000-000000000046");
+        public static Guid IID_IServiceProvider = new Guid("6d5140c1-7436-11ce-8034-00aa006009fa");
+        public static Guid IID_IWebBrowser2 = new Guid("D30C1661-CDAF-11d0-8A3E-00C04FC9E26E");
+        public static Guid IID_IOleCommandTarget = new Guid("b722bccb-4e68-101b-a2bc-00aa00404770");
 
-		protected Guid DIID_HTMLDocumentEvents2 = new Guid("3050f613-98b5-11cf-bb82-00aa00bdce0b");
-		protected Guid DIID_HTMLWindowEvents2 = new Guid("3050f625-98b5-11cf-bb82-00aa00bdce0b");
+        public static Guid DIID_HTMLDocumentEvents2 = new Guid("3050f613-98b5-11cf-bb82-00aa00bdce0b");
+        public static Guid DIID_HTMLWindowEvents2 = new Guid("3050f625-98b5-11cf-bb82-00aa00bdce0b");
 
-		protected Guid CATID_CommBand = new Guid("00021494-0000-0000-C000-000000000046");
-		protected Guid CGID_DeskBand =    new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC");
+        public static Guid CATID_CommBand = new Guid("00021494-0000-0000-C000-000000000046");
+        public static Guid CGID_DeskBand = new Guid("EB0FE172-1A3A-11D0-89B3-00A0C90A90AC");
 																						  
 		protected const int DBID_BANDINFOCHANGED = 0;
 		protected const int DBID_SHOWONLY = 1;
@@ -147,8 +147,9 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.Common
 				}
 
 				m_pIWebBrowser2 = Marshal.GetObjectForIUnknown(ipWb2) as IWebBrowser2;
-				Marshal.Release(ipWb2);
 
+				Marshal.Release(ipWb2);
+                
 				if (m_pIWebBrowser2 == null)
 				{
 					Release();

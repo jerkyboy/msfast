@@ -37,7 +37,7 @@ namespace MySpace.MSFast.GUI.Engine
 		[STAThread]
 		static void Main()
 		{
-            PageDataCollectorStartInfo csr = new PageDataCollectorStartInfo();
+             PageDataCollectorStartInfo csr = new PageDataCollectorStartInfo();
             csr.URL = "http://www.google.com/";
             PageDataCollector pdc = new PageDataCollector();
             int a = pdc.StartTest(csr);

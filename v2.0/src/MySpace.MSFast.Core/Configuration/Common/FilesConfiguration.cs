@@ -29,6 +29,11 @@ namespace MySpace.MSFast.Core.Configuration.Common
 
         protected Stream Open(FileAccess fa, params object[] args)
         {
+            return Open(fa, FileMode.Open, args);
+        }
+
+        protected Stream Open(FileAccess fa, FileMode fm, params object[] args)
+        {
             String folder = GetFolderNameAndCheckIfValid();
 
             if (folder == null)
@@ -48,9 +53,11 @@ namespace MySpace.MSFast.Core.Configuration.Common
             {
                 if ((fa & FileAccess.Write) == FileAccess.Write)
                 {
-                    return new FileStream(filename,FileMode.OpenOrCreate, fa);
-                }else{
-                    return new FileStream(filename, FileMode.Open, fa);
+                    return new FileStream(filename,((fm == FileMode.Open) ? FileMode.OpenOrCreate : fm), fa);
+                }
+                else
+                {
+                    return new FileStream(filename, fm, fa);
                 }
             }
             catch 
@@ -130,6 +137,15 @@ namespace MySpace.MSFast.Core.Configuration.Common
         public OnlyCollectionIDDumpFileInfo(CollectionMetaInfo collectionMetaInfo, String filenamePattern):
             base(collectionMetaInfo, filenamePattern)
         {
+        }
+
+        public Stream Open(FileAccess fa, FileMode fm)
+        {
+            if (collectionMetaInfo == null ||
+                collectionMetaInfo.DumpFolder == null)
+                return null;
+
+            return base.Open(fa, fm, collectionMetaInfo.CollectionID);
         }
 
         public Stream Open(FileAccess fa)

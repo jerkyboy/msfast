@@ -24,7 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using MySpace.MSFast.SuProxy.Pipes;
-using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.Core.Http;
 using MySpace.MSFast.Engine.Events;
 using MySpace.MSFast.Core.Configuration.Common;

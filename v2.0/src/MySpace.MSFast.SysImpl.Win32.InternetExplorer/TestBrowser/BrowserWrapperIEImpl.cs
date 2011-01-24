@@ -33,6 +33,8 @@ using MySpace.MSFast.Engine.BrowserWrapper;
 using MySpace.MSFast.Engine.CollectorStartInfo;
 using MySpace.MSFast.Engine.DataCollector;
 using MySpace.MSFast.SysImpl.Win32;
+using MySpace.MSFast.SysImpl.Win32.InternetExplorer.Common;
+using mshtml;
 
 namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 {
@@ -138,7 +140,6 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 			browserWrapperIEImpl = null;
 		}
 
-
 		internal void TestStarted()
 		{
 		}
@@ -151,6 +152,10 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 		private BrowserWrapperIEImpl host;
 
 		private SHDocVw.IWebBrowser2 ieInstance;
+        private HTMLDocumentClass document;
+        private HtmlDocument htmlDocument;
+        private WebBrowser webBrowserControl;
+
 		private IntPtr _mainHWND = IntPtr.Zero;
 		private IntPtr _canvasHWND = IntPtr.Zero;
 
@@ -181,16 +186,23 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 
 			this.SuspendLayout();
 
-			WebBrowser webBrowserControl = new WebBrowser();
+			webBrowserControl = new WebBrowser();
 			webBrowserControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			webBrowserControl.Name = "webBrowser1";
 			webBrowserControl.TabIndex = 0;
 			webBrowserControl.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(DocumentCompleted);
-
 			webBrowserControl.Navigate("about:blank");
-	
+           
 			ieInstance = webBrowserControl.ActiveXInstance as SHDocVw.IWebBrowser2;
-			
+            htmlDocument = webBrowserControl.Document;
+
+            document = ieInstance.Document as HTMLDocumentClass;
+
+            if (document != null)
+            {
+                document.HTMLDocumentEvents_Event_onreadystatechange += new HTMLDocumentEvents_onreadystatechangeEventHandler(d_HTMLDocumentEvents_Event_onreadystatechange);
+            }
+
 			_canvasHWND = webBrowserControl.Handle;
 			_mainHWND = this.Handle;
 
@@ -204,8 +216,9 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
             this.Text = "Performance Tracking Background Process";
 			this.ResumeLayout(false);
             this.FormBorderStyle = FormBorderStyle.None;
+            
 			CheckUIHostRegistration();
-		}
+		}        
 
 		protected override void WndProc(ref Message m)
 		{
@@ -246,7 +259,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 
 					if (cDoc != null)
 					{
-						_browser = new BrowserIEImpl(ieInstance, _mainHWND, _canvasHWND);
+                        _browser = new BrowserIEImpl(ieInstance, _mainHWND, _canvasHWND, htmlDocument);
 						testHelp = new IETestHelp(clientSite as IDocHostUIHandler, _browser, host);
 						cDoc.SetUIHandler(testHelp);
 						isUIHostRegistered = true;
@@ -329,12 +342,38 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 			{
 				testHelp.Dispose();
 			}
+
+            if (document != null)
+            {
+                try
+                {
+                    Marshal.ReleaseComObject(document);
+                }
+                catch
+                {
+                }
+            }
+            htmlDocument = null;
 			testHelp = null;
 			_browser = null;
 			host = null;
 			ieInstance = null;
 			_mainHWND = IntPtr.Zero;
 		}
+
+        void d_HTMLDocumentEvents_Event_onreadystatechange()
+        {
+            if (testHelp != null && ieInstance != null)
+            {
+                try
+                {
+                    testHelp.OnReadyStateChange(ieInstance.ReadyState);
+                }
+                catch
+                {
+                }
+            }
+        }
 	}
 
 	public class BrowserIEImpl : Browser
@@ -342,12 +381,14 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 		private SHDocVw.IWebBrowser2 ieInstance;
 		private IntPtr _mainHWND = IntPtr.Zero;
 		private IntPtr _canvasHWND = IntPtr.Zero;
+        private HtmlDocument htmlDocument;
 
-		public BrowserIEImpl(SHDocVw.IWebBrowser2 v, IntPtr mainHWND, IntPtr canvasHWND)
+        public BrowserIEImpl(SHDocVw.IWebBrowser2 v, IntPtr mainHWND, IntPtr canvasHWND, HtmlDocument htmlDocument)
 		{
 			this._mainHWND = mainHWND;
 			this._canvasHWND = canvasHWND;
 			this.ieInstance = v;
+            this.htmlDocument = htmlDocument;
 		}
 
 		public override IntPtr CanvasHWND
@@ -397,7 +438,6 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 			return false;
 		}
 
-
 		public void Dispose()
 		{
 			if (this.ieInstance != null)
@@ -406,6 +446,21 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 			}
 			this.ieInstance = null;
 			this._mainHWND = IntPtr.Zero;
+            this.htmlDocument = null;
 		}
+
+        public void InvokeScript(String s, object[] args)
+        {
+            if (htmlDocument != null)
+            {
+                try
+                {
+                    htmlDocument.InvokeScript(s, args);
+                }
+                catch
+                {
+                }
+            }
+        }
 	}
 }

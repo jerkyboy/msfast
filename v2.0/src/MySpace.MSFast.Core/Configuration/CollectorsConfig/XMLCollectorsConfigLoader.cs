@@ -127,6 +127,7 @@ namespace MySpace.MSFast.Core.Configuration.CollectorsConfig
                                 else if (n.Equals("onstarthtml")) { cs.OnStartHtml = xmlNd.InnerText; }
                                 else if (n.Equals("onstarthead")) { cs.OnStartHead = xmlNd.InnerText; }
                                 else if (n.Equals("onendhead")) { cs.OnEndHead = xmlNd.InnerText; }
+                                else if (n.Equals("onreadystate")) { cs.OnReadyState = xmlNd.InnerText; }
                                 else if (n.Equals("onstartbody")) { cs.OnStartBody = xmlNd.InnerText; }
                                 else if (n.Equals("onsegment")) { cs.OnSegment = xmlNd.InnerText; }
                                 else if (n.Equals("onendbody")) { cs.OnEndBody = xmlNd.InnerText; }
@@ -178,6 +179,8 @@ namespace MySpace.MSFast.Core.Configuration.CollectorsConfig
                 else if (n.Equals("pagedatacollector_script_onendbody")) { collectorsConfig.SetArgument("Script_OnEndBody",xmlNd.InnerText);}
                 else if (n.Equals("pagedatacollector_script_onendhtml")) { collectorsConfig.SetArgument("Script_OnEndHtml",xmlNd.InnerText);}
                 else if (n.Equals("pagedatacollector_script_onenddocument")) { collectorsConfig.SetArgument("Script_OnEndDocument", xmlNd.InnerText); }
+                else if (n.Equals("pagedatacollector_script_onreadystate")) { collectorsConfig.SetArgument("Script_OnReadyState", xmlNd.InnerText); }
+                
             }
         }
     }

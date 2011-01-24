@@ -30,7 +30,6 @@ using System.IO;
 using MySpace.MSFast.Engine.CollectorStartInfo;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using MySpace.MSFast.Engine.CollectorsConfiguration;
 using MySpace.MSFast.Engine.Events;
 using MySpace.MSFast.Engine.DataCollector;
 

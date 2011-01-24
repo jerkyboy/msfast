@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MySpace.MSFast.Engine.CollectorsConfiguration;
 using System.Text.RegularExpressions;
 using MySpace.MSFast.Engine.DataCollector;
 

@@ -26,7 +26,6 @@ using System.Text;
 using MySpace.MSFast.SuProxy.Pipes.Utils;
 using System.IO;
 using System.Text.RegularExpressions;
-using MySpace.MSFast.Engine.CollectorsConfiguration;
 using System.Reflection;
 using MySpace.MSFast.Core.Configuration.Common;
 using MySpace.MSFast.Engine.SuProxy.Utils;
