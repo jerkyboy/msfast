@@ -6,6 +6,8 @@ using System.ServiceProcess;
 using log4net;
 using EYF.Tasks.Context;
 using EYF.Tasks.Context.Listeners;
+using EYF.Providers.ThridParty.Twitter;
+using EYF.Core.Configuration;
 
 namespace BDika.Tasks.EmailsSender
 {
@@ -37,7 +39,7 @@ namespace BDika.Tasks.EmailsSender
         public static void Main(String[] args)
         {
             TasksContext.InitContext();
-
+            NotificationTemplatesRepository.InitRepository(AppConfig.ConfigLocation(AppConfig.Instance["NotificationTemplates.config"]));
             if (log.IsDebugEnabled) log.Debug("Starting EmailSender...");
 #if DEBUG
             new EmailSenderTask().Start();

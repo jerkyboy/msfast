@@ -23,6 +23,42 @@ namespace BDika.Web.Application.Controls.Results.Browse {
         protected global::EYF.Web.Controls.Common.BrowseForm bfBrowseResults;
         
         /// <summary>
+        /// siJPopup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::EYF.Web.Controls.Common.StaticFileInclude siJPopup;
+        
+        /// <summary>
+        /// siJCookie control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::EYF.Web.Controls.Common.StaticFileInclude siJCookie;
+        
+        /// <summary>
+        /// slResultsList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::EYF.Web.Controls.Common.StyleLiteral slResultsList;
+        
+        /// <summary>
+        /// scResultsList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::EYF.Web.Controls.Common.ScriptLiteral scResultsList;
+        
+        /// <summary>
         /// Results_ResultsList control.
         /// </summary>
         /// <remarks>

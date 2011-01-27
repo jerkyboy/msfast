@@ -61,6 +61,7 @@
     <Compile Include="Collectors\ExecutionConfigurationEntity.cs" />
     <Compile Include="Collectors\ExtCollectorsConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Results\AvgResults.cs" />
     <Compile Include="Results\Results.cs" />
     <Compile Include="Tests\Test.cs" />
     <Compile Include="Tests\TesterTypes.cs" />

@@ -50,6 +50,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResultsList.resx</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Results\Browse\ResultsPaging.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResultsPaging.resx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Results\ResultsDisplayAndFilter.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -181,6 +186,11 @@
     <EmbeddedResource Include="Controls\Results\Browse\ResultsList.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ResultsList.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Results\Browse\ResultsPaging.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResultsPaging.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Results\ResultsDisplayAndFilter.resx">

@@ -118,6 +118,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestsExecuter", "TestsExecu
 		Configuration\Debug\Tasks\TestsExecuter\Application.Task.TestsExecuter.config = Configuration\Debug\Tasks\TestsExecuter\Application.Task.TestsExecuter.config
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notifications", "{492EF95C-58EF-41E0-9F2C-78CE63872226}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration\Global\Notifications\NotificationTemplates.config = Configuration\Global\Notifications\NotificationTemplates.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -177,6 +182,7 @@ Global
 		{654B44A7-5E5F-4AA2-80FA-CE135049A1D0} = {A6587A72-BE5F-4CDC-9553-04770351F068}
 		{A7513898-DA6B-4F1D-907A-3F884229EDED} = {A6587A72-BE5F-4CDC-9553-04770351F068}
 		{D674FB36-1EB2-442F-AC84-0F5137E2E4FA} = {A6587A72-BE5F-4CDC-9553-04770351F068}
+		{492EF95C-58EF-41E0-9F2C-78CE63872226} = {A6587A72-BE5F-4CDC-9553-04770351F068}
 		{C3DDB25E-F259-49C6-BA9B-26C328788E66} = {EABEF104-7CFE-4DCF-8BD2-B8C0CE10E755}
 		{A6AA4858-7BF3-4B59-A205-6D1AB39554A3} = {EABEF104-7CFE-4DCF-8BD2-B8C0CE10E755}
 		{AA0C0F6A-8B27-4A32-BB08-006143027008} = {D2CE6F1E-72BC-4072-BA97-794FE1D61A3D}

@@ -80,6 +80,7 @@
     <Compile Include="DB\Collectors\GetPendingResultsCollectorsConfigurationDBDAO.cs" />
     <Compile Include="DB\Collectors\UpdateCollectorsConfigurationDBDAO.cs" />
     <Compile Include="DB\Collectors\GetCollectorsConfigurationDBDAO.cs" />
+    <Compile Include="DB\Results\Browse\BrowseAvgResultsEntities.cs" />
     <Compile Include="DB\Results\Browse\BrowseResultsEntitiesDBDAO.cs" />
     <Compile Include="DB\Results\GetPendingResultsEntityIndexDBDAO.cs" />
     <Compile Include="DB\Tests\Browse\BrowseTesterTypes.cs" />

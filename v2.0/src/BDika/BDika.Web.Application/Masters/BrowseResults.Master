@@ -6,6 +6,7 @@
 <type><asp:Literal runat="server" id="phType"/></type>
 <args><asp:Literal runat="server" id="phArgs"/></args>
 <length><asp:Literal runat="server" id="phLength"/></length>
+<sort><asp:Literal runat="server" id="phSort"/></sort>
 <page><%="<![CDATA["%><asp:ContentPlaceHolder ID="results" runat="server"></asp:ContentPlaceHolder><%="]]>"%></page>
 <scripts><eyf:ScriptWriter ID="ScriptWriter" runat="server" XMLOutput="true"/></scripts>
 <styles><eyf:StyleWriter ID="StyleWriter" runat="server" XMLOutput="true" /></styles>

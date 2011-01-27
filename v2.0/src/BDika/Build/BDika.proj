@@ -17,7 +17,7 @@
     </GenerateBuildVersion>
   </Target>
 
-  <Target Name="package" DependsOnTargets="build_BDika;GenerateBuildVersion;deploy_and_push_web_BDika;deploy_testsexecuter_BDika">
+  <Target Name="package" DependsOnTargets="build_BDika;GenerateBuildVersion;deploy_and_push_web_BDika;deploy_testsexecuter_BDika;deploy_emailssender_BDika">
     <ItemGroup>
       <ZipFiles Include="$(Dir_Deploy)\BDika\**\*.*"
                 Exclude="$(Dir_Deploy)\BDika\**\*.zip;
