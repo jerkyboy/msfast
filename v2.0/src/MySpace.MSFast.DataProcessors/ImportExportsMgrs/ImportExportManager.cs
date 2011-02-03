@@ -9,7 +9,7 @@ namespace MySpace.MSFast.ImportExportsMgrs
     public interface ImportExportManager
     {
         String DefaultExtension{get;}
-
+        
         ProcessedDataPackage LoadProcessedDataPackage(Stream fileStream);
         bool SaveProcessedDataPackage(Stream filestream, ProcessedDataPackage pacakge);        
     }

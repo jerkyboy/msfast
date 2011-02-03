@@ -26,7 +26,7 @@ along with MSFast.  If not, see <http://www.gnu.org/licenses/>.
 <urlmapping>
 
 	<map category="request">
-		<match><![CDATA[.*(homebundle_-rj_cqf2|ad_wrapper0159|msglobal_il3cvni1)\.js.*]]></match>
+		<match><![CDATA[.*(msglobal).*\.js.*]]></match>
 		<chain>LocalFileResponseChain</chain>
 	</map>
 	

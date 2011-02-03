@@ -48,8 +48,9 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 	[ComVisible(true), GuidAttribute("04C70682-9BD8-443a-9AFC-17849B8A7AAA")] // MY CLASS GUID
 	[ProgId("MSFast.Engine")]
 	public class IETestHelp : JavascriptExecutioner, IDocHostUIHandler
-	{
+	{       
         private static readonly MSFastLogger log = MSFastLogger.GetLogger("IETestHelp");
+
         
         private IDocHostUIHandler m_defaultUIHandler;
 		private BrowserIEImpl browser = null;
@@ -166,7 +167,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 		{
 			if (this.m_defaultUIHandler != null)
 				this.m_defaultUIHandler.GetDropTarget(pDropTarget, ppDropTarget);
-		}
+		}        
 		public virtual void GetExternal(out object ppDispatch)
 		{
 			ppDispatch = this;
@@ -212,6 +213,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 			if (this.browser != null)
 				this.browser.URL = args;
 		}
+
 		private void ClearCache(string cmdId, string args)
 		{
             try
@@ -221,7 +223,8 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
             catch
             {
             }
-		}        
+		}
+        
         private void TakeScreenshot(string cmdId, string args)
         {
 
@@ -298,6 +301,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 
 			return result;
 		}
+
 		private void StartPerformanceTracking(string cmdId, string args)
 		{
             lock (performanceTrackerLock)
@@ -399,7 +403,8 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
             if (this.StartInfo == null || args == null)
 				return;
 
-            Stream outs = new MarkersDumpFilesInfo(this.StartInfo).Open(FileAccess.Write, FileMode.Append);
+
+            Stream outs = new MarkersDumpFilesInfo(this.StartInfo).Open(FileAccess.Write);
 
             if (outs != null)
             {                
@@ -423,9 +428,5 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
 
 		#endregion
 
-        public void OnReadyStateChange(SHDocVw.tagREADYSTATE tagREADYSTATE)
-        {
-            browser.InvokeScript("msfOnReadyState", new object[]{(uint)tagREADYSTATE});
-        }
-    }
+	}
 }

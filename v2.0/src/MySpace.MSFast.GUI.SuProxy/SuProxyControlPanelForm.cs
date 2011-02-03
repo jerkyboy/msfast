@@ -117,7 +117,7 @@ namespace MySpace.MSFast.GUI.SuProxy
 
         private void btnStartProxy_Click(object sender, EventArgs e)
         {
-            SuProxyConfiguration spc = new SuProxyConfiguration(8080, 100, 20, 2 * 60 * 1000, 2);
+            SuProxyConfiguration spc = new SuProxyConfiguration(8081, 100, 20, 2 * 60 * 1000, 2);
             spc.ConfigurationFiles = new String[]{
                 Path.GetDirectoryName(Assembly.GetAssembly(typeof(SuProxyControlPanelForm)).Location) + "\\conf\\SuProxy.default.config", 
                 Path.GetDirectoryName(Assembly.GetAssembly(typeof(SuProxyControlPanelForm)).Location) + "\\conf\\SuProxy.Standalone.config" 

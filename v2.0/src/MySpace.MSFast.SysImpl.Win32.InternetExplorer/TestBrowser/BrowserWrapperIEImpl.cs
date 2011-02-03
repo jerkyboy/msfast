@@ -367,7 +367,7 @@ namespace MySpace.MSFast.SysImpl.Win32.InternetExplorer.TestBrowser
             {
                 try
                 {
-                    testHelp.OnReadyStateChange(ieInstance.ReadyState);
+                    //testHelp.OnReadyStateChange(ieInstance.ReadyState);
                 }
                 catch
                 {

@@ -11,6 +11,9 @@ namespace MySpace.MSFast.ImportExportsMgrs
 {
     public class MSFImportExportsManager : ImportExportManager
     {
+
+        public String TempPath = Path.GetTempPath();
+
         public String DefaultExtension { get{ return "msf";} }
         
         byte[] tmpBuffer = new byte[4096];
@@ -24,11 +27,9 @@ namespace MySpace.MSFast.ImportExportsMgrs
                 throw new NullReferenceException();
             }
 
-            string tempFolder = Path.GetTempPath();
-
-            if (String.IsNullOrEmpty(tempFolder) || Directory.Exists(tempFolder) == false)
+            if (String.IsNullOrEmpty(TempPath) || Directory.Exists(TempPath) == false)
             {
-                throw new DirectoryNotFoundException("Invalid temp folder " + tempFolder);
+                throw new DirectoryNotFoundException("Invalid temp folder " + TempPath);
             }
 
             GZipStream gzipStream = null;
@@ -39,7 +40,7 @@ namespace MySpace.MSFast.ImportExportsMgrs
             {
                 gzipStream = new GZipStream(fileStream, CompressionMode.Decompress, true);
 
-                collectionId = Decompress(tempFolder, gzipStream);
+                collectionId = Decompress(TempPath, gzipStream);
             }
             finally
             {                
@@ -55,7 +56,7 @@ namespace MySpace.MSFast.ImportExportsMgrs
                 return null;
             }
 
-            return ProcessedDataCollector.CollectAll(tempFolder, collectionId);
+            return ProcessedDataCollector.CollectAll(TempPath, collectionId);
         }
 
         public bool SaveProcessedDataPackage(Stream msfFilestream, ProcessedDataPackage pacakge)
