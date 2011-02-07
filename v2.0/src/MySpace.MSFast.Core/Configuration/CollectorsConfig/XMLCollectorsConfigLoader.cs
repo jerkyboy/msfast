@@ -12,9 +12,9 @@ namespace MySpace.MSFast.Core.Configuration.CollectorsConfig
         private String configFile = null;
         private Stream configStream = null;
 
-        public XMLCollectorsConfigLoader(String config)
+        public XMLCollectorsConfigLoader(String filename)
         {
-            this.configFile = config;
+            this.configFile = filename;
         }
         public XMLCollectorsConfigLoader(Stream config)
         {

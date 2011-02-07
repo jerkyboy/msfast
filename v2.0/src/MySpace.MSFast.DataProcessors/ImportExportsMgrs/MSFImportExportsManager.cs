@@ -66,8 +66,11 @@ namespace MySpace.MSFast.ImportExportsMgrs
             try
             {
                 gzipStream = new GZipStream(msfFilestream, CompressionMode.Compress, true);
-
                 return Compress(gzipStream, pacakge);
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
             finally
             {

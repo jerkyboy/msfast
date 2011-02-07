@@ -28,18 +28,19 @@ namespace MySpace.MSFast.Engine.DataCollector
 {
 		public enum PageDataCollectorErrors : int
 		{
-			NoError									= 0,
-			CantSaveTempFile				= 0x800000,
+			NoError								= 0,
+			CantSaveTempFile				    = 0x800000,
 			ObjectDisposed						= 0x800001,
-			InvalidOrMissingArguments = 0x800002,
+			InvalidOrMissingArguments           = 0x800002,
 			TestTimeout							= 0x800003,
-			TestAlreadyRunning				= 0x800004,
+			TestAlreadyRunning				    = 0x800004,
 			CantStartBrowser					= 0x800005,
-			CantGetBrowserProcessID	= 0x800006,
-			Unknown									= 0x800007,
-			TestAborted							= 0x800008,
+			CantGetBrowserProcessID	            = 0x800006,
+			Unknown								= 0x800007,
+            TestAborted							= 0x800008,
 			CantSetProxy						= 0x800009,
 			CantStartProxy						= 0x800010,
-			InvalidConfiguration				= 0x800011
+			InvalidConfiguration				= 0x800011,
+            InvalidEngineLocation               = 0x800012,
 		}
 }

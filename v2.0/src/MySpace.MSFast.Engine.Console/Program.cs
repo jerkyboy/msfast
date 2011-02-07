@@ -79,8 +79,6 @@ namespace MySpace.MSFast.Engine.Console
 
             TestEvents.IsVerbose = pdcsi.IsVerbose;
             TestEvents.FireProgressEvent(TestEventType.TestStarted);
-            
-            pdcsi.IsDebug = true;
 
             _Collector c = new _Collector(pdcsi);
 
@@ -88,7 +86,9 @@ namespace MySpace.MSFast.Engine.Console
 			{
 				System.Environment.ExitCode = c.Run();
 			}
-			catch {
+			catch (Exception e)
+            {
+                ExceptionsHandler.HandleException(e);
 				System.Environment.ExitCode = (int)PageDataCollectorErrors.Unknown;
 			}
 			finally

@@ -69,7 +69,7 @@ namespace MySpace.MSFast.Engine
 
 			if (String.IsNullOrEmpty(executable) || File.Exists(executable) == false)
 			{
-				return (int)PageDataCollectorErrors.Unknown;
+                return (int)PageDataCollectorErrors.InvalidEngineLocation;
 			}
 
 			ProcessStartInfo psi = new ProcessStartInfo(executable);

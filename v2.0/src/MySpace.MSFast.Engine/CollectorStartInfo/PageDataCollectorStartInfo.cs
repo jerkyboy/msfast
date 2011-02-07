@@ -185,7 +185,8 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
 			ArgsParsers.Add("/verbose", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.IsVerbose = true; }));
             ArgsParsers.Add("/dump:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si._dumpFolder = value.Replace("\\", "/"); if (si._dumpFolder.EndsWith("/") == false) si._dumpFolder = String.Concat(si._dumpFolder, "/"); }));
             ArgsParsers.Add("/temp:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.TempFolder = value.Replace("\\", "/"); if (si.TempFolder.EndsWith("/") == false) si.TempFolder = String.Concat(si.TempFolder, "/"); }));
-            ArgsParsers.Add("/config:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) {si.ConfigFiles = value.Split(new String[]{"|"}, StringSplitOptions.RemoveEmptyEntries);}));
+            ArgsParsers.Add("/config:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.ConfigFiles = value.Split(new String[] { "|" }, StringSplitOptions.RemoveEmptyEntries); }));
+            ArgsParsers.Add("/scripts:", new ArgumentsParser(delegate(String name, String value, PageDataCollectorStartInfo si) { si.CollectorScripts = value; }));
 			
 		}
 
@@ -270,6 +271,13 @@ namespace MySpace.MSFast.Engine.CollectorStartInfo
                     sb.Append("|");
                 }
                 sb.Append("\"");
+            }  
+
+            if (this.CollectorScripts != null)
+            {
+                sb.Append(" /scripts:\"");
+                sb.Append(CollectorScripts.Replace("/", "\\"));
+                sb.Append("\" ");
             }
 
 			return sb.ToString();
