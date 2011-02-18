@@ -45,7 +45,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Solutions_MSFastAutomation Include="$(Dir_Projects_MSFastAutomation)\MySpace.MSFast.Automation.sln"/>
+    <Solutions_MSFastAutomation Include="$(Dir_Projects_MSFastAutomation)\MSFastAutomation.sln"/>
   </ItemGroup>
 
   <Target Name="clean_MSFastAutomation">
