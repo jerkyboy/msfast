@@ -1,0 +1,19 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Masters/Base.Master" AutoEventWireup="true" CodeBehind="Main.master.cs" Inherits="MySpace.MSFast.Automation.Web.Application.Masters.Main" %>
+<asp:Content ID="cntHead" ContentPlaceHolderID="head" Runat="Server">
+    <eyf:StaticFileInclude FileId="GlobalStyle" runat="server"/>
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="cntBody" ContentPlaceHolderID="body" Runat="Server">
+    <div class="mtitl">
+        <img src="/Static/Affiliations/myspace/logo.png" />
+    </div>
+    <div id="subbody">
+        <h1>
+            <a href="<%=MySpace.MSFast.Automation.Web.Application._Default.GetURL() %>"><span class="ico ico-logo"></span></a>
+            <a href="<%=MySpace.MSFast.Automation.Web.Application._Default.GetURL() %>"><span class="ico ico-demo"></span></a>
+            <a href="<%=MySpace.MSFast.Automation.Web.Application._Default.GetURL() %>"><span class="ico ico-slogan" style="position:absolute;top:34px;right:0px"></span></a>
+        </h1>
+        <h2 runat="server" id="h2PageTitle"/>
+        <asp:ContentPlaceHolder ID="body" runat="server"></asp:ContentPlaceHolder>  
+    </div>
+</asp:Content>

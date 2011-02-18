@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="build">
+	
+	<PropertyGroup Condition="$(Dir_Projects)==''">
+		<Dir_Projects>$(MSBuildProjectDirectory)\..</Dir_Projects>
+	</PropertyGroup>
+
+  <Import Condition="$(Base_Loaded)==''" Project="$(Dir_Projects)\Build\MySpace.MSFast.Automation.Base.proj"/>
+	
+	<PropertyGroup>
+    <Dir_Projects_MSFastAutomation_Tasks_EmailsSender>$(Dir_Projects_MSFastAutomation)\MySpace.MSFast.Automation.Tasks.EmailsSender</Dir_Projects_MSFastAutomation_Tasks_EmailsSender>
+    <Dir_Deploy_MSFastAutomation_Tasks_EmailsSender>$(Dir_Deploy_MSFastAutomation)\Tasks\EmailSender</Dir_Deploy_MSFastAutomation_Tasks_EmailsSender>
+	</PropertyGroup>
+
+  <Target Name="_sync_conf_emailsender" DependsOnTargets="create_conf">
+    
+    <CreateItem Include="$(Dir_Projects_MSFastAutomation_Global_Configuration)\**\Tasks\EmailsSender\**\*;"
+                Exclude="$(Dir_Projects_MSFastAutomation_Global_Configuration)\**\Tasks\EmailsSender\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_MSFastAutomation_tasks_emailsender_global"/>
+    </CreateItem>
+
+    <CreateItem Include="$(Dir_Projects_MSFastAutomation_Configuration)\**\Tasks\EmailsSender\**\*;"
+                Exclude="$(Dir_Projects_MSFastAutomation_Configuration)\**\Tasks\EmailsSender\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_MSFastAutomation_tasks_emailsender"/>
+    </CreateItem>
+    
+    <Copy SourceFiles="@(_sync_conf_MSFastAutomation_base_global)"       SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_MSFastAutomation_base_global->'$(Dir_Projects_MSFastAutomation_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_MSFastAutomation_tasks_global)"      SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_MSFastAutomation_tasks_global->'$(Dir_Projects_MSFastAutomation_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_MSFastAutomation_tasks_emailsender_global)" SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_MSFastAutomation_tasks_emailsender_global->'$(Dir_Projects_MSFastAutomation_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_MSFastAutomation_base)"              SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_MSFastAutomation_base->'$(Dir_Projects_MSFastAutomation_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_MSFastAutomation_tasks)"             SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_MSFastAutomation_tasks->'$(Dir_Projects_MSFastAutomation_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_MSFastAutomation_tasks_emailsender)" SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_MSFastAutomation_tasks_emailsender->'$(Dir_Projects_MSFastAutomation_Tasks_EmailsSender)\bin\$(Configuration)\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+  </Target>
+<!--  DependsOnTargets="build_MSFastAutomation" -->
+  <Target Name="deploy_emailssender_MSFastAutomation">
+		<CreateItem Include="$(Dir_Projects_MSFastAutomation_Tasks_EmailsSender)\bin\$(Configuration)\**\*" 
+					      Exclude="$(Dir_Projects_MSFastAutomation_Tasks_EmailsSender)\bin\$(Configuration)\**\*.pdb;
+                         $(Dir_Projects_MSFastAutomation_Tasks_EmailsSender)\bin\$(Configuration)\**\.svn\**">
+			<Output TaskParameter="Include" ItemName="_MSFastAutomationTasksEmailOutput"/>
+		</CreateItem>
+		<Copy SourceFiles="@(_MSFastAutomationTasksEmailOutput)" SkipUnchangedFiles="true" DestinationFiles="@(_MSFastAutomationTasksEmailOutput->'$(Dir_Deploy_MSFastAutomation_Tasks_EmailsSender)\%(RecursiveDir)%(Filename)%(Extension)')"/>
+	</Target>
+  
+</Project>

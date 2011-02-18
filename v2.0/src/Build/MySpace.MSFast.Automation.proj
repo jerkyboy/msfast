@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="build">
+
+  <PropertyGroup Condition="$(Dir_Projects)==''">
+    <Dir_Projects>$(MSBuildProjectDirectory)\..</Dir_Projects>
+  </PropertyGroup>
+
+  <Import Condition="$(Base_Loaded)==''" Project="$(Dir_Projects)\Build\MySpace.MSFast.Automation.Base.proj"/>
+
+	<Import Project="$(Dir_Projects)\Build\MySpace.MSFast.Automation.Web.proj"/>
+  <Import Project="$(Dir_Projects)\Build\MySpace.MSFast.Automation.Tasks.EmailsSender.proj"/>
+  <Import Project="$(Dir_Projects)\Build\MySpace.MSFast.Automation.Client.proj"/>
+
+
+  <Target Name="package" DependsOnTargets="build_MSFastAutomation;deploy_web_MSFastAutomation;deploy_emailssender_MSFastAutomation;deploy_client_MSFastAutomation">
+    <ItemGroup>
+      <ZipFiles Include="$(Dir_Deploy)\MSFastAutomation\**\*.*"
+                Exclude="$(Dir_Deploy)\MSFastAutomation\**\*.zip;
+                         $(Dir_Deploy)\MSFastAutomation\**\*.pdb;
+                         $(Dir_Deploy)\MSFastAutomation\**\*.log.*;
+                         $(Dir_Deploy)\MSFastAutomation\**\*.log;" />
+    </ItemGroup>
+    <Zip Files="@(ZipFiles)"
+         WorkingDirectory="$(Dir_Deploy)\MSFastAutomation\"
+         ZipFileName="$(Dir_Deploy)\MSFastAutomation-Build-$(BuildVersion).zip"
+         ZipLevel="9" />
+  </Target>
+
+  <Target Name="deploy" DependsOnTargets="package;">
+  </Target>
+  
+</Project>

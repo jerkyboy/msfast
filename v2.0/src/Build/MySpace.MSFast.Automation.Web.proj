@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="build">
+	
+	<PropertyGroup Condition="$(Dir_Projects)==''">
+		<Dir_Projects>$(MSBuildProjectDirectory)\..</Dir_Projects>
+	</PropertyGroup>
+
+  <Import Condition="$(Base_Loaded)==''" Project="$(Dir_Projects)\Build\MySpace.MSFast.Automation.Base.proj"/>
+	
+	<PropertyGroup>
+    <Dir_Projects_MSFastAutomation_Web>$(Dir_Projects_MSFastAutomation)\MySpace.MSFast.Automation.Web.Application</Dir_Projects_MSFastAutomation_Web>
+      <Dir_Projects_MSFastAutomation_Core>$(Dir_Projects_MSFastAutomation)\MySpace.MSFast.Automation.Web.Core</Dir_Projects_MSFastAutomation_Core>
+      <Dir_Deploy_MSFastAutomation_Web>$(Dir_Deploy_MSFastAutomation)\Web</Dir_Deploy_MSFastAutomation_Web>
+      <Dir_Deploy_MSFastAutomation_Web_Static>$(Dir_Deploy_MSFastAutomation_Web)\Static</Dir_Deploy_MSFastAutomation_Web_Static>
+      <Dir_Temp_MSFastAutomation_Web>$(Dir_Temp_MSFastAutomation)\Web</Dir_Temp_MSFastAutomation_Web>
+      <Dir_Temp_MSFastAutomation_Web_Complied>$(Dir_Temp_MSFastAutomation)\WebCompiled</Dir_Temp_MSFastAutomation_Web_Complied>
+	
+</PropertyGroup>
+
+  <Target Name="_sync_conf_application" DependsOnTargets="create_conf">
+    <Copy SourceFiles="@(_sync_conf_MSFastAutomation_base_global)"     SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_MSFastAutomation_base_global->'$(Dir_Projects_MSFastAutomation_Web)\bin\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_MSFastAutomation_web_global)"      SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_MSFastAutomation_web_global->'$(Dir_Projects_MSFastAutomation_Web)\bin\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_MSFastAutomation_base)"            SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_MSFastAutomation_base->'$(Dir_Projects_MSFastAutomation_Web)\bin\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_sync_conf_MSFastAutomation_web)"             SkipUnchangedFiles="true" DestinationFiles="@(_sync_conf_MSFastAutomation_web->'$(Dir_Projects_MSFastAutomation_Web)\bin\Configuration\%(RecursiveDir)%(Filename)%(Extension)')"/>
+  </Target>  
+  
+  <Target Name="syncweb">
+		<CreateItem Include="$(Dir_Projects_MSFastAutomation_Core)\**\*.ascx;" 
+                Exclude="$(Dir_Projects_MSFastAutomation_Core)\**\.svn\**;">
+			<Output TaskParameter="Include" ItemName="_cntrlFiles"/>
+		</CreateItem>
+
+		<Copy SourceFiles="@(_cntrlFiles)" SkipUnchangedFiles="true" DestinationFiles="@(_cntrlFiles->'$(Dir_Projects_MSFastAutomation_Web)\%(RecursiveDir)%(Filename)%(Extension)')"/>
+	</Target>
+
+  <Target Name="deploy_web_MSFastAutomation" DependsOnTargets="syncweb;build_MSFastAutomation">
+
+		<CreateItem Include="$(Dir_Projects_MSFastAutomation_Web)\**\*" 
+					      Exclude="$(Dir_Projects_MSFastAutomation_Web)\**\.svn\**; 
+							           $(Dir_Projects_MSFastAutomation_Web)\**\thumbnails\**\*;
+                         $(Dir_Projects_MSFastAutomation_Web)\**\results\**\*.xml;
+							           $(Dir_Projects_MSFastAutomation_Web)\**\log\**\*;">			
+			<Output TaskParameter="Include" ItemName="_MSFastAutomationweboutput"/>
+		</CreateItem>
+
+    <Copy SourceFiles="@(_MSFastAutomationweboutput)" SkipUnchangedFiles="true" DestinationFiles="@(_MSFastAutomationweboutput->'$(Dir_Temp_MSFastAutomation_Web)\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_msfast_files)" SkipUnchangedFiles="true" DestinationFiles="@(_msfast_files->'$(Dir_Temp_MSFastAutomation_Web)\bin\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    
+    <AspNetCompiler Clean="true"
+                    VirtualPath="/"
+                    PhysicalPath="$(Dir_Temp_MSFastAutomation_Web)"
+                    TargetPath="$(Dir_Temp_MSFastAutomation_Web_Complied)"
+                    Updateable="false"
+                    FixedNames="false" />
+
+		<CreateItem Include="$(Dir_Temp_MSFastAutomation_Web_Complied)\**\*"
+					      Exclude="$(Dir_Temp_MSFastAutomation_Web_Complied)\**\*.cs;
+							           $(Dir_Temp_MSFastAutomation_Web_Complied)\obj\**\*;
+                         $(Dir_Temp_MSFastAutomation_Web_Complied)\**\*.pdb;
+							           $(Dir_Temp_MSFastAutomation_Web_Complied)\log\**\*;
+							           $(Dir_Temp_MSFastAutomation_Web_Complied)\bin\*.xml;
+							           $(Dir_Temp_MSFastAutomation_Web_Complied)\Static\**\*;
+							           $(Dir_Temp_MSFastAutomation_Web_Complied)\**\*.csproj*;
+							           $(Dir_Temp_MSFastAutomation_Web_Complied)\**\.svn\**;">
+
+			<Output TaskParameter="Include" ItemName="DirDeployMSFastAutomationWebCLEAN"/>
+		</CreateItem>
+
+		<Copy SourceFiles="@(DirDeployMSFastAutomationWebCLEAN)" SkipUnchangedFiles="true" DestinationFiles="@(DirDeployMSFastAutomationWebCLEAN->'$(Dir_Deploy_MSFastAutomation_Web)\%(RecursiveDir)%(Filename)%(Extension)')"/>
+
+		<CreateItem Include="$(Dir_Temp_MSFastAutomation_Web_Complied)\Static\**\*" Exclude="$(Dir_Temp_MSFastAutomation_Web_Complied)\Static\**\.svn\**;">
+			<Output TaskParameter="Include" ItemName="MSFastAutomation_Static_Output"/>
+		</CreateItem>
+
+		<Copy SourceFiles="@(MSFastAutomation_Static_Output)" SkipUnchangedFiles="true" DestinationFiles="@(MSFastAutomation_Static_Output->'$(Dir_Deploy_MSFastAutomation_Web_Static)\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    
+  </Target>
+  <Target Name="deploy_and_push_web_MSFastAutomation" DependsOnTargets="deploy_web_MSFastAutomation">
+    
+  </Target>
+</Project>

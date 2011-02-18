@@ -1,0 +1,33 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Masters/Main.Master" AutoEventWireup="true" CodeBehind="MainWithSideMenu.master.cs" Inherits="MySpace.MSFast.Automation.Web.Application.Masters.MainWithSideMenu" %>
+<asp:Content ID="cntHead" ContentPlaceHolderID="head" Runat="Server">
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="cntBody" ContentPlaceHolderID="body" Runat="Server">
+<eyf:StyleLiteral ID="slMain" runat="server">
+table.mainWithSideMenu{width:100%;table-layout:fixed}
+table.mainWithSideMenu td.mainWithSideMenuL{font-weight:bold;width:220px;padding:0 10px}
+table.mainWithSideMenu td.mainWithSideMenuR{padding:0 10px 0 0;}
+table.mainWithSideMenu td.mainWithSideMenuL ul{list-style:none;margin:0;padding:0;}
+table.mainWithSideMenu td.mainWithSideMenuL li{margin:0;padding:10px 10px;}
+table.mainWithSideMenu td.mainWithSideMenuL li.selected{background:#F6F7FA;border:1px solid #EEE;padding-left:15px}
+table.mainWithSideMenu td.mainWithSideMenuL .ico{float:left;margin:-2px 6px 0 0;}
+table.mainWithSideMenu td.mainWithSideMenuL a:hover{text-decoration:underline;}
+</eyf:StyleLiteral>
+    <table class="mainWithSideMenu">
+        <tr>
+            <td class="mainWithSideMenuL" valign="top">
+                <eyf:Box runat="server">
+                    <ul>
+                        <li<%=Context.Handler is MySpace.MSFast.Automation.Web.Application.Pages.Results.Browse.BrowseResults ? " class=\"selected\"" : "" %>><span class="ico ico-results"></span><eyf:Href ID="hrefLatestResults" runat="server" /></li>
+                        <li<%=Context.Handler is MySpace.MSFast.Automation.Web.Application.Pages.Tests.Browse.BrowseTests ? " class=\"selected\"" : "" %>><span class="ico ico-tests"></span><eyf:Href ID="hrefManageTests" runat="server" /></li>
+                        <li<%=Context.Handler is MySpace.MSFast.Automation.Web.Application.Pages.Tests.Browse.BrowseTesterTypes ? " class=\"selected\"" : "" %>><span class="ico ico-testbox"></span><eyf:Href ID="hrefManageTestBox" runat="server" /></li>
+                        <li<%=Context.Handler is MySpace.MSFast.Automation.Web.Application.Pages.Triggers.Browse.BrowseTriggers ? " class=\"selected\"" : "" %>><span class="ico ico-trigger"></span><eyf:Href ID="hrefManageManageTriggers" runat="server" /></li>
+                    </ul>
+                </eyf:Box>
+            </td>
+            <td class="mainWithSideMenuR" valign="top">
+                <asp:ContentPlaceHolder ID="body" runat="server"></asp:ContentPlaceHolder>  
+            </td>
+        </tr>
+    </table>    
+</asp:Content>

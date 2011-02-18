@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="build">
+
+  <PropertyGroup Condition="$(Base_Loaded)==''">
+    <Base_Loaded>LOADED</Base_Loaded>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Dir_ExternalReferences)==''">
+    <Dir_ExternalReferences>$(MSBuildProjectDirectory)\..\lib</Dir_ExternalReferences>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Dir_MSFast)==''">
+    <Dir_MSFast>$(MSBuildProjectDirectory)\..\lib\MSFast</Dir_MSFast>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Dir_Projects)==''">
+    <Dir_Projects>$(MSBuildProjectDirectory)\..</Dir_Projects>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(MSBuildHelpers)==''">
+    <MSBuildHelpers>$(MSBuildProjectDirectory)\..\lib</MSBuildHelpers>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration)==''">
+    <Configuration>Debug</Configuration>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Dir_Temp)==''">
+    <Dir_Temp>$(MSBuildProjectDirectory)\Tmp</Dir_Temp>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Dir_Deploy)==''">
+    <Dir_Deploy>$(MSBuildProjectDirectory)\Out</Dir_Deploy>
+  </PropertyGroup>
+  
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/><!-- download http://msbuildtasks.tigris.org/ -->
+  
+  <PropertyGroup>
+    <Dir_Projects_MSFastAutomation>$(Dir_Projects)</Dir_Projects_MSFastAutomation>
+    <Dir_Projects_MSFastAutomation_Configuration>$(Dir_Projects_MSFastAutomation)\Configuration\$(Configuration)</Dir_Projects_MSFastAutomation_Configuration>
+    <Dir_Projects_MSFastAutomation_Global_Configuration>$(Dir_Projects_MSFastAutomation)\Configuration\Global</Dir_Projects_MSFastAutomation_Global_Configuration>
+    <Dir_Deploy_MSFastAutomation>$(Dir_Deploy)\MSFastAutomation</Dir_Deploy_MSFastAutomation>
+      <Dir_Deploy_MSFastAutomation_Assemblies>$(Dir_Deploy_MSFastAutomation)\Assemblies</Dir_Deploy_MSFastAutomation_Assemblies>
+    <Dir_Temp_MSFastAutomation>$(Dir_Temp)\MSFastAutomation</Dir_Temp_MSFastAutomation>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Solutions_MSFastAutomation Include="$(Dir_Projects_MSFastAutomation)\MySpace.MSFast.Automation.sln"/>
+  </ItemGroup>
+
+  <Target Name="clean_MSFastAutomation">
+    <RemoveDir Directories="$(Dir_Deploy_MSFastAutomation);$(Dir_Temp_MSFastAutomation)"/>
+    <MakeDir Directories="$(Dir_Deploy_MSFastAutomation);$(Dir_Temp_MSFastAutomation)"/>
+  </Target>
+
+  <Target Name="create_conf">
+
+    <!-- Configuration -->
+    <CreateItem Include="$(Dir_Projects_MSFastAutomation_Configuration)\**\*;"
+                Exclude="$(Dir_Projects_MSFastAutomation_Configuration)\**\.svn\**;
+                         $(Dir_Projects_MSFastAutomation_Configuration)\**\Tasks\**\*;
+                         $(Dir_Projects_MSFastAutomation_Configuration)\**\Web\**\*;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_MSFastAutomation_base"/>
+    </CreateItem>
+
+    <CreateItem Include="$(Dir_Projects_MSFastAutomation_Configuration)\**\Web\**\*;"
+                Exclude="$(Dir_Projects_MSFastAutomation_Configuration)\**\Web\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_MSFastAutomation_web"/>
+    </CreateItem>
+
+    <CreateItem Include="$(Dir_Projects_MSFastAutomation_Configuration)\**\Tasks\*;"
+                Exclude="$(Dir_Projects_MSFastAutomation_Configuration)\**\Tasks\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_MSFastAutomation_tasks"/>
+    </CreateItem>
+
+    <!-- Global -->
+    <CreateItem Include="$(Dir_Projects_MSFastAutomation_Global_Configuration)\**\*;"
+                Exclude="$(Dir_Projects_MSFastAutomation_Global_Configuration)\**\.svn\**;
+                         $(Dir_Projects_MSFastAutomation_Global_Configuration)\**\Tasks\**\*;
+                         $(Dir_Projects_MSFastAutomation_Global_Configuration)\**\Web\**\*;
+                         $(Dir_Projects_MSFastAutomation_Global_Configuration)\**\Deployment\**\*;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_MSFastAutomation_base_global"/>
+    </CreateItem>
+
+    <CreateItem Include="$(Dir_Projects_MSFastAutomation_Global_Configuration)\**\Web\*;"
+                Exclude="$(Dir_Projects_MSFastAutomation_Global_Configuration)\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_MSFastAutomation_web_global"/>
+    </CreateItem>
+
+    <CreateItem Include="$(Dir_Projects_MSFastAutomation_Global_Configuration)\**\Tasks\*;"
+                Exclude="$(Dir_Projects_MSFastAutomation_Global_Configuration)\**\.svn\**;">
+      <Output TaskParameter="Include" ItemName="_sync_conf_MSFastAutomation_tasks_global"/>
+    </CreateItem>
+
+
+    <!-- MSFast -->
+    <CreateItem Include="$(Dir_MSFast)\configuration.exe;
+                         $(Dir_MSFast)\engine.exe;
+                         $(Dir_MSFast)\Interop.SHDocVw.dll;
+                         $(Dir_MSFast)\log4net.dll;
+                         $(Dir_MSFast)\msfast.exe;
+                         $(Dir_MSFast)\MySpace.MSFast.Core.dll;
+                         $(Dir_MSFast)\MySpace.MSFast.DataProcessors.CustomDataValidators.dll;
+                         $(Dir_MSFast)\MySpace.MSFast.DataProcessors.dll;
+                         $(Dir_MSFast)\MySpace.MSFast.Engine.dll;
+                         $(Dir_MSFast)\MySpace.MSFast.SuProxy.dll;
+                         $(Dir_MSFast)\MySpace.MSFast.SysImpl.Win32.dll;
+                         $(Dir_MSFast)\MySpace.MSFast.SysImpl.Win32.InternetExplorer.dll;
+                         $(Dir_MSFast)\Newtonsoft.Json.Net35.dll;
+                         $(Dir_MSFast)\processor.exe;
+                         $(Dir_MSFast)\**\DefaultPageValidation.xml;
+                         $(Dir_MSFast)\**\MSFastLogging.config;
+                         $(Dir_MSFast)\**\SuProxy.default.config;
+                         $(Dir_MSFast)\**\SuProxy.default.mapping;
+                         $(Dir_MSFast)\**\SuProxy.msfast.config;
+                         $(Dir_MSFast)\**\SuProxy.msfast.mapping;" >
+      <Output TaskParameter="Include" ItemName="_msfast_files"/>
+    </CreateItem>
+  </Target>
+
+  <Target Name="syncconf" DependsOnTargets="_sync_conf_application;
+                                            _sync_conf_emailsender;"></Target>
+
+  <Target Name="build_MSFastAutomation" DependsOnTargets="clean_MSFastAutomation;syncconf">
+    <MSBuild Projects="@(Solutions_MSFastAutomation)" Targets="Rebuild" Properties="Configuration=$(Configuration)"/>
+  </Target>
+
+</Project>

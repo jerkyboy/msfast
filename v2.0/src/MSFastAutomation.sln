@@ -1,0 +1,194 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySpace.MSFast.Automation.Web.Application", "MySpace.MSFast.Automation.Web.Application\MySpace.MSFast.Automation.Web.Application.csproj", "{B48A1A13-C427-4F28-ABED-ACA6F28C66BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySpace.MSFast.Automation.Web.Core", "MySpace.MSFast.Automation.Web.Core\MySpace.MSFast.Automation.Web.Core.csproj", "{23D7C7BD-131C-4267-B4FA-05EB099007BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{5EB2FA58-2B9F-46AA-9A36-A22221636FC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{A6587A72-BE5F-4CDC-9553-04770351F068}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{654B44A7-5E5F-4AA2-80FA-CE135049A1D0}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration\Global\Core\MySpace.MSFast.Automation.Application.config = Configuration\Global\Core\MySpace.MSFast.Automation.Application.config
+		Configuration\Global\Core\MySpace.MSFast.Automation.Entities.config = Configuration\Global\Core\MySpace.MSFast.Automation.Entities.config
+		Configuration\Global\Core\MySpace.MSFast.Automation.Entities.Pop.config = Configuration\Global\Core\MySpace.MSFast.Automation.Entities.Pop.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{A7513898-DA6B-4F1D-907A-3F884229EDED}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration\Global\Web\MySpace.MSFast.Automation.Linkables.config = Configuration\Global\Web\MySpace.MSFast.Automation.Linkables.config
+		Configuration\Global\Web\MySpace.MSFast.Automation.StaticFiles.config = Configuration\Global\Web\MySpace.MSFast.Automation.StaticFiles.config
+		Configuration\Global\Web\MySpace.MSFast.Automation.Web.Core.config = Configuration\Global\Web\MySpace.MSFast.Automation.Web.Core.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{EABEF104-7CFE-4DCF-8BD2-B8C0CE10E755}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{38A21401-1DC1-46AB-8392-ED12E436707C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySpace.MSFast.Automation.Entities", "MySpace.MSFast.Automation.Entities\MySpace.MSFast.Automation.Entities.csproj", "{C3DDB25E-F259-49C6-BA9B-26C328788E66}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Debug", "Debug", "{D2CE6F1E-72BC-4072-BA97-794FE1D61A3D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{AA0C0F6A-8B27-4A32-BB08-006143027008}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration\Debug\Core\MySpace.MSFast.Automation.Dao.config = Configuration\Debug\Core\MySpace.MSFast.Automation.Dao.config
+		Configuration\Debug\Core\MySpace.MSFast.Automation.Memcached.config = Configuration\Debug\Core\MySpace.MSFast.Automation.Memcached.config
+		Configuration\Debug\Core\MySpace.MSFast.Automation.SecurityCredentials.config = Configuration\Debug\Core\MySpace.MSFast.Automation.SecurityCredentials.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{EEFDA719-E0F8-4B97-BE92-047C19DBBFB4}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration\Debug\Web\MySpace.MSFast.Automation.Logging.config = Configuration\Debug\Web\MySpace.MSFast.Automation.Logging.config
+		Configuration\Debug\Web\MySpace.MSFast.Automation.Web.Application.config = Configuration\Debug\Web\MySpace.MSFast.Automation.Web.Application.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{27755B68-FC69-4A8B-A7F4-0DEB41F221AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySpace.MSFast.Automation.Resources.Web.Application", "MySpace.MSFast.Automation.Resources.Web.Application\MySpace.MSFast.Automation.Resources.Web.Application.csproj", "{48119CA3-B43F-464D-81EF-F3C035D2E5E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySpace.MSFast.Automation.Resources.Web.Core", "MySpace.MSFast.Automation.Resources.Web.Core\MySpace.MSFast.Automation.Resources.Web.Core.csproj", "{09D03BA5-DC68-4C42-BD3E-6E29DB7ADC42}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{56D2421F-5977-4933-8AA3-879B525FE131}"
+	ProjectSection(SolutionItems) = preProject
+		Build\build_all.bat = Build\build_all.bat
+		Build\build_client.bat = Build\build_client.bat
+		Build\build_email_service.bat = Build\build_email_service.bat
+		Build\build_web.bat = Build\build_web.bat
+		Build\MySpace.MSFast.Automation.Base.proj = Build\MySpace.MSFast.Automation.Base.proj
+		Build\MySpace.MSFast.Automation.Client.proj = Build\MySpace.MSFast.Automation.Client.proj
+		Build\MySpace.MSFast.Automation.proj = Build\MySpace.MSFast.Automation.proj
+		Build\MySpace.MSFast.Automation.Tasks.EmailsSender.proj = Build\MySpace.MSFast.Automation.Tasks.EmailsSender.proj
+		Build\MySpace.MSFast.Automation.Web.proj = Build\MySpace.MSFast.Automation.Web.proj
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{53A5004F-F4C0-4814-859B-147D898D9EB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySpace.MSFast.Automation.Providers", "MySpace.MSFast.Automation.Providers\MySpace.MSFast.Automation.Providers.csproj", "{10EDAF6F-14A5-48AB-A394-65346F40D349}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySpace.MSFast.Automation.Dao", "MySpace.MSFast.Automation.Dao\MySpace.MSFast.Automation.Dao.csproj", "{A6AA4858-7BF3-4B59-A205-6D1AB39554A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{181CCF29-5B36-46A8-8E8C-A100F96C38FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySpace.MSFast.Automation.Tasks.EmailsSender", "MySpace.MSFast.Automation.Tasks.EmailsSender\MySpace.MSFast.Automation.Tasks.EmailsSender.csproj", "{C4E93673-4B7C-4930-B4FC-E52E9C2851A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{D674FB36-1EB2-442F-AC84-0F5137E2E4FA}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration\Global\Tasks\Tasks.Logging.config = Configuration\Global\Tasks\Tasks.Logging.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmailsSender", "EmailsSender", "{995B0B24-F883-4F34-9499-4447D7CBA681}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration\Global\Tasks\EmailsSender\Application.Task.EmailsSender.config = Configuration\Global\Tasks\EmailsSender\Application.Task.EmailsSender.config
+		Configuration\Global\Tasks\EmailsSender\Entities.Task.EmailsSender.config = Configuration\Global\Tasks\EmailsSender\Entities.Task.EmailsSender.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySpace.MSFast.Automation.Client.API", "MySpace.MSFast.Automation.Client.API\MySpace.MSFast.Automation.Client.API.csproj", "{33DB4F3B-F5C1-4305-A364-7FC7B9792092}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{92D9E80B-6910-4FD8-A62B-B9804369E5BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A20A3591-2F4B-480D-91B1-D11CC907BC61}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration\Release\Core\MySpace.MSFast.Automation.Dao.config = Configuration\Release\Core\MySpace.MSFast.Automation.Dao.config
+		Configuration\Release\Core\MySpace.MSFast.Automation.Memcached.config = Configuration\Release\Core\MySpace.MSFast.Automation.Memcached.config
+		Configuration\Release\Core\MySpace.MSFast.Automation.SecurityCredentials.config = Configuration\Release\Core\MySpace.MSFast.Automation.SecurityCredentials.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{D0B43005-C830-424A-BAC5-9BD4143B6244}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration\Release\Web\MySpace.MSFast.Automation.Logging.config = Configuration\Release\Web\MySpace.MSFast.Automation.Logging.config
+		Configuration\Release\Web\MySpace.MSFast.Automation.Web.Application.config = Configuration\Release\Web\MySpace.MSFast.Automation.Web.Application.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notifications", "{492EF95C-58EF-41E0-9F2C-78CE63872226}"
+	ProjectSection(SolutionItems) = preProject
+		Configuration\Global\Notifications\NotificationTemplates.config = Configuration\Global\Notifications\NotificationTemplates.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{DBE8E849-D374-46B2-88DA-90007D0166F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySpace.MSFast.Automation.Client.MSFast", "MySpace.MSFast.Automation.Client.MSFast\MySpace.MSFast.Automation.Client.MSFast.csproj", "{4244385A-5DED-4A6A-8253-F00A7E805685}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySpace.MSFast.Automation.Resources.GlobalVariables", "MySpace.MSFast.Automation.Resources.GlobalVariables\MySpace.MSFast.Automation.Resources.GlobalVariables.csproj", "{8E57FF70-4F62-4776-B3F2-A14C137848D7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B48A1A13-C427-4F28-ABED-ACA6F28C66BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B48A1A13-C427-4F28-ABED-ACA6F28C66BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B48A1A13-C427-4F28-ABED-ACA6F28C66BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B48A1A13-C427-4F28-ABED-ACA6F28C66BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23D7C7BD-131C-4267-B4FA-05EB099007BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23D7C7BD-131C-4267-B4FA-05EB099007BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23D7C7BD-131C-4267-B4FA-05EB099007BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23D7C7BD-131C-4267-B4FA-05EB099007BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3DDB25E-F259-49C6-BA9B-26C328788E66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3DDB25E-F259-49C6-BA9B-26C328788E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3DDB25E-F259-49C6-BA9B-26C328788E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3DDB25E-F259-49C6-BA9B-26C328788E66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48119CA3-B43F-464D-81EF-F3C035D2E5E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48119CA3-B43F-464D-81EF-F3C035D2E5E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48119CA3-B43F-464D-81EF-F3C035D2E5E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48119CA3-B43F-464D-81EF-F3C035D2E5E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09D03BA5-DC68-4C42-BD3E-6E29DB7ADC42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09D03BA5-DC68-4C42-BD3E-6E29DB7ADC42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09D03BA5-DC68-4C42-BD3E-6E29DB7ADC42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09D03BA5-DC68-4C42-BD3E-6E29DB7ADC42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10EDAF6F-14A5-48AB-A394-65346F40D349}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10EDAF6F-14A5-48AB-A394-65346F40D349}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10EDAF6F-14A5-48AB-A394-65346F40D349}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10EDAF6F-14A5-48AB-A394-65346F40D349}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6AA4858-7BF3-4B59-A205-6D1AB39554A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6AA4858-7BF3-4B59-A205-6D1AB39554A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6AA4858-7BF3-4B59-A205-6D1AB39554A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6AA4858-7BF3-4B59-A205-6D1AB39554A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4E93673-4B7C-4930-B4FC-E52E9C2851A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4E93673-4B7C-4930-B4FC-E52E9C2851A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4E93673-4B7C-4930-B4FC-E52E9C2851A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4E93673-4B7C-4930-B4FC-E52E9C2851A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33DB4F3B-F5C1-4305-A364-7FC7B9792092}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33DB4F3B-F5C1-4305-A364-7FC7B9792092}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33DB4F3B-F5C1-4305-A364-7FC7B9792092}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33DB4F3B-F5C1-4305-A364-7FC7B9792092}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4244385A-5DED-4A6A-8253-F00A7E805685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4244385A-5DED-4A6A-8253-F00A7E805685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4244385A-5DED-4A6A-8253-F00A7E805685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4244385A-5DED-4A6A-8253-F00A7E805685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E57FF70-4F62-4776-B3F2-A14C137848D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E57FF70-4F62-4776-B3F2-A14C137848D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E57FF70-4F62-4776-B3F2-A14C137848D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E57FF70-4F62-4776-B3F2-A14C137848D7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{23D7C7BD-131C-4267-B4FA-05EB099007BD} = {38A21401-1DC1-46AB-8392-ED12E436707C}
+		{B48A1A13-C427-4F28-ABED-ACA6F28C66BE} = {38A21401-1DC1-46AB-8392-ED12E436707C}
+		{A6587A72-BE5F-4CDC-9553-04770351F068} = {5EB2FA58-2B9F-46AA-9A36-A22221636FC0}
+		{D2CE6F1E-72BC-4072-BA97-794FE1D61A3D} = {5EB2FA58-2B9F-46AA-9A36-A22221636FC0}
+		{92D9E80B-6910-4FD8-A62B-B9804369E5BA} = {5EB2FA58-2B9F-46AA-9A36-A22221636FC0}
+		{654B44A7-5E5F-4AA2-80FA-CE135049A1D0} = {A6587A72-BE5F-4CDC-9553-04770351F068}
+		{A7513898-DA6B-4F1D-907A-3F884229EDED} = {A6587A72-BE5F-4CDC-9553-04770351F068}
+		{D674FB36-1EB2-442F-AC84-0F5137E2E4FA} = {A6587A72-BE5F-4CDC-9553-04770351F068}
+		{492EF95C-58EF-41E0-9F2C-78CE63872226} = {A6587A72-BE5F-4CDC-9553-04770351F068}
+		{C3DDB25E-F259-49C6-BA9B-26C328788E66} = {EABEF104-7CFE-4DCF-8BD2-B8C0CE10E755}
+		{A6AA4858-7BF3-4B59-A205-6D1AB39554A3} = {EABEF104-7CFE-4DCF-8BD2-B8C0CE10E755}
+		{AA0C0F6A-8B27-4A32-BB08-006143027008} = {D2CE6F1E-72BC-4072-BA97-794FE1D61A3D}
+		{EEFDA719-E0F8-4B97-BE92-047C19DBBFB4} = {D2CE6F1E-72BC-4072-BA97-794FE1D61A3D}
+		{48119CA3-B43F-464D-81EF-F3C035D2E5E4} = {27755B68-FC69-4A8B-A7F4-0DEB41F221AB}
+		{09D03BA5-DC68-4C42-BD3E-6E29DB7ADC42} = {27755B68-FC69-4A8B-A7F4-0DEB41F221AB}
+		{8E57FF70-4F62-4776-B3F2-A14C137848D7} = {27755B68-FC69-4A8B-A7F4-0DEB41F221AB}
+		{10EDAF6F-14A5-48AB-A394-65346F40D349} = {53A5004F-F4C0-4814-859B-147D898D9EB1}
+		{C4E93673-4B7C-4930-B4FC-E52E9C2851A4} = {181CCF29-5B36-46A8-8E8C-A100F96C38FB}
+		{995B0B24-F883-4F34-9499-4447D7CBA681} = {D674FB36-1EB2-442F-AC84-0F5137E2E4FA}
+		{33DB4F3B-F5C1-4305-A364-7FC7B9792092} = {DBE8E849-D374-46B2-88DA-90007D0166F5}
+		{4244385A-5DED-4A6A-8253-F00A7E805685} = {DBE8E849-D374-46B2-88DA-90007D0166F5}
+		{A20A3591-2F4B-480D-91B1-D11CC907BC61} = {92D9E80B-6910-4FD8-A62B-B9804369E5BA}
+		{D0B43005-C830-424A-BAC5-9BD4143B6244} = {92D9E80B-6910-4FD8-A62B-B9804369E5BA}
+	EndGlobalSection
+EndGlobal

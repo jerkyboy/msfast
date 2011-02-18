@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="build">
+	
+	<PropertyGroup Condition="$(Dir_Projects)==''">
+		<Dir_Projects>$(MSBuildProjectDirectory)\..</Dir_Projects>
+	</PropertyGroup>
+
+  <Import Condition="$(Base_Loaded)==''" Project="$(Dir_Projects)\Build\MySpace.MSFast.Automation.Base.proj"/>
+	
+	<PropertyGroup>
+    <Dir_Projects_MSFastAutomation_Client>$(Dir_Projects_MSFastAutomation)\MySpace.MSFast.Automation.Client.MSFast</Dir_Projects_MSFastAutomation_Client>
+    <Dir_Deploy_MSFastAutomation_Client>$(Dir_Deploy_MSFastAutomation)\Client</Dir_Deploy_MSFastAutomation_Client>
+  </PropertyGroup>
+
+  <!--  DependsOnTargets="build_MSFastAutomation" -->
+  <Target Name="deploy_client_MSFastAutomation">
+		<CreateItem Include="$(Dir_Projects_MSFastAutomation_Client)\bin\$(Configuration)\**\*" 
+					      Exclude="$(Dir_Projects_MSFastAutomation_Client)\bin\$(Configuration)\**\*.pdb;
+                         $(Dir_Projects_MSFastAutomation_Client)\bin\$(Configuration)\**\*.manifest;
+                         $(Dir_Projects_MSFastAutomation_Client)\bin\$(Configuration)\**\*.vshost.exe;
+                         $(Dir_Projects_MSFastAutomation_Client)\bin\$(Configuration)\**\MySpace.MSFast.GUI.Engine.RenderGraph.bin;
+                         $(Dir_Projects_MSFastAutomation_Client)\bin\$(Configuration)\**\.svn\**">
+			<Output TaskParameter="Include" ItemName="_MSFastAutomationClientOutput"/>
+		</CreateItem>
+    <Copy SourceFiles="@(_MSFastAutomationClientOutput)" SkipUnchangedFiles="true" DestinationFiles="@(_MSFastAutomationClientOutput->'$(Dir_Deploy_MSFastAutomation_Client)\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(_msfast_files)" SkipUnchangedFiles="true" DestinationFiles="@(_msfast_files->'$(Dir_Deploy_MSFastAutomation_Client)\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    
+  </Target>
+  
+</Project>
