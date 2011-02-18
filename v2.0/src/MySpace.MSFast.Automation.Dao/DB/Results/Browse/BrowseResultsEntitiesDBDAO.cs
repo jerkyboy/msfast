@@ -39,24 +39,31 @@ namespace MySpace.MSFast.Automation.Dao.DB.Results.Browse
     {
         private static EntitiesCollectionMapper<T> entityMapper = new EntitiesCollectionMapper<T>();
 
-        public static String COUNT = "SELECT COUNT(DISTINCT " + Entity.GetFieldName(typeof(Entities.Results.Results), "resultsid") + ") ";
-        public static String SELECT = "SELECT DISTINCT " + Entity.GetFieldName(typeof(Entities.Results.Results), "resultsid") + " as results_resultsid, " +
+        public static String COUNT = "SELECT COUNT(DISTINCT " + Entity.GetFieldName(typeof(Entities.Results.Results), "testid") + ", " + Entity.GetFieldName(typeof(Entities.Results.Results), "testertypeid") + " ) ";
+
+        public static String SELECT = "SELECT " + Entity.GetFieldName(typeof(Entities.Results.Results), "resultsid") + " as results_resultsid, " + 
                                       " ( " + Entity.GetFieldName(typeof(Entities.Results.Results), "endtime") + " - " + Entity.GetFieldName(typeof(Entities.Results.Results), "starttime") + ") as results_totaltime, " +
                                       Entity.GetFieldName(typeof(Test), "testname") + " as tests_testname, " +
                                       Entity.GetFieldName(typeof(TesterType), "name") + " as testertypes_name, " +
                                       " 'BPI' as results_bpi ";
 
-        public static String FROM = " FROM " + Entity.GetTableNameAndNick(typeof(Entities.Results.Results)) + 
-                                    " LEFT JOIN " + Entity.GetTableNameAndNick(typeof(Test)) + " ON " + Entity.GetFieldName(typeof(Entities.Results.Results), "testid") + " = " + Entity.GetFieldName(typeof(Test), "testid") +
-                                    " LEFT JOIN " + Entity.GetTableNameAndNick(typeof(TesterType)) + " ON " + Entity.GetFieldName(typeof(Entities.Results.Results), "testertypeid") + " = " + Entity.GetFieldName(typeof(TesterType), "testertypeid");
+        public static String FROM =     " FROM " + Entity.GetTableNameAndNick(typeof(Entities.Results.Results)) +
+                                        " LEFT JOIN " + Entity.GetTableNameAndNick(typeof(Test)) + " ON " + Entity.GetFieldName(typeof(Entities.Results.Results), "testid") + " = " + Entity.GetFieldName(typeof(Test), "testid") +
+                                        " LEFT JOIN " + Entity.GetTableNameAndNick(typeof(TesterType)) + " ON " + Entity.GetFieldName(typeof(Entities.Results.Results), "testertypeid") + " = " + Entity.GetFieldName(typeof(TesterType), "testertypeid");
+
+        public static String FROM_ALL = " FROM ( SELECT MAX(rres.resultsid) as resultsid FROM `results` AS rres WHERE rres.state = {0} GROUP BY rres.testid, rres.testertypeid ORDER BY resultsid ASC LIMIT 0, 5000 ) AS rres, " +
+                                        Entity.GetTableNameAndNick(typeof(Entities.Results.Results)) + 
+                                        " LEFT JOIN " + Entity.GetTableNameAndNick(typeof(Test)) + " ON " + Entity.GetFieldName(typeof(Entities.Results.Results), "testid") + " = " + Entity.GetFieldName(typeof(Test), "testid") +
+                                        " LEFT JOIN " + Entity.GetTableNameAndNick(typeof(TesterType)) + " ON " + Entity.GetFieldName(typeof(Entities.Results.Results), "testertypeid") + " = " + Entity.GetFieldName(typeof(TesterType), "testertypeid");
 
         public static String FROM_TRIGGER = " FROM " + Entity.GetTableNameAndNick(typeof(TriggerToTestAndTesterType)) + ", " + Entity.GetTableNameAndNick(typeof(Entities.Results.Results)) +  
                                             " LEFT JOIN " + Entity.GetTableNameAndNick(typeof(Test)) + " ON " + Entity.GetFieldName(typeof(Entities.Results.Results), "testid") + " = " + Entity.GetFieldName(typeof(Test), "testid") +
                                             " LEFT JOIN " + Entity.GetTableNameAndNick(typeof(TesterType)) + " ON " + Entity.GetFieldName(typeof(Entities.Results.Results), "testertypeid") + " = " + Entity.GetFieldName(typeof(TesterType), "testertypeid");
 
-        public static String WHERE_SUCCEEDED = " (" + Entity.GetFieldName(typeof(Entities.Results.Results), "state") + " = " + ((uint)ResultsState.Succeeded) + ") ";
-        public static String WHERE = " WHERE " + WHERE_SUCCEEDED;
+        public static String WHERE_ALL = " WHERE rres.resultsid = " + Entity.GetFieldName(typeof(Entities.Results.Results), "resultsid");
+
         public static String ORDERBY = " ORDER BY " + Entity.GetFieldName(typeof(Entities.Results.Results), "resultsid") + " DESC ";
+        
         public static String LIMIT = " LIMIT ?ind,?len ";
 
         public override IDAOTransaction ExecuteCall(EntitiesDAOTransaction<T> t)
@@ -80,7 +87,7 @@ namespace MySpace.MSFast.Automation.Dao.DB.Results.Browse
                 {
                     if (bpe.PopTotal)
                     {
-                        String s = String.Concat(GetCount(builder, bpe), GetFrom(builder, bpe), GetWhere(builder, bpe));
+                        String s = String.Concat(GetCount(builder, bpe), GetFrom(builder, bpe), GetWhereCount(builder, bpe));
                         t.Entities[id].Total = int.Parse(AdoTemplate.ExecuteScalar(CommandType.Text, s, builder.GetParameters()).ToString());
                     }
                 }
@@ -90,12 +97,12 @@ namespace MySpace.MSFast.Automation.Dao.DB.Results.Browse
             return null;
         }
 
-
         public virtual void PrepareBuilder(IDbParametersBuilder builder, T bpe){}
         public virtual String GetCount(IDbParametersBuilder builder, T bpe){return COUNT;}
         public virtual String GetLimit(IDbParametersBuilder builder, T bpe) { return LIMIT; }
         public virtual String GetOrder(IDbParametersBuilder builder, T bpe) { return ORDERBY; }
-        public virtual String GetWhere(IDbParametersBuilder builder, T bpe) { return WHERE; }
+        public virtual String GetWhereCount(IDbParametersBuilder builder, T bpe) { return GetWhere(builder, bpe); }
+        public virtual String GetWhere(IDbParametersBuilder builder, T bpe) { throw new NotImplementedException(); }
         public virtual String GetFrom(IDbParametersBuilder builder, T bpe) { return FROM; }
         public virtual String GetGroupBy(IDbParametersBuilder builder,T bpe){return String.Empty;}
         public virtual String GetSelect(IDbParametersBuilder builder, T bpe) { return SELECT; }
@@ -110,13 +117,6 @@ namespace MySpace.MSFast.Automation.Dao.DB.Results.Browse
             Entity.GetFieldName(typeof(TriggerToTestAndTesterType), "triggerid") + " = ?trid AND " +
             Entity.GetFieldName(typeof(Entities.Results.Results), "testid") + " = " + Entity.GetFieldName(typeof(TriggerToTestAndTesterType), "testid") + " AND " +
             Entity.GetFieldName(typeof(Entities.Results.Results), "testertypeid") + " = " + Entity.GetFieldName(typeof(TriggerToTestAndTesterType), "testertypeid") + " ) ";
-
-        private static String WHERE_ALL = " WHERE " + Entity.GetFieldName(typeof(Entities.Results.Results), "resultsid") + " IN ( " +
-                                          " SELECT MAX(" + Entity.GetFieldName(typeof(Entities.Results.Results), "resultsid") + ") " +
-                                          " FROM " + Entity.GetTableNameAndNick(typeof(Entities.Results.Results)) +
-                                          " WHERE " + Entity.GetFieldName(typeof(Entities.Results.Results), "state") + " = " + ((uint)ResultsState.Succeeded) +
-                                          " GROUP BY " + Entity.GetFieldName(typeof(Entities.Results.Results), "testid") + ", " + Entity.GetFieldName(typeof(Entities.Results.Results), "testertypeid") +
-                                          " ) ";
 
         public override void PrepareBuilder(IDbParametersBuilder builder, BrowseResultsEntities_FreeBrowse bpe)
         {
@@ -140,24 +140,31 @@ namespace MySpace.MSFast.Automation.Dao.DB.Results.Browse
             if (TriggerID.IsValidTriggerID(bpe.TriggerID))
                 return FROM_TRIGGER;
 
-            return base.GetFrom(builder, bpe);
+            if (TestID.IsValidTestID(bpe.TestID) == false &&
+                TesterTypeID.IsValidTesterTypeID(bpe.TesterTypeID) == false)
+            {
+                if (bpe.ResultsState == ResultsState.Unknown)
+                {
+                    return String.Format(FROM_ALL, (uint)ResultsState.Succeeded);
+                }
+                else
+                {
+                    return String.Format(FROM_ALL, (uint)bpe.ResultsState);
+                }
+            }
+
+            return FROM;
         }
 
         public override String GetWhere(IDbParametersBuilder builder, BrowseResultsEntities_FreeBrowse bpe)
         {
             String where = String.Empty;
 
-            if (bpe.ResultsState == ResultsState.Unknown &&
-                TriggerID.IsValidTriggerID(bpe.TriggerID) == false &&
+            if (TriggerID.IsValidTriggerID(bpe.TriggerID) == false &&
                 TestID.IsValidTestID(bpe.TestID) == false &&
                 TesterTypeID.IsValidTesterTypeID(bpe.TesterTypeID) == false)
             {
                 return WHERE_ALL;
-            }
-
-            if (bpe.ResultsState != ResultsState.Unknown) {
-                if (where.Length > 0) where += " AND ";
-                where += WHERE_RESULTS_STATE;
             }
 
             if (TestID.IsValidTestID(bpe.TestID)) {
@@ -173,11 +180,17 @@ namespace MySpace.MSFast.Automation.Dao.DB.Results.Browse
             if (TriggerID.IsValidTriggerID(bpe.TriggerID))
             {
                 if (where.Length > 0) where += " AND ";
-                where += WHERE_TRIGGER_ID;                
+                where += WHERE_TRIGGER_ID;
+            }
+            
+            if (bpe.ResultsState != ResultsState.Unknown)
+            {
+                if (where.Length > 0) where += " AND ";
+                where += WHERE_RESULTS_STATE;
             }
 
-            if (String.IsNullOrEmpty(where)) 
-                return WHERE;
+            if (String.IsNullOrEmpty(where))
+                return WHERE_ALL;
             
             return " WHERE " + where; 
         }

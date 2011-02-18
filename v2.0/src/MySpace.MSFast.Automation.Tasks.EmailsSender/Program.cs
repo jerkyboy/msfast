@@ -30,6 +30,10 @@ using EYF.Tasks.Context;
 using EYF.Tasks.Context.Listeners;
 using EYF.Providers.ThridParty.Twitter;
 using EYF.Core.Configuration;
+using MySpace.MSFast.Automation.Providers.Tests.Browse;
+using MySpace.MSFast.Automation.Entities.Tests;
+using MySpace.MSFast.Core.Configuration.CollectorsConfig;
+using System.IO;
 
 namespace MySpace.MSFast.Automation.Tasks.EmailsSender
 {
@@ -69,6 +73,7 @@ namespace MySpace.MSFast.Automation.Tasks.EmailsSender
             ServiceBase.Run(new ServiceBase[] { new Program() });
 #endif
 
+
         }
         public Program()
         {
@@ -92,3 +97,4 @@ namespace MySpace.MSFast.Automation.Tasks.EmailsSender
         }
     }
 }
+

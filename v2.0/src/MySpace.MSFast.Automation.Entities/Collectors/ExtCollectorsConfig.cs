@@ -52,7 +52,7 @@ namespace MySpace.MSFast.Automation.Entities.Collectors
                 }
             }
         }
-
+        
         public override void SetArgument(string k, string v)
         {
             if (metaData == null)
