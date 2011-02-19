@@ -6,6 +6,7 @@
 <param name="movie" value="/Controls/Results/MySpace.MSFast.GUI.Engine.RenderGraph.bin" />
 <param name="quality" value="high" />
 <param name="bgcolor" value="#ffffff" />
-<embed src="/Controls/Results/MySpace.MSFast.GUI.Engine.RenderGraph.bin" quality="high" FlashVars="u=<%=RESULTS_URL %>" bgcolor="#ffffff" width="100%" height="400" name="main" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+<param name="wmode" value="transparent" />
+<embed src="/Controls/Results/MySpace.MSFast.GUI.Engine.RenderGraph.bin" wmode="transparent" quality="high" FlashVars="u=<%=RESULTS_URL %>" bgcolor="#ffffff" width="100%" height="400" name="main" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 </object>
  

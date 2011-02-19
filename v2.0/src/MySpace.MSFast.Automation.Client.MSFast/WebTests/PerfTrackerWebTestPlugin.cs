@@ -23,14 +23,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-//using Microsoft.VisualStudio.TestTools.WebTesting;
+using Microsoft.VisualStudio.TestTools.WebTesting;
 using System.Net;
 using MySpace.MSFast.Core.Configuration.CollectorsConfig;
 using System.Windows.Forms;
 
-namespace MySpace.MSFast.Automation.Client.MSFast.Webtests.Plugins
+namespace MySpace.MSFast.Automation.Client.MSFast.WebTests
 {
-    /*
+    
     public class PerfTrackerWebTestPlugin : WebTestPlugin
     {
 		 public CollectorsConfig CollectorsConfig;
@@ -74,5 +74,5 @@ namespace MySpace.MSFast.Automation.Client.MSFast.Webtests.Plugins
              
              base.PreWebTest(sender, e);
          }
-    }*/
+    }
 }

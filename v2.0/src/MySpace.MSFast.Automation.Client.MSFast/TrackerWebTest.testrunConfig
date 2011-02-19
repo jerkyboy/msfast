@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRunConfiguration name="TestBrowse" id="8987e2f2-bf00-4929-ba09-8c49f3268aee" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
+  <Description>This is a default test run configuration for a local test run.</Description>
+  <Deployment>
+    <DeploymentItem filename=".\MySpace.MSFast.Engine.dll" />
+    <DeploymentItem filename=".\MySpace.MSFast.DataProcessors.CustomDataValidators.dll" />
+    <DeploymentItem filename=".\MySpace.MSFast.DataProcessors.dll" />
+    <DeploymentItem filename=".\MSFastAutomation.exe" />
+    <DeploymentItem filename=".\log4net.dll" />
+    <DeploymentItem filename=".\Interop.SHDocVw.dll" />
+  </Deployment>
+  <TestTypeSpecific>
+    <WebTestRunConfiguration testTypeId="4e7599fa-5ecb-43e9-a887-cd63cf72d207">
+      <Browser name="Internet Explorer 7.0">
+        <Headers>
+          <Header name="User-Agent" value="Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)" />
+          <Header name="Accept" value="*/*" />
+          <Header name="Accept-Language" value="{{$IEAcceptLanguage}}" />
+          <Header name="Accept-Encoding" value="GZIP" />
+        </Headers>
+      </Browser>
+      <Network Name="LAN" BandwidthInKbps="0" />
+    </WebTestRunConfiguration>
+  </TestTypeSpecific>
+</TestRunConfiguration>

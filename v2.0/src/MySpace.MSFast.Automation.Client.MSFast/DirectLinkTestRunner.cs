@@ -74,17 +74,24 @@ namespace MySpace.MSFast.Automation.Client.MSFast
             if (log.IsDebugEnabled)
                 log.Debug("Test URL(" + testUri + "), Results ID " + testIteration.ResultsID);
 
-            String msWebTest = cc.GetArgumentValue("mswebtest");
+            String isDevLogin = cc.GetArgumentValue("dev_login");
+            String isRequireLogin = cc.GetArgumentValue("require_login");
+            String loginUsername = cc.GetArgumentValue("login_username");
+            String loginPassword = cc.GetArgumentValue("login_password");
 
             ProcessedDataPackage results = null;
 
-            if (String.IsNullOrEmpty(msWebTest))
+            if (String.IsNullOrEmpty(isRequireLogin) || isRequireLogin.ToLower().Trim().Equals("false"))
             {
                 results = RunDirectTest(testIteration, testUri, testIteration.ResultsID);
             }
+            else if (String.IsNullOrEmpty(isDevLogin) || isDevLogin.ToLower().Trim().Equals("false"))
+            {
+                results = RunTestWithProductionLogin(testIteration, testUri, testIteration.ResultsID, loginUsername, loginPassword);
+            }
             else
             {
-                results = RunWebTest(testIteration, testUri, testIteration.ResultsID, msWebTest);
+                results = RunTestWithDevLogin(testIteration, testUri, testIteration.ResultsID, loginUsername, loginPassword);
             }
 
             testIteration.ProcessedDataPackage = results;
@@ -92,16 +99,24 @@ namespace MySpace.MSFast.Automation.Client.MSFast
             return results != null;
         }
 
+        private ProcessedDataPackage RunTestWithDevLogin(TestIteration testIteration, Uri testUri, uint resultsID, string loginUsername, string loginPassword)
+        {
+            return RunWebTest(testIteration, testUri, resultsID, @"WebTests\Development\DevelopmentLogin.webtest");
+        }
+
+        private ProcessedDataPackage RunTestWithProductionLogin(TestIteration testIteration, Uri testUri, uint resultsID, string loginUsername, string loginPassword)
+        {
+            return RunWebTest(testIteration, testUri, resultsID, @"WebTests\Production\ProductionLogin.webtest");
+        }
+
         private ProcessedDataPackage RunWebTest(TestIteration testIteration, Uri testUri, uint resultsID, string webtest)
         {
-            String webTestBase = MSFastDefaultStartInfo.TempFolder.Replace('/', '\\').Trim();
+            String webTestBase = Path.GetDirectoryName(Assembly.GetAssembly(typeof(DirectLinkTestRunner)).Location).Replace('/', '\\').Trim();
 
             if (webTestBase.EndsWith("\\") == false)
                 webTestBase += "\\";
 
-            String webtestlocation = webTestBase + "TempWebTest_" + Guid.NewGuid().ToString().ToLower().Replace("-","").Substring(0,10) + "_.webtest";
-
-            File.WriteAllText(webtestlocation, webtest);
+            webtest = webTestBase + webtest;
 
             //Start the webtest
             ProcessHelper helper = new ProcessHelper();
@@ -113,7 +128,8 @@ namespace MySpace.MSFast.Automation.Client.MSFast
             helper.EnvironmentVariables.Add("TestTempFolder", MSFastDefaultStartInfo.TempFolder);
             helper.EnvironmentVariables.Add("EngineExecutable", MSFastDefaultStartInfo.EngineExecutable);
             helper.EnvironmentVariables.Add("MSFastConfigFiles", String.Join("|",MSFastDefaultStartInfo.ConfigFiles));
-
+            helper.EnvironmentVariables.Add("MSFastCollectorScripts", MSFastDefaultStartInfo.CollectorScripts);
+            
             if (String.IsNullOrEmpty(webtest) || File.Exists(webtest) == false)
             {
                 if (log.IsFatalEnabled)

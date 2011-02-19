@@ -38,25 +38,6 @@ using System.Net;
 
 namespace MySpace.MSFast.Automation.Client.MSFast
 {
-    [RunInstaller(true)]
-    public class MSFastAutomationClientInstaller : System.Configuration.Install.Installer
-    {
-        public MSFastAutomationClientInstaller()
-        {
-            ServiceProcessInstaller process = new ServiceProcessInstaller();
-            process.Account = ServiceAccount.LocalSystem;
-
-            ServiceInstaller serviceAdmin = new ServiceInstaller();
-
-            serviceAdmin.StartType = ServiceStartMode.Manual;
-            serviceAdmin.ServiceName = "MSFastAutomationClient";
-            serviceAdmin.DisplayName = "MSFastAutomation Client Service";
-
-            Installers.Add(process);
-            Installers.Add(serviceAdmin);
-        }
-    }
-
     public class MSFastAutomationMSFastClient : AbsClient
     {
         public override bool Start()

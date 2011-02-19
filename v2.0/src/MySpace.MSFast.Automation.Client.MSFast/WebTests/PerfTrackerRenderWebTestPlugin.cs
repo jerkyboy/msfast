@@ -23,16 +23,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-//using Microsoft.VisualStudio.TestTools.WebTesting;
+using Microsoft.VisualStudio.TestTools.WebTesting;
 using System.Net;
 using MySpace.MSFast.Engine.CollectorStartInfo;
 using MySpace.MSFast.Engine;
 using MySpace.MSFast.Engine.DataCollector;
 using MySpace.MSFast.Automation.Client.MSFast.Utils;
 
-namespace MySpace.MSFast.Automation.Client.MSFast.Webtests.Plugins
+namespace MySpace.MSFast.Automation.Client.MSFast.WebTests
 {
-    /*
+    
 	public class PerfTrackerRenderWebTestPlugin : PerfTrackerWebTestPlugin
 	{
         public override void PostRequest(object sender, PostRequestEventArgs e)
@@ -41,6 +41,8 @@ namespace MySpace.MSFast.Automation.Client.MSFast.Webtests.Plugins
                 return;
 
             Log(e.WebTest, "Running test with resultid " + this.ResultsID);
+
+            MSFastDefaultStartInfo.Init();
 
             CustomRequestPageDataCollectorStartInfo chr = new CustomRequestPageDataCollectorStartInfo();
 
@@ -116,5 +118,5 @@ namespace MySpace.MSFast.Automation.Client.MSFast.Webtests.Plugins
 
             base.PostRequest(sender, e);
         }
-	}*/
+	}
 }

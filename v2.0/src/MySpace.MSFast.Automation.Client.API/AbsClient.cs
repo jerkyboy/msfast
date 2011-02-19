@@ -281,42 +281,12 @@ namespace MySpace.MSFast.Automation.Client.API
 
                 String testType = collectorsConfig.GetArgumentValue("test_type");
 
-                if (String.IsNullOrEmpty(testType))
-                {
-                    if (log.IsErrorEnabled)
-                        log.Error("No test_type!");
-
-                    if (testIteration != null && testIteration.ResultsID != 0)
-                        try
-                        {
-                            client.MarkFailedTest(testIteration);
-                        }
-                        catch (Exception e)
-                        {
-                            if (log.IsErrorEnabled)
-                                log.Error("Error while setting failed test ", e);
-                        }
-
-                    results.Failed++;
-
-                    if (PrintToConsole)
-                    {
-                        Console.ResetColor();
-                        Console.Write("[");
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write("Failed");
-                        Console.ResetColor();
-                        Console.Write("]");
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.Write("\r\nGoing to sleep...");
-                    }
-
-                    return results;
-                }
-
                 ITestRunner itr = null;
 
-                runners.TryGetValue(testType.Trim().ToLower(), out itr);
+                if (String.IsNullOrEmpty(testType) == false)
+                {
+                    runners.TryGetValue(testType.Trim().ToLower(), out itr);
+                }
 
                 if (itr == null)
                     itr = defaultTestRunner;
