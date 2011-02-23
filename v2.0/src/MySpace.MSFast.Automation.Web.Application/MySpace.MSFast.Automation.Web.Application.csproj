@@ -555,6 +555,9 @@
     <Content Include="Static\Skin\Skin001\Global\css\global.css" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClearTempFolder.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Controls\Results\MySpace.MSFast.GUI.Engine.RenderGraph.bin" />
     <Content Include="ControlLoaders\Triggers\DeleteTriggerFormControlLoader.aspx" />
     <Content Include="Controls\Triggers\DeleteTriggerForm.ascx" />
